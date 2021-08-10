@@ -7,7 +7,7 @@ from modules.icmplib import *
 
 def home(request):
 
-    host = ping('1.1.1.1', count=10, interval=0.2, privileged=True)
+    host = ping('8.8.8.8', count=10, interval=0.2, privileged=True)
     print(host)
     return render(request, 'polls/ping-result.html', {'pinginfo':host})
 

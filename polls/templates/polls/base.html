@@ -8,18 +8,22 @@
 <head>
     <title>My Project</title>
 
-    <nav class="uk-navbar-container" uk-navbar>
-   
     <div class="uk-container">
-
-    <nav class="uk-navbar-container" uk-navbar>
-      {% block header %}{% endblock %}
-
+    <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+        <ul class="uk-navbar-nav">
+            <a class="uk-navbar-item uk-logo" href="#"> <span uk-icon="heart"></span> Logo</a>
+            </ul>
+    
+        <div class="uk-navbar-right">
+            <ul class="uk-navbar-nav">
+        {% block header %}{% endblock %}
+         </ul>
+        </div>
+     
     </nav>
     </div>
-
-    </nav>
 </head>
+
 <body>
     <div class="uk-container">
 {% block content %}{% endblock %}
@@ -27,15 +31,13 @@
 </body>
 
 <footer>
-    <div class="uk-section uk-section-muted">
         <div class="uk-container">
             <ul class="uk-breadcrumb">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Linked Category</a></li>
                 <li class="uk-disabled"><a>Disabled Category</a></li>
-                <li><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span></li>
+                <li><span></span></li>
             </ul>
         </div>
-    </div>
 </footer>
 </html>
