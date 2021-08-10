@@ -1,0 +1,54 @@
+
+
+{% extends "polls/base.html" %}
+
+{% block header %}
+
+
+        <ul class="uk-navbar-nav">
+        <a class="uk-navbar-item uk-logo" href="#"> <span uk-icon="heart"></span> Logo</a>
+        </ul>
+
+    <div class="uk-navbar-right">
+        <ul class="uk-navbar-nav">
+            <li class="uk-active"><a href="#">Scan</a></li>
+            <li>
+                <a href="#">Tools</a>
+                <div class="uk-navbar-dropdown">
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                        <li class="uk-active"><a href="#">SSL Scan</a></li>
+                        <li><a href="ping/">Ping</a></li>
+                        <li><a href="dig/">DIG</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="#">Blog</a></li>
+        </ul>
+    </div>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+    <h1> This is the templates page</h1>
+
+    <div class="uk-section uk-section-muted">
+        <div class="uk-container">
+    
+            <h3>Section</h3>
+    
+            <div class="uk-grid-match uk-child-width-1-3@m" uk-grid>
+                <div class="uk-margin">
+                    <form class="uk-search uk-search-default" action="result">
+                        <a href="result" class="uk-search-icon-flip" uk-search-icon></a>
+                        <input class="uk-search-input" type="search" placeholder="host:port" name="website_port">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+   
+{% endblock %}

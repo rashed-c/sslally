@@ -1,0 +1,49 @@
+
+
+
+{% extends "polls/base.html" %}
+
+{% block header %}
+
+
+<div class="uk-navbar-left">
+<a class="uk-navbar-item uk-logo" href="#"> <span uk-icon="heart"></span> Logo</a>
+</div>
+<div class="uk-navbar-right">
+
+    <ul class="uk-navbar-nav">
+        <li><a href="/">Scan</a></li>
+        <li>
+            <a href="#">Tools</a>
+            <div class="uk-navbar-dropdown">
+                <ul class="uk-nav uk-navbar-dropdown-nav">
+                    <li class="uk-active"><a href="#">SSL Scan</a></li>
+                    <li><a href="#">Ping</a></li>
+                    <li><a href="#">DIG</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="uk-active"><a href="#">Blog</a></li>
+    </ul>
+
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+<h1> Ping result page</h1>
+
+<form action="">
+<input type="text" name="website_port">
+</input>
+<input type="submit" action="result">
+    
+</input>
+
+</form>
+
+<h3>Ping Info:</h3>
+{{ pinginfo }}
+<br>
+{% endblock %}

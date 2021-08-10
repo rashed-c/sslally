@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/css/uikit.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/js/uikit.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/js/uikit-icons.min.js"></script> 
+<head>
+    <title>My Project</title>
+
+    <nav class="uk-navbar-container" uk-navbar>
+   
+    <div class="uk-container">
+
+    <nav class="uk-navbar-container" uk-navbar>
+      {% block header %}{% endblock %}
+
+    </nav>
+    </div>
+
+    </nav>
+</head>
+<body>
+    <div class="uk-container">
+{% block content %}{% endblock %}
+    </div>
+</body>
+<footer>
+    <div class="uk-section uk-section-muted">
+        <div class="uk-container">
+            <ul class="uk-breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Linked Category</a></li>
+                <li class="uk-disabled"><a>Disabled Category</a></li>
+                <li><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+</html>
