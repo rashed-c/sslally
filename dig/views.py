@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse
-import modules.pydig
+from modules.dns import *
 
 # Create your views here.
 
 
 def home(request):
-    a_record = pydig.query('google.com', 'A')
-    return HttpResponse(a_record)
+    answers = resolver.query('dnspython.org', 'MX')
+    for rdata in answers:
+        print('Host', rdata.exchange, 'has preference', rdata.preference)
+    return render(request, 'polls/dns-result.html', {'dnsinfo':rdata})
