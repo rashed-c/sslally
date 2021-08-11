@@ -30,16 +30,21 @@
 
 {% block content %}
 
+<div class="uk-flex-inline uk-position-center uk-position-relative uk-margin-large-top">
+    <div class="uk-text-large uk-margin-right">Hostname:</div>
+    <div>
+    <form class="uk-search uk-search-default" action="result">
+        <a href="#" class="uk-search-icon-flip" uk-search-icon></a>
+        <input class="uk-search-input" type="search" placeholder="" name="website_port">
+    </form>
+    </div>
+</div>
+<div class="uk-margin-large-top">
+<progress class="uk-progress" value="1" max="10"></progress>
+</div>
+
 <h1> This is the result page</h1>
 
-<form action="">
-<input type="text" name="website_port">
-</input>
-<input type="submit" action="result">
-    
-</input>
-
-</form>
 
 <h3>Certificate</h3>
 {{ certinfo }}

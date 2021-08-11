@@ -7,8 +7,8 @@
         <a href="#">Monitor</a>
         <div class="uk-navbar-dropdown">
             <ul class="uk-nav uk-navbar-dropdown-nav">
-                <li class="uk-active"><a href="#">SSL</a></li>
-                <li><a href="ping/">Ping</a></li>
+                <li class="uk-active"><a href="#">SSL Monitor</a></li>
+                <li><a href="ping/">Ping Monitor</a></li>
             </ul>
         </div>
     </li>
@@ -25,16 +25,32 @@
     <li><a href="#">Blog</a></li>
 {% endblock %}
 
+$.ajax({
+    type: "GET",
+    dataType: "json",
+    url:"/updata/",
+    success: function(data)
+    {
+        alert("i got data now i will parse it as i want to display it");
+    },
+    
+    })
 
-    {% block content %}    
-            <div class="uk-grid-match uk-child-width-1-3@m" uk-grid>
-                <div class="uk-margin">
+{% block content %}
+    <div class="uk-flex-inline uk-position-center uk-position-relative uk-margin-large-top">
+                    <div class="uk-text-large uk-margin-right">Hostname:</div>
+                    <div>
                     <form class="uk-search uk-search-default" action="result">
                         <a href="result" class="uk-search-icon-flip" uk-search-icon></a>
-                        <input class="uk-search-input" type="search" placeholder="host:port" name="website_port">
+                        <input class="uk-search-input" type="search" placeholder="" name="website_port">
                     </form>
-                </div>
-            </div>
-        </div>
+                    </div>
     </div>
-    {% endblock %}
+
+
+    <div class="uk-margin-large-top">
+    <progress class="uk-progress" value="1" max="10"></progress>
+    </div>
+
+           
+{% endblock %}
