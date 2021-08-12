@@ -10,15 +10,15 @@
 
 {% block content %}
 
-<div class="uk-flex-inline uk-position-center uk-position-relative uk-margin-large-top">
-    <div class="uk-text-large uk-margin-right">Hostname:</div>
-    <div>
-    <form class="uk-search uk-search-default" action="result">
-        <a href="#" class="uk-search-icon-flip" uk-search-icon></a>
-        <input class="uk-search-input" type="search" placeholder="" name="website_port">
-    </form>
-    </div>
-</div>
+<form  action="result">
+    <fieldset class="uk-fieldset">
+        <div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
+        <div class="uk-text-large uk-margin-right">Hostname:</div>
+        <div><input class="uk-input" type="text" placeholder="" name="website_port"></div>
+        <div><button class="uk-button uk-button-default uk-button-small uk-margin-left">Submit</button></div>
+        </div>
+    </fieldset>
+</form>
 <div class="uk-margin-large-top">
 <progress class="uk-progress" value="1" max="10"></progress>
 </div>

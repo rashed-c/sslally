@@ -6,7 +6,11 @@ from modules.dns import *
 
 
 def home(request):
-    answers = resolver.query('dnspython.org', 'MX')
+    return render(request, 'polls/dig-home.html', {'dnsinfo':rdata})
+
+def do_dig(request):
+    website = request.GET.get('website_port')
+    answers = resolver.query(website, 'MX')
     for rdata in answers:
         print('Host', rdata.exchange, 'has preference', rdata.preference)
-    return render(request, 'polls/dns-result.html', {'dnsinfo':rdata})
+    return render(request, 'polls/dig-result.html', {'dnsinfo':rdata})
