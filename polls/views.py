@@ -177,8 +177,4 @@ def check(Ip):
         print("Invalid Ip address") 
 
 
-def ping(request):
-    return HttpResponse('Hello world')
 
-def dig(request):
-    return HttpResponse('hello world!')
