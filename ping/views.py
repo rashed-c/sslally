@@ -6,8 +6,12 @@ from modules.icmplib import *
 
 
 def home(request):
+    return render(request, 'polls/home.html')
 
-    host = ping('8.8.8.8', count=10, interval=0.2, privileged=True)
+def do_ping(request):
+    website = request.GET.get('website_port')
+    print(website)
+    website = "google.com"
+    host = ping(website, count=5, interval=0.2, privileged=True)
     print(host)
     return render(request, 'polls/ping-result.html', {'pinginfo':host})
-

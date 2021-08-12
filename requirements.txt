@@ -1,0 +1,16 @@
+asgiref==3.3.1
+cffi==1.14.4
+cryptography==3.3.1
+Django==3.1.6
+dnslib==0.9.16
+dnspython==2.1.0
+icmplib==3.0
+nassl==4.0.0
+pycparser==2.20
+pydig==0.3.0
+PythonDNS==0.1
+pytz==2021.1
+six==1.15.0
+sqlparse==0.4.1
+sslyze==4.0.2
+tls-parser==1.2.2
