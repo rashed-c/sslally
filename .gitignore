@@ -7,11 +7,15 @@
 node_modules/
 dist/
 
+
 # Compiled Java class files
 *.class
 
 # Compiled Python bytecode
+__pycache__/
 *.py[cod]
+*.pyc
+*.pyo
 
 # Log files
 *.log
