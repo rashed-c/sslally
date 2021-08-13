@@ -21,6 +21,8 @@
 </form>
 
 <h3>Dig Info:</h3>
-{{ dnsinfo }}
-<br>
-{% endblock %}
+
+{% for result in dnsinfo %}
+    <br>
+    <td>{{result}}</td>
+{% endfor %}
