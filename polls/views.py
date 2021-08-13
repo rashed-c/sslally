@@ -126,6 +126,7 @@ def result(request):
         cert_expiration_date = certinfo_json['certificate_deployments'][0]['received_certificate_chain'][0]['not_valid_after']
         certinfo_view = {'sn' : cert_dns_subject_alternative, 
                          'exp' : cert_expiration_date}
+                         
         for cert_deployment in certinfo_result.certificate_deployments:
             print(f"Leaf certificate: \n{cert_deployment.received_certificate_chain}")
     return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
