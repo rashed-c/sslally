@@ -40,6 +40,21 @@ $.ajax({
             <div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
             <div class="uk-text-large uk-margin-right">Hostname:</div>
             <div><input class="uk-input" type="text" placeholder="" name="website_port"></div>
+            <div class="uk-text-large uk-margin-right uk-margin-left">Record Type</div>
+            <div class="uk-margin-left">
+                <select class="uk-select" name="record_type">
+                    <option>A</option>
+                    <option>AAAA</option>
+                    <option>ANY</option>
+                    <option>CAA</option>
+                    <option>MX</option>
+                    <option>NS</option>
+                    <option>PTR</option>
+                    <option>SOA</option>
+                    <option>SRV</option>
+                    <option>TXT</option>
+                </select> 
+            </div>
             <div><button class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
             </div>
         </fieldset>

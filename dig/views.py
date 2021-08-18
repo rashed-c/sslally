@@ -11,7 +11,9 @@ def home(request):
 
 def do_dig(request):
     website = request.GET.get('website_port')
-    answers = resolver.query(website, 'MX')
+    record_type = request.GET.get('record_type')
+    print(record_type)
+    answers = resolver.query(website, record_type)
     dig_result = []
     for rdata in answers:
         dig_result.append(rdata)
