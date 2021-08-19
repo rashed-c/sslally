@@ -25,27 +25,42 @@
     <li><a href="#">Blog</a></li>
 {% endblock %}
 
-$.ajax({
-    type: "GET",
-    dataType: "json",
-    url:"/updata/",
-    success: function(data)
-    {
-        alert("i got data now i will parse it as i want to display it");
-    }, })
+
 
 {% block content %}
-<form  action="result">
+
+<div>
     <fieldset class="uk-fieldset">
         <div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
         <div class="uk-text-large uk-margin-right">Hostname:</div>
-        <div><input class="uk-input" type="text" placeholder="" name="website_port"></div>
-        <div><button class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
+        <div><input id="website_port" class="uk-input" type="text" placeholder=""></div>
+        <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
     </div>
     </fieldset>
-</form>
+</div>
 
-    <div class="uk-margin-large-top">
+    <div id="ssl-data" class="uk-margin-large-top">
     <span class="uk-margin-small-right" uk-spinner="ratio: 1"></span>
-    </div>         
+    </div>        
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+function myFunction(){
+var website_port = document.getElementById("website_port").value;
+$.ajax({
+    type: "GET",
+    dataType: "json",
+    url:"/result/?website_port="+website_port,
+    success: function(data)
+    {   
+        console.log(data);
+        $("#ssl-data").append(JSON.stringify(data));
+    },
+    failure: function(data) { 
+        console.log('Got an error dude');
+    }})
+}
+</script>
 {% endblock %}

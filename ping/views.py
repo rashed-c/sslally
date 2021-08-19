@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from modules.icmplib import *
 
 # Create your views here.
@@ -13,4 +13,5 @@ def do_ping(request):
     ping_result = []
     host = ping(website, count=5, interval=0.2, privileged=True)
     print(host)
+    #return JsonResponse()
     return render(request, 'polls/ping-result.html', {'pinginfo':host})

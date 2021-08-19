@@ -1,5 +1,5 @@
 
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render
 from modules.sslyze import *
 import sslyze
@@ -16,6 +16,9 @@ regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-
 
 def home(request):
     return render(request, 'polls/home.html')
+
+def test(request):
+    return HttpResponse("Hello world!")
 
 def result(request):
     #checkSSL("google.com","TLS_1_3_CIPHER_SUITES")
@@ -120,6 +123,7 @@ def result(request):
 
         # Certificate info results
         certinfo_result = server_scan_result.scan_commands_results[ScanCommand.CERTIFICATE_INFO]
+        print(certinfo_result)
         server_scan_result_as_json = json.dumps(asdict(certinfo_result), cls=sslyze.JsonEncoder)
         certinfo_json = json.loads(server_scan_result_as_json)
         cert_dns_subject_alternative = certinfo_json['certificate_deployments'][0]['received_certificate_chain'][0]['subject_alternative_name']['dns']
@@ -129,43 +133,8 @@ def result(request):
                          
         for cert_deployment in certinfo_result.certificate_deployments:
             print(f"Leaf certificate: \n{cert_deployment.received_certificate_chain}")
-    return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
-
-
-def checkSSL(website,command):
-    print("Checking ssl")
-    print(website)
-    print(command)
-    website = website
-    command = command
-    if ":" in website:
-        port = website[-3:] # Get port number
-        website = website[0:-4] # All exepct port number and colon
-    else:
-        port=443
-
-    
-    server_location = ServerNetworkLocationViaDirectConnection.with_ip_address_lookup(website, port)
-
-    # Do connectivity testing to ensure SSLyze is able to connect
-    try:
-        server_info = ServerConnectivityTester().perform(server_location)
-    except ConnectionToServerFailed as e:
-        # Could not connect to the server; abort
-        print(f"Error connecting to {server_location}: {e.error_message}")
-        return
-       # Then queue some scan commands for the server
-    scanner = Scanner()
-    if "TLS_1_3_CIPHER_SUITES" in command:
-        server_scan_req = ServerScanRequest(server_info=server_info, scan_commands={ScanCommand.TLS_1_3_CIPHER_SUITES},)
-        scanner.queue_scan(server_scan_req)
-        server_scan_result = scanner.get_results()
-        result = server_scan_result.scan_commands_results[ScanCommand.TLS_1_3_CIPHER_SUITES]
-        accepted_ciphers = []
-        print("\nAccepted cipher suites for SSL 2.0:")
-        for accepted_cipher_suite in result.accepted_cipher_suites:
-            accepted_ciphers.append(accepted_cipher_suite.cipher_suite.name)
-        print(accepted_ciphers)
+    return JsonResponse(certinfo_json)
+    #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
 def check(Ip): 
  
