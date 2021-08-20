@@ -92,13 +92,15 @@ def result(request):
 
         # TLS 1.3 results
         tls13_result = server_scan_result.scan_commands_results[ScanCommand.TLS_1_3_CIPHER_SUITES]
+        print(tls13_result)
+        '''
         accepted_tls13 = []
         print("\nAccepted cipher suites for TLS 1.3:")
         for accepted_cipher_suite in tls12_result.accepted_cipher_suites:
             accepted_tls13.append(accepted_cipher_suite.cipher_suite.name)
             print(f"* {accepted_cipher_suite.cipher_suite.name}") 
         
-        '''
+        
     
         Transform to uppercase first:
 
