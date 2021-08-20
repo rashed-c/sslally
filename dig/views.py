@@ -20,6 +20,6 @@ def do_dig(request):
     for rdata in answers:
         dig_result.append(rdata)
         #print('Host', rdata.exchange, 'has preference', rdata.preference)
-    print(rdata)
-    return HttpResponse(rdata)
+    print (HttpResponse(answers))
+    return HttpResponse(answers)
     #return render(request, 'polls/dig-result.html', {'dnsinfo':dig_result})

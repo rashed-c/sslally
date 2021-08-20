@@ -56,7 +56,7 @@ $.ajax({
     success: function(data)
     {   
         console.log(data);
-        $("#ssl-data").append(JSON.stringify(data));
+        $("#ssl-data").html(JSON.stringify(data));
     },
     failure: function(data) { 
         console.log('Got an error dude');

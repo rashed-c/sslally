@@ -60,10 +60,13 @@ $.ajax({
             </div>
         </fieldset>
     </div>
-
-    <div id="ssl-data" class="uk-margin-large-top">
-    <progress class="uk-progress" value="1" max="10"></progress>
-    </div>         
+    <div class="uk-card uk-card-default">
+        <div  class=" uk-margin-left">
+        <div id="ssl-data"> </div>
+        
+        </div>
+        </div>
+      
 {% endblock %}
 
 {% block javascript %}
@@ -71,14 +74,13 @@ $.ajax({
 function myFunction(){
 var website_port = document.getElementById("website_port").value;
 var record_type = document.getElementById("record_type").value;
-var url = "result/?website_port"
 $.ajax({
     type: "GET",
-    url:"result/?website_port=${website_port}?+record_type=${record_type}",
+    url:"result/?website_port="+website_port+"&record_type="+record_type,
     success: function(data)
     {   
         console.log(data);
-        $("#ssl-data").append(data);
+        $("#ssl-data").html(data);
     },
     failure: function(data) { 
         console.log('Got an error dude');
