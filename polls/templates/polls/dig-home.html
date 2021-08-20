@@ -48,6 +48,7 @@ $.ajax({
                     <option>AAAA</option>
                     <option>ANY</option>
                     <option>CAA</option>
+                    <option>CNAME</option>
                     <option>MX</option>
                     <option>NS</option>
                     <option>PTR</option>
@@ -60,12 +61,11 @@ $.ajax({
             </div>
         </fieldset>
     </div>
-    <div class="uk-card uk-card-default">
-        <div  class=" uk-margin-left">
-        <div id="ssl-data"> </div>
-        
-        </div>
-        </div>
+<div class="uk-card uk-card-default">
+    <div  class=" uk-margin-left">
+        <div id="dig-data"> </div>
+    </div>
+</div>
       
 {% endblock %}
 
@@ -79,8 +79,7 @@ $.ajax({
     url:"result/?website_port="+website_port+"&record_type="+record_type,
     success: function(data)
     {   
-        console.log(data);
-        $("#ssl-data").html(data);
+        $("#dig-data").html(data);
     },
     failure: function(data) { 
         console.log('Got an error dude');
