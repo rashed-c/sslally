@@ -46,7 +46,7 @@ def do_dig(request):
         answers= dig_result
     else:
         try:
-            answers = resolver.query(website, record_type)
+            answers = resolver.query(website,record_type)
         except:
             answers = "No record found!"
 

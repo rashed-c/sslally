@@ -56,12 +56,6 @@
             <ul class="uk-navbar-nav">
                 <li>
                     <a href="#">Monitor</a>
-                    <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><a href="/result/">SSL</a></li>
-                            <li><a href="/ping/">Ping</a></li>
-                        </ul>
-                    </div>
                 </li>
                 <li>
                     <a href="#">Tools</a>
@@ -74,13 +68,14 @@
                     </div>
                 </li>
                 <li><a href="#">Blog</a></li>
+                <li></li>
             </ul>
         </div>
     </nav>
 </head>
 
 <body>
-    <div class="uk-container">
+    <div uk-height-viewport="expand: true" class="uk-container">
 {% block content %}{% endblock %}
     </div>
 
@@ -89,15 +84,13 @@
 </body>
 
 <footer>
-        <div class="uk-margin-large-top">
-        <div class="uk-container">
-            <ul class="uk-breadcrumb">
+        <div class="uk-section uk-section-primary uk-container uk-position-bottom uk-position-relative">
+            <ul class="uk-breadcrumb uk-position-center">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Linked Category</a></li>
                 <li class="uk-disabled"><a>Disabled Category</a></li>
                 <li><span></span></li>
             </ul>
-        </div>
         </div>
 </footer>
 </html>

@@ -31,7 +31,7 @@
 
 
  
-<div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
+<div class="uk-flex-inline uk-position-center uk-position-relative uk-margin-large-top">
     <div class="uk-text-large uk-margin-right">Hostname:</div>
     <div><input id="website_port" class="uk-input" type="text" placeholder=""></div>
     <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
@@ -41,8 +41,11 @@
     <span class="uk-margin-small-right" uk-spinner="ratio: 1"></span>
 </div> 
 
-<div id="ssl-data" class="uk-margin-large-top">
-</div>        
+<div class="uk-card uk-card-default">
+    <div  class=" uk-margin">
+        <div id="ssl-data"> </div>
+    </div>
+</div> 
 
 {% endblock %}
 
