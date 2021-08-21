@@ -11,7 +11,8 @@ def home(request):
 def do_ping(request):
     website = request.GET.get('website_port')
     ping_result = []
-    host = ping(website, count=5, interval=0.2, privileged=True)
+    host = ping(website, count=5, interval=1, privileged=True)
     print(host)
     #return JsonResponse()
-    return render(request, 'polls/ping-result.html', {'pinginfo':host})
+    return HttpResponse(host)
+    #return render(request, 'polls/ping-result.html', {'pinginfo':host})
