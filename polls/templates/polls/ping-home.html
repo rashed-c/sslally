@@ -25,28 +25,39 @@
     <li><a href="#">Blog</a></li>
 {% endblock %}
 
-$.ajax({
-    type: "GET",
-    dataType: "json",
-    url:"/updata/",
-    success: function(data)
-    {
-        alert("i got data now i will parse it as i want to display it");
-    }, })
 
 {% block content %}
-    <form  action="result">
-        <fieldset class="uk-fieldset">
+    
             <div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
             <div class="uk-text-large uk-margin-right">Hostname:</div>
-            <div><input class="uk-input" type="text" placeholder="" name="website_port"></div>
-            <div><button class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
+            <div><input id="website_port" class="uk-input" type="text" placeholder="" ></div>
+            <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
             </div>
-        </fieldset>
-    </form>
+    
 
+    <div class="uk-card uk-card-default">
+        <div  class=" uk-margin-left">
+            <div id="ping-data"> </div>
+        </div>
+    </div>
 
-    <div class="uk-margin-large-top">
-    <progress class="uk-progress" value="1" max="10"></progress>
-    </div>         
+{% endblock %}
+
+{% block javascript %}
+<script>
+function myFunction(){
+var website_port = document.getElementById("website_port").value;
+
+$.ajax({
+    type: "GET",
+    url:"result/?website_port="+website_port,
+    success: function(data)
+    {   
+        $("#ping-data").html(data);
+    },
+    failure: function(data) { 
+        console.log('Got an error dude');
+    }})
+}
+</script>
 {% endblock %}

@@ -35,18 +35,20 @@ $.ajax({
     }, })
 
 {% block content %}
-    <form  action="result">
+
+    <div>
         <fieldset class="uk-fieldset">
             <div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
             <div class="uk-text-large uk-margin-right">Hostname:</div>
-            <div><input class="uk-input" type="text" placeholder="" name="website_port"></div>
+            <div><input id="website_port" class="uk-input" type="text" placeholder=""></div>
             <div class="uk-text-large uk-margin-right uk-margin-left">Record Type</div>
             <div class="uk-margin-left">
-                <select class="uk-select" name="record_type">
+                <select id="record_type" class="uk-select" name="record_type">
                     <option>A</option>
                     <option>AAAA</option>
                     <option>ANY</option>
                     <option>CAA</option>
+                    <option>CNAME</option>
                     <option>MX</option>
                     <option>NS</option>
                     <option>PTR</option>
@@ -55,13 +57,33 @@ $.ajax({
                     <option>TXT</option>
                 </select> 
             </div>
-            <div><button class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
+            <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
             </div>
         </fieldset>
-    </form>
+    </div>
+<div class="uk-card uk-card-default">
+    <div  class=" uk-margin-left">
+        <div id="dig-data"> </div>
+    </div>
+</div>
+      
+{% endblock %}
 
-
-    <div class="uk-margin-large-top">
-    <progress class="uk-progress" value="1" max="10"></progress>
-    </div>         
+{% block javascript %}
+<script>
+function myFunction(){
+var website_port = document.getElementById("website_port").value;
+var record_type = document.getElementById("record_type").value;
+$.ajax({
+    type: "GET",
+    url:"result/?website_port="+website_port+"&record_type="+record_type,
+    success: function(data)
+    {   
+        $("#dig-data").html(data);
+    },
+    failure: function(data) { 
+        console.log('Got an error dude');
+    }})
+}
+</script>
 {% endblock %}
