@@ -55,7 +55,7 @@
         <div class="uk-navbar-right">
             <ul class="uk-navbar-nav">
                 <li>
-                    <a href="#">Monitor</a>
+                    <a href="/monitor/">Monitor</a>
                 </li>
                 <li>
                     <a href="#">Tools</a>
@@ -70,12 +70,19 @@
                 <li><a href="#">Blog</a></li>
                 <li></li>
             </ul>
+
+            <div class="uk-navbar-item">
+                <form action="javascript:void(0)">
+                    <button class="uk-button uk-button-primary">Sign In</button>
+                </form>
+            </div>
+
         </div>
     </nav>
 </head>
 
 <body>
-    <div uk-height-viewport="expand: true" class="uk-container">
+    <div uk-height-viewport="expand: true" class="uk-container uk-text-break">
 {% block content %}{% endblock %}
     </div>
 
