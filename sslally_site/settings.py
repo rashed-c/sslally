@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'polls',
     'ping',
     'dig',
+    #Other django apps
+    'tailwind',
+    'theme'
 ]
 
 MIDDLEWARE = [
@@ -121,3 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+TAILWIND_APP_NAME = 'theme'
+
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
