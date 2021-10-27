@@ -33,17 +33,17 @@
  
 <div class="uk-flex-inline uk-position-center uk-position-relative uk-margin-large-top">
     <div class="uk-text-large uk-margin-right">Hostname:</div>
-    <div><input id="website_port" class="uk-input" type="text" placeholder=""></div>
+    <div><input id="website_port2" class="uk-input" type="text" placeholder=""></div>
     <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
 </div>
   
-<div id="loading-spinner" style="display: none;" class="uk-margin-large-top uk-position-center uk-position-relative">
+<div id="loading-spinner2" style="display: none;" class="uk-margin-large-top uk-position-center uk-position-relative">
     <span class="uk-margin-small-right" uk-spinner="ratio: 1"></span>
 </div> 
 
 <div class="uk-card uk-card-default">
     <div  class=" uk-margin">
-        <div id="ssl-data"> </div>
+        <div id="ssl-data2"> </div>
     </div>
 </div> 
 
@@ -74,3 +74,116 @@ $.ajax({
 }
 </script>
 {% endblock %}
+
+{% block contenttest %}
+<style>
+    .loader {
+      border-top-color: #3498db;
+      -webkit-animation: spinner 1.5s linear infinite;
+      animation: spinner 1.5s linear infinite;
+    }
+  
+    @-webkit-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+  
+    @keyframes spinner {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+
+
+<div class="container flex justify-center items-center">
+<div class="mb-3 pt-0">
+    <input
+      id="website_port"
+      type="text"
+      placeholder="Placeholder"
+      class="
+        px-3
+        py-3
+        placeholder-gray-400
+        text-gray-600
+        relative
+        bg-white bg-white
+        rounded
+        text-sm
+        border border-gray-400
+        outline-none
+        focus:outline-none focus:ring
+        w-full
+      "
+    />
+  </div>
+  <button 
+  onclick="myFunction()"
+  class="
+    bg-purple-500
+    text-white
+    active:bg-purple-600
+    font-bold
+    uppercase
+    text-sm
+    px-6
+    py-3
+    rounded
+    shadow
+    hover:shadow-lg
+    outline-none
+    focus:outline-none
+    mr-1
+    mb-1
+    ease-linear
+    transition-all
+    duration-150
+  "
+  type="button"
+>
+  Medium
+</button>
+  </div>
+
+  	  <div
+        class="
+          container
+          w-full
+          p-20
+          m-4
+          mx-auto
+          my-16
+          text-center
+          bg-white
+          border-2 border-gray-300 border-dashed
+          h-full
+          rounded-xl
+        "
+      >
+        
+  <div id="loading-spinner" style="display: none;" class="flex justify-center items-center">
+    <div
+      class="
+        loader
+        ease-linear
+        rounded-full
+        border-8 border-t-8 border-gray-200
+        h-32
+        w-32
+      "
+    >
+  </div>
+</div> 
+
+ <div id="ssl-data"> </div>
+</div>
+  {% endblock %}
