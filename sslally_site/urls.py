@@ -16,9 +16,12 @@ Including another URLconf
 from django import urls
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
     path('', include('polls.urls')),
+    path('theme/', TemplateView.as_view(template_name="base.html")),
     path('polls/', include('polls.urls')),
     path('ping/', include('ping.urls')),
     path('dig/', include('dig.urls')),
