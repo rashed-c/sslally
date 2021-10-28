@@ -129,7 +129,9 @@ TAILWIND_APP_NAME = 'theme'
 
 NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
-NPM_BIN_PATH = "/usr/local/bin/npm"
+#NPM_BIN_PATH = "/usr/local/bin/npm"
+
+#NPM_BIN_PATH = "/usr/bin/npm"
                                                 
 
                     
