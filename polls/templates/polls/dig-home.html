@@ -2,262 +2,37 @@
 
 {% extends "polls/base.html" %}
 
-{% block header %}
-    <li>
-        <a href="#">Monitor</a>
-        <div class="uk-navbar-dropdown">
-            <ul class="uk-nav uk-navbar-dropdown-nav">
-                <li class="uk-active"><a href="#">SSL Monitor</a></li>
-                <li><a href="ping/">Ping Monitor</a></li>
-            </ul>
+{% block contenttest %}
+
+<div>
+    <fieldset class="uk-fieldset">
+        <div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
+        <div class="uk-text-large uk-margin-right">Hostname:</div>
+        <div><input id="website_port" class="uk-input" type="text" placeholder=""></div>
+        <div class="uk-text-large uk-margin-right uk-margin-left">Record Type</div>
+        <div class="uk-margin-left">
+            <select id="record_type" class="uk-select" name="record_type">
+                <option>A</option>
+                <option>AAAA</option>
+                <option>ANY</option>
+                <option>CAA</option>
+                <option>CNAME</option>
+                <option>MX</option>
+                <option>NS</option>
+                <option>PTR</option>
+                <option>SOA</option>
+                <option>SRV</option>
+                <option>TXT</option>
+            </select> 
         </div>
-    </li>
-    <li>
-        <a href="#">Tools</a>
-        <div class="uk-navbar-dropdown">
-            <ul class="uk-nav uk-navbar-dropdown-nav">
-                <li class="uk-active"><a href="#">SSL Scan</a></li>
-                <li><a href="ping/">Ping</a></li>
-                <li><a href="dig/">DIG</a></li>
-            </ul>
+        <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
         </div>
-    </li>
-    <li><a href="#">Blog</a></li>
-{% endblock %}
-
-$.ajax({
-    type: "GET",
-    dataType: "json",
-    url:"/updata/",
-    success: function(data)
-    {
-        alert("i got data now i will parse it as i want to display it");
-    }, })
-
-{% block content %}
-
-    <div>
-        <fieldset class="uk-fieldset">
-            <div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
-            <div class="uk-text-large uk-margin-right">Hostname:</div>
-            <div><input id="website_port" class="uk-input" type="text" placeholder=""></div>
-            <div class="uk-text-large uk-margin-right uk-margin-left">Record Type</div>
-            <div class="uk-margin-left">
-                <select id="record_type" class="uk-select" name="record_type">
-                    <option>A</option>
-                    <option>AAAA</option>
-                    <option>ANY</option>
-                    <option>CAA</option>
-                    <option>CNAME</option>
-                    <option>MX</option>
-                    <option>NS</option>
-                    <option>PTR</option>
-                    <option>SOA</option>
-                    <option>SRV</option>
-                    <option>TXT</option>
-                </select> 
-            </div>
-            <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
-            </div>
-        </fieldset>
-    </div>
-<div class="uk-card uk-card-default">
-    <div  class=" uk-margin-left">
-        <div id="dig-data"> </div>
-    </div>
+    </fieldset>
 </div>
-      
+<div class="uk-card uk-card-default">
+<div  class=" uk-margin-left">
+    <div id="dig-data"> </div>
+</div>
+</div>
+
 {% endblock %}
-
-{% block javascript %}
-<script>
-function myFunction(){
-var website_port = document.getElementById("website_port").value;
-var record_type = document.getElementById("record_type").value;
-$.ajax({
-    type: "GET",
-    url:"result/?website_port="+website_port+"&record_type="+record_type,
-    success: function(data)
-    {   
-        $("#dig-data").html(data);
-    },
-    failure: function(data) { 
-        console.log('Got an error dude');
-    }})
-}
-</script>
-{% endblock %}
-
-
-{% load static tailwind_tags %}
-<!DOCTYPE html>
-
-<html lang="en">
-	<head>
-    <title>Django Tailwind</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		{% tailwind_css %}
-
-		
-	</head>
-
-	<body>
-
-		<nav class="bg-white shadow dark:bg-gray-800">
-			<div
-			  class="
-				container
-				px-6
-				py-3
-				mx-auto
-				md:flex md:justify-between md:items-center
-			  "
-			>
-			  <div class="flex items-center justify-between">
-				<div>
-				  <a
-					class="
-					  text-xl
-					  font-bold
-					  text-gray-800
-					  dark:text-white
-					  md:text-2xl
-					  hover:text-gray-700
-					  dark:hover:text-gray-300
-					"
-					href="#"
-					>Brand</a
-				  >
-				</div>
-		  
-				<!-- Mobile menu button -->
-				<div class="flex md:hidden">
-				  <button
-					type="button"
-					class="
-					  text-gray-500
-					  dark:text-gray-200
-					  hover:text-gray-600
-					  dark:hover:text-gray-400
-					  focus:outline-none focus:text-gray-600
-					  dark:focus:text-gray-400
-					"
-					aria-label="toggle menu"
-				  >
-					<svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-					  <path
-						fill-rule="evenodd"
-						d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
-					  ></path>
-					</svg>
-				  </button>
-				</div>
-			  </div>
-		  
-			  <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
-			  <div class="items-center md:flex">
-				<div class="flex flex-col md:flex-row md:mx-6">
-				  <a
-					class="
-					  my-1
-					  text-gray-700
-					  dark:text-gray-200
-					  hover:text-indigo-500
-					  dark:hover:text-indigo-400
-					  md:mx-4 md:my-0
-					"
-					href="#"
-					>Home</a
-				  >
-				  <a
-					class="
-					  my-1
-					  text-gray-700
-					  dark:text-gray-200
-					  hover:text-indigo-500
-					  dark:hover:text-indigo-400
-					  md:mx-4 md:my-0
-					"
-					href="#"
-					>Shop</a
-				  >
-				  <a
-					class="
-					  my-1
-					  text-gray-700
-					  dark:text-gray-200
-					  hover:text-indigo-500
-					  dark:hover:text-indigo-400
-					  md:mx-4 md:my-0
-					"
-					href="#"
-					>Contact</a
-				  >
-				  <a
-					class="
-					  my-1
-					  text-gray-700
-					  dark:text-gray-200
-					  hover:text-indigo-500
-					  dark:hover:text-indigo-400
-					  md:mx-4 md:my-0
-					"
-					href="#"
-					>About</a
-				  >
-				</div>
-		  
-				<div class="flex justify-center md:block">
-				  <a
-					class="
-					  relative
-					  text-gray-700
-					  dark:text-gray-200
-					  hover:text-gray-600
-					  dark:hover:text-gray-300
-					"
-					href="#"
-				  >
-					<i class="fas fa-shopping-cart"></i>
-		  
-					<span
-					  class="
-						absolute
-						top-0
-						left-0
-						p-1
-						text-xs text-white
-						bg-indigo-500
-						rounded-full
-					  "
-					></span>
-				  </a>
-				</div>
-			  </div>
-			</div>
-		  </nav>
-		  <div
-			class="
-			  container
-			  w-full
-			  p-20
-			  m-4
-			  mx-auto
-			  my-16
-			  text-center
-			  bg-white
-			  border-2 border-gray-300 border-dashed
-			  h-96
-			  rounded-xl
-			"
-		  >
-			<p class="mt-20 italic text-gray-500 text-md">-- Content of your page --</p>
-		  </div>
-
-				<h1 class="text-5xl">Django + Tailwind = ❤️</h1>
-			
-	</body>
-	</html>
-

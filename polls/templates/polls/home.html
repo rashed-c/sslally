@@ -2,53 +2,6 @@
 
 {% extends "polls/base.html" %}
 
-{% block header %}
-    <li>
-        <a href="#">Monitor</a>
-        <div class="uk-navbar-dropdown">
-            <ul class="uk-nav uk-navbar-dropdown-nav">
-                <li class="uk-active"><a href="#">SSL Monitor</a></li>
-                <li><a href="ping/">Ping Monitor</a></li>
-            </ul>
-        </div>
-    </li>
-    <li>
-        <a href="#">Tools</a>
-        <div class="uk-navbar-dropdown">
-            <ul class="uk-nav uk-navbar-dropdown-nav">
-                <li class="uk-active"><a href="#">SSL Scan</a></li>
-                <li><a href="ping/">Ping</a></li>
-                <li><a href="dig/">DIG</a></li>
-            </ul>
-        </div>
-    </li>
-    <li><a href="#">Blog</a></li>
-{% endblock %}
-
-
-
-{% block content %}
-
-
- 
-<div class="uk-flex-inline uk-position-center uk-position-relative uk-margin-large-top">
-    <div class="uk-text-large uk-margin-right">Hostname:</div>
-    <div><input id="website_port2" class="uk-input" type="text" placeholder=""></div>
-    <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
-</div>
-  
-<div id="loading-spinner2" style="display: none;" class="uk-margin-large-top uk-position-center uk-position-relative">
-    <span class="uk-margin-small-right" uk-spinner="ratio: 1"></span>
-</div> 
-
-<div class="uk-card uk-card-default">
-    <div  class=" uk-margin">
-        <div id="ssl-data2"> </div>
-    </div>
-</div> 
-
-{% endblock %}
-
 {% block javascript %}
 <script>
 function myFunction(){
@@ -104,8 +57,9 @@ $.ajax({
 
 
 
-<div class="container flex justify-center items-center">
-<div class="mb-3 pt-0">
+<div class="container mx-auto flex items-center justify-center p-5 space-x-2">
+<div class="">Hostname:</div>    
+<div class="">
     <input
       id="website_port"
       type="text"
@@ -142,8 +96,6 @@ $.ajax({
     hover:shadow-lg
     outline-none
     focus:outline-none
-    mr-1
-    mb-1
     ease-linear
     transition-all
     duration-150
@@ -153,8 +105,7 @@ $.ajax({
   Medium
 </button>
   </div>
-
-  	  <div
+   <div
         class="
           container
           w-full
@@ -167,23 +118,21 @@ $.ajax({
           border-2 border-gray-300 border-dashed
           h-full
           rounded-xl
-        "
-      >
+        ">
         
-  <div id="loading-spinner" style="display: none;" class="flex justify-center items-center">
-    <div
-      class="
-        loader
-        ease-linear
-        rounded-full
-        border-8 border-t-8 border-gray-200
-        h-32
-        w-32
-      "
-    >
-  </div>
-</div> 
+    <div id="loading-spinner" style="display: none;" class="flex justify-center items-center">
+        <div
+            class="
+                loader
+                ease-linear
+                rounded-full
+                border-8 border-t-8 border-gray-200
+                h-32
+                w-32
+            " >
+        </div>
+    </div> 
 
- <div id="ssl-data"> </div>
+    <div id="ssl-data"> </div>
 </div>
   {% endblock %}

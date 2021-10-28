@@ -2,47 +2,6 @@
 
 {% extends "polls/base.html" %}
 
-{% block header %}
-    <li>
-        <a href="#">Monitor</a>
-        <div class="uk-navbar-dropdown">
-            <ul class="uk-nav uk-navbar-dropdown-nav">
-                <li class="uk-active"><a href="#">SSL Monitor</a></li>
-                <li><a href="ping/">Ping Monitor</a></li>
-            </ul>
-        </div>
-    </li>
-    <li>
-        <a href="#">Tools</a>
-        <div class="uk-navbar-dropdown">
-            <ul class="uk-nav uk-navbar-dropdown-nav">
-                <li class="uk-active"><a href="#">SSL Scan</a></li>
-                <li><a href="ping/">Ping</a></li>
-                <li><a href="dig/">DIG</a></li>
-            </ul>
-        </div>
-    </li>
-    <li><a href="#">Blog</a></li>
-{% endblock %}
-
-
-{% block content %}
-    
-            <div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
-            <div class="uk-text-large uk-margin-right">Hostname:</div>
-            <div><input id="website_port" class="uk-input" type="text" placeholder="" ></div>
-            <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
-            </div>
-    
-
-    <div class="uk-card uk-card-default">
-        <div  class=" uk-margin-left">
-            <div id="ping-data"> </div>
-        </div>
-    </div>
-
-{% endblock %}
-
 {% block javascript %}
 <script>
 function myFunction(){
@@ -60,4 +19,22 @@ $.ajax({
     }})
 }
 </script>
+{% endblock %}
+
+
+{% block contenttest %}
+
+<div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
+    <div class="uk-text-large uk-margin-right">Hostname:</div>
+    <div><input id="website_port" class="uk-input" type="text" placeholder="" ></div>
+    <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
+    </div>
+
+
+<div class="uk-card uk-card-default">
+<div  class=" uk-margin-left">
+    <div id="ping-data"> </div>
+</div>
+</div>
+
 {% endblock %}

@@ -1,126 +1,28 @@
 {% load static %}
-
-<!DOCTYPE html>
-<html>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/css/uikit.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/js/uikit.min.js"></script> 
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/js/uikit-icons.min.js"></script> 
-<head>
-    <title>SSLAlly | Everything you need to for troubleshooting</title>
-<!--
-    <nav class="uk-navbar-container" uk-navbar>
-        
-        <div class="uk-container">
-        <div class="uk-navbar-left">
-            <ul class="uk-navbar-nav">
-            <a class="uk-navbar-item uk-logo" href="/">SSL Ally</a>
-            </ul>
-        </div>
-        </div>
-        <div class="uk-container">
-        <div class="uk-navbar-right">
-            <ul class="uk-navbar-nav">
-                <li>
-                    <a href="#">Monitor</a>
-                    <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><a href="/result/">SSL</a></li>
-                            <li><a href="/ping/">Ping</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a href="#">Tools</a>
-                    <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><a href="#">SSL Scan</a></li>
-                            <li><a href="/ping/">Ping</a></li>
-                            <li><a href="/dig/">DIG</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li><a href="#">Blog</a></li>
-            </ul>
-        </div>
-        </div>
-    </nav>
-    !-->
-
-    <nav class="uk-navbar-container" uk-navbar>
-        <div class="uk-navbar-left">
-            <ul class="uk-navbar-nav">
-            <a class="uk-navbar-item uk-logo" href="/">SSL Ally</a>
-            </ul>
-        </div>
-        <div class="uk-navbar-right">
-            <ul class="uk-navbar-nav">
-                <li>
-                    <a href="/monitor/">Monitor</a>
-                </li>
-                <li>
-                    <a href="#">Tools</a>
-                    <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><a href="#">SSL Scan</a></li>
-                            <li><a href="/ping/">Ping</a></li>
-                            <li><a href="/dig/">DIG</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li><a href="#">Blog</a></li>
-                <li></li>
-            </ul>
-
-            <div class="uk-navbar-item">
-                <form action="javascript:void(0)">
-                    <button class="uk-button uk-button-primary">Sign In</button>
-                </form>
-            </div>
-
-        </div>
-    </nav>
-</head>
-
-<body>
-    <div uk-height-viewport="expand: true" class="uk-container uk-text-break">
-{% block content %}{% endblock %}
-    </div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>    
-{% block javascript %}{% endblock %}
-</body>
-
-<footer>
-        <div class="uk-section uk-section-primary uk-container uk-position-bottom uk-position-relative">
-            <ul class="uk-breadcrumb uk-position-center">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Linked Category</a></li>
-                <li class="uk-disabled"><a>Disabled Category</a></li>
-                <li><span></span></li>
-            </ul>
-        </div>
-</footer>
-</html>
-
-
-
 {% load static tailwind_tags %}
+<!DOCTYPE html>
 <html lang="en">
 	<head>
-    <title>Django Tailwind</title>
+    <title>SSLAlly</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
         <!-- Required font awesome -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
+        <!-- old stuff-->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/css/uikit.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/js/uikit.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/js/uikit-icons.min.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>    
 		{% tailwind_css %}
-
-		
+    {% block javascript %}{% endblock %}	
+   
+ 
 	</head>
 
 	<body>
 
-		<nav class="bg-white shadow dark:bg-gray-800">
+		<nav class="bg-white shadow dark:bg-gray-100">
 			<div
 			  class="
 				container
@@ -142,8 +44,8 @@
 					  hover:text-gray-700
 					  dark:hover:text-gray-300
 					"
-					href="#"
-					>Brand</a
+					href="/"
+					>SLL Ally</a
 				  >
 				</div>
 		  
@@ -289,7 +191,7 @@
         "
       >
         <i class="fas fa-cubes fa-lg text-purple-500"></i>
-        <span class="ml-3 text-xl">Tailwind elements</span>
+        <span class="ml-3 text-xl">SSLAlly</span>
       </a>
       <p class="mt-2 text-sm text-gray-500">
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi,
@@ -467,11 +369,10 @@
       <p class="text-gray-500 text-sm text-center sm:text-left">
         © 2021 Copyright:
         <a
-          href="https://www.tailwind-elements.com/"
+          href="/"
           class="text-gray-600 ml-1"
           target="_blank"
-          >Tailwind Elements</a
-        >
+          >SSLAlly</a>
       </p>
       <span
         class="
