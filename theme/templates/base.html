@@ -1,170 +1,610 @@
+{% load static %}
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-    <title>Django Tailwind</title>
+    <title>SSLAlly</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <!-- Required font awesome -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
+        <!-- old stuff-->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/css/uikit.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/js/uikit.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/js/uikit-icons.min.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>    
+
 		{% tailwind_css %}
-
+    {% block javascript %}
+	
+	<script>
+		function myFunction(){
+		var website_port = document.getElementById("website_port").value;
 		
-	</head>
+		$.ajax({
+		   
+			type: "GET",
+			url:"/result/?website_port="+website_port,
+			beforeSend: function(){
+				$('#loading-spinner').show();
+			},
+			success: function(data)
+			{   
+			  //console.log(JSON.parse(json))
+			p = data.certificate_deployments[0].received_certificate_chain[0]
+			for (var key in p) {
+			if (p.hasOwnProperty(key)) {
+				console.log(key + " -> " + p[key]);
+				document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
+			}
+			}
+			  //$("#ssl-data").html(data.certificate_deployments[0].received_certificate_chain[0].not_valid_after);
+			},
+			complete: function(){
+				$('#loading-spinner').hide();
+			},
+			failure: function(data) { 
+				console.log('Got an error dude');
+			}})
+		}
+		</script>
+	
+	{% endblock %}	
+    
+  <nav class="bg-blue-200 shadow dark:bg-gray-100">
+    <div class="container px-6 py-3 mx-auto md:flex md:justify-between md:items-center">
+      <div class="flex items-center justify-between">
+      <div>
+        <a
+        class="
+          text-xl
+          font-bold
+          text-gray-800
+          dark:text-white
+          md:text-2xl
+          hover:text-gray-700
+          dark:hover:text-gray-300
+        "
+        href="/"
+        >SLL Ally</a
+        >
+      </div>
+    
+      <!-- Mobile menu button -->
+      <div class="flex md:hidden">
+        <button
+        type="button"
+        class="
+          text-gray-500
+          dark:text-gray-200
+          hover:text-gray-600
+          dark:hover:text-gray-400
+          focus:outline-none focus:text-gray-600
+          dark:focus:text-gray-400
+        "
+        aria-label="toggle menu"
+        >
+        <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+          <path
+          fill-rule="evenodd"
+          d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+          ></path>
+        </svg>
+        </button>
+      </div>
+      </div>
+    
+      <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
+      <div class="items-center md:flex">
+        <div class="flex flex-col md:flex-row md:mx-6">
+          <a
+          class="
+            my-1
+            text-gray-700
+            dark:text-gray-200
+            hover:text-indigo-500
+            dark:hover:text-indigo-400
+            md:mx-4 md:my-0
+          "
+          href="#"
+          >Home</a
+          >
+          <a
+          class="
+            my-1
+            text-gray-700
+            dark:text-gray-200
+            hover:text-indigo-500
+            dark:hover:text-indigo-400
+            md:mx-4 md:my-0
+          "
+          href="#"
+          >Shop</a
+          >
+          <a
+          class="
+            my-1
+            text-gray-700
+            dark:text-gray-200
+            hover:text-indigo-500
+            dark:hover:text-indigo-400
+            md:mx-4 md:my-0
+          "
+          href="#"
+          >Contact</a
+          >
+          <a
+          class="
+            my-1
+            text-gray-700
+            dark:text-gray-200
+            hover:text-indigo-500
+            dark:hover:text-indigo-400
+            md:mx-4 md:my-0
+          "
+          href="#"
+          >About</a
+          >
+        </div>
+    
+        <div class="flex justify-center md:block">
+          <a
+          class="
+            relative
+            text-gray-700
+            dark:text-gray-200
+            hover:text-gray-600
+            dark:hover:text-gray-300
+          "
+          href="#"
+          >
+          <i class="fas fa-shopping-cart"></i>
+      
+          <span
+            class="
+            absolute
+            top-0
+            left-0
+            p-1
+            text-xs text-white
+            bg-indigo-500
+            rounded-full
+            "
+          ></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  </head>
 
-	<body>
 
-		<nav class="bg-white shadow dark:bg-gray-800">
-			<div
-			  class="
-				container
-				px-6
-				py-3
-				mx-auto
-				md:flex md:justify-between md:items-center
-			  "
-			>
-			  <div class="flex items-center justify-between">
-				<div>
-				  <a
-					class="
-					  text-xl
-					  font-bold
-					  text-gray-800
-					  dark:text-white
-					  md:text-2xl
-					  hover:text-gray-700
-					  dark:hover:text-gray-300
-					"
-					href="#"
-					>Brand</a
-				  >
-				</div>
-		  
-				<!-- Mobile menu button -->
-				<div class="flex md:hidden">
-				  <button
-					type="button"
-					class="
-					  text-gray-500
-					  dark:text-gray-200
-					  hover:text-gray-600
-					  dark:hover:text-gray-400
-					  focus:outline-none focus:text-gray-600
-					  dark:focus:text-gray-400
-					"
-					aria-label="toggle menu"
-				  >
-					<svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-					  <path
-						fill-rule="evenodd"
-						d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
-					  ></path>
-					</svg>
-				  </button>
-				</div>
-			  </div>
-		  
-			  <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
-			  <div class="items-center md:flex">
-				<div class="flex flex-col md:flex-row md:mx-6">
-				  <a
-					class="
-					  my-1
-					  text-gray-700
-					  dark:text-gray-200
-					  hover:text-indigo-500
-					  dark:hover:text-indigo-400
-					  md:mx-4 md:my-0
-					"
-					href="#"
-					>Home</a
-				  >
-				  <a
-					class="
-					  my-1
-					  text-gray-700
-					  dark:text-gray-200
-					  hover:text-indigo-500
-					  dark:hover:text-indigo-400
-					  md:mx-4 md:my-0
-					"
-					href="#"
-					>Shop</a
-				  >
-				  <a
-					class="
-					  my-1
-					  text-gray-700
-					  dark:text-gray-200
-					  hover:text-indigo-500
-					  dark:hover:text-indigo-400
-					  md:mx-4 md:my-0
-					"
-					href="#"
-					>Contact</a
-				  >
-				  <a
-					class="
-					  my-1
-					  text-gray-700
-					  dark:text-gray-200
-					  hover:text-indigo-500
-					  dark:hover:text-indigo-400
-					  md:mx-4 md:my-0
-					"
-					href="#"
-					>About</a
-				  >
-				</div>
-		  
-				<div class="flex justify-center md:block">
-				  <a
-					class="
-					  relative
-					  text-gray-700
-					  dark:text-gray-200
-					  hover:text-gray-600
-					  dark:hover:text-gray-300
-					"
-					href="#"
-				  >
-					<i class="fas fa-shopping-cart"></i>
-		  
-					<span
-					  class="
-						absolute
-						top-0
-						left-0
-						p-1
-						text-xs text-white
-						bg-indigo-500
-						rounded-full
-					  "
-					></span>
-				  </a>
-				</div>
-			  </div>
-			</div>
-		  </nav>
-		  <div
-			class="
-			  container
-			  w-full
-			  p-20
-			  m-4
-			  mx-auto
-			  my-16
-			  text-center
-			  bg-white
-			  border-2 border-gray-300 border-dashed
-			  h-96
-			  rounded-xl
-			"
-		  >
-			<p class="mt-20 italic text-gray-500 text-md">-- Content of your page --</p>
-		  </div>
+  <body>
+  {% block content %}
+  
+  <style>
+    .loader {
+      border-top-color: #3498db;
+      -webkit-animation: spinner 1.5s linear infinite;
+      animation: spinner 1.5s linear infinite;
+    }
+  
+    @-webkit-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+  
+    @keyframes spinner {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 
-				<h1 class="text-5xl">Django + Tailwind = ❤️</h1>
-			
-	</body>
-	</html>
+
+
+<div class="max-w-6xl mx-auto px-8 py-16">
+
+  <div class="relative">
+    <div class="relative lg:flex rounded-lg shadow-sm overflow-hidden">
+      <!-- 
+      <div class="h-56 lg:h-auto lg:w-5/12 relative flex items-center justify-center">
+        <img class="absolute h-full w-full object-cover" src="https://stripe.com/img/v3/payments/overview/photos/slack.jpg" alt="" />
+        <div class="absolute inset-0 bg-indigo-900 opacity-75"></div>
+        <svg class="relative" width="200" height="120" viewBox="0 0 200 120">
+        <path fill="#fff" fill-rule="evenodd" d="M63.75 75.24l2.5-5.93c2.7 2.05 6.3 3.13 9.85 3.13 2.61 0 4.27-1.03 4.27-2.6-.04-4.37-15.7-.95-15.82-11.9-.04-5.58 4.8-9.86 11.66-9.86 4.08 0 8.16 1.03 11.06 3.38l-2.34 6.05c-2.66-1.73-5.97-2.97-9.12-2.97-2.13 0-3.55 1.03-3.55 2.36.04 4.28 15.82 1.94 15.98 12.4 0 5.7-4.72 9.69-11.5 9.69-4.96 0-9.52-1.2-12.99-3.75zm96.01-8.08a7.16 7.16 0 0 1-8.11 3.5 7.35 7.35 0 0 1-5.38-7.13c0-3.34 2.2-6.27 5.38-7.12 3.16-.85 6.5.58 8.11 3.5l6.9-3.93a15.02 15.02 0 0 0-17.03-7.42 15.42 15.42 0 0 0-11.33 14.97c0 7.04 4.66 13.2 11.33 14.97a15.02 15.02 0 0 0 17.04-7.43l-6.9-3.9zM91.71 35.25h8.64v43.16h-8.64V35.25zm78.34 0v43.16h8.65V65.48l10.25 12.93H200l-13.03-15.37 12.06-14.34h-10.58l-9.76 11.9V35.25h-8.64zm-43.82 31.1a8.14 8.14 0 0 1-6.83 3.56 7.24 7.24 0 0 1-7.33-7.16 7.24 7.24 0 0 1 7.33-7.15 8.1 8.1 0 0 1 6.83 3.67v7.08zm0-18v3.4c-1.43-2.36-5-4-8.72-4-7.7 0-13.76 6.64-13.76 14.96 0 8.33 6.07 15.04 13.76 15.04 3.73 0 7.3-1.63 8.72-4v3.4H135v-28.8h-8.77zM10.53 66.4A5.32 5.32 0 0 1 5.3 71.8 5.32 5.32 0 0 1 .04 66.4a5.32 5.32 0 0 1 5.25-5.38h5.25v5.38zm2.63 0a5.32 5.32 0 0 1 5.25-5.38c2.9 0 5.25 2.4 5.25 5.38v13.46a5.32 5.32 0 0 1-5.25 5.39 5.32 5.32 0 0 1-5.25-5.39V66.4zm5.26-21.63a5.32 5.32 0 0 1-5.25-5.38A5.32 5.32 0 0 1 18.42 34c2.9 0 5.25 2.41 5.25 5.39v5.38h-5.25zm0 2.74c2.9 0 5.25 2.41 5.25 5.39a5.32 5.32 0 0 1-5.25 5.38H5.25A5.32 5.32 0 0 1 0 52.9a5.32 5.32 0 0 1 5.25-5.39h13.17zm21.03 5.39a5.32 5.32 0 0 1 5.25-5.39c2.9 0 5.25 2.41 5.25 5.39a5.32 5.32 0 0 1-5.25 5.38h-5.25V52.9zm-2.62 0a5.32 5.32 0 0 1-5.25 5.38 5.32 5.32 0 0 1-5.25-5.38V39.39A5.32 5.32 0 0 1 31.58 34c2.9 0 5.25 2.41 5.25 5.39v13.5zm-5.25 21.58c2.9 0 5.25 2.41 5.25 5.38a5.32 5.32 0 0 1-5.25 5.39 5.32 5.32 0 0 1-5.25-5.39v-5.38h5.25zm0-2.7a5.32 5.32 0 0 1-5.25-5.38 5.32 5.32 0 0 1 5.25-5.38h13.17c2.9 0 5.25 2.4 5.25 5.38a5.32 5.32 0 0 1-5.25 5.39H31.58z"/>
+      </svg>
+      </div>
+      -->
+
+     
+<div class="mx-auto flex items-center justify-center p-5 space-x-2">
+  <div class="">Hostname:</div>    
+  <div class="">
+      <input
+        id="website_port"
+        type="text"
+        placeholder="Placeholder"
+        class="
+          px-3
+          py-3
+          placeholder-gray-400
+          text-gray-600
+          relative
+          bg-white bg-white
+          rounded
+          text-sm
+          border border-gray-400
+          outline-none
+          focus:outline-none focus:ring
+          w-full
+        "
+      />
+    </div>
+    <button 
+    onclick="myFunction()"
+    class="
+      bg-purple-500
+      text-white
+      active:bg-purple-600
+      font-bold
+      uppercase
+      text-sm
+      px-6
+      py-3
+      rounded
+      shadow
+      hover:shadow-lg
+      outline-none
+      focus:outline-none
+      ease-linear
+      transition-all
+      duration-150
+    "
+    type="button"
+  >
+   TEST SSL
+  </button>
+  </div>
+    </div>
+    <!-- <div class="absolute inset-y-0 left-0 lg:flex lg:items-center">
+      <button class="mt-24 lg:mt-0 -ml-6 h-12 w-12 rounded-full bg-white p-3 shadow-lg">
+      <svg class="h-full w-full text-indigo-900" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M5.41 11H21a1 1 0 0 1 0 2H5.41l5.3 5.3a1 1 0 0 1-1.42 1.4l-7-7a1 1 0 0 1 0-1.4l7-7a1 1 0 0 1 1.42 1.4L5.4 11z"/>
+      </svg>
+    </button>
+    </div>
+    <div class="absolute inset-y-0 right-0 lg:flex lg:items-center">
+      <button class="mt-24 lg:mt-0 -mr-6 h-12 w-12 rounded-full bg-white p-3 shadow-lg">
+      <svg class="h-full w-full text-indigo-900" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M18.59 13H3a1 1 0 0 1 0-2h15.59l-5.3-5.3a1 1 0 1 1 1.42-1.4l7 7a1 1 0 0 1 0 1.4l-7 7a1 1 0 0 1-1.42-1.4l5.3-5.3z"/>
+      </svg>
+    </button>
+    </div> -->
+  </div>
+</div>    
+
+   <!-- <div
+        class="
+          container
+          w-full
+          p-20
+          m-4
+          mx-auto
+          my-16
+          text-center
+          bg-white
+          border-2 border-gray-300 border-dashed
+          h-full
+          rounded-xl
+        "> -->
+        
+    <div id="loading-spinner" style="display: none;" class="flex justify-center items-center">
+        <div
+            class="
+                loader
+                ease-linear
+                rounded-full
+                border-8 border-t-8 border-gray-200
+                h-32
+                w-32
+            " >
+        </div>
+    </div>
+
+     <div class="max-w-6xl mx-auto px-8 py-16">
+        <div class="relative">
+          <div class="relative lg:flex rounded-lg shadow-sm overflow-hidden">
+            <!-- 
+            <div class="h-56 lg:h-auto lg:w-5/12 relative flex items-center justify-center">
+              <img class="absolute h-full w-full object-cover" src="https://stripe.com/img/v3/payments/overview/photos/slack.jpg" alt="" />
+              <div class="absolute inset-0 bg-indigo-900 opacity-75"></div>
+              <svg class="relative" width="200" height="120" viewBox="0 0 200 120">
+              <path fill="#fff" fill-rule="evenodd" d="M63.75 75.24l2.5-5.93c2.7 2.05 6.3 3.13 9.85 3.13 2.61 0 4.27-1.03 4.27-2.6-.04-4.37-15.7-.95-15.82-11.9-.04-5.58 4.8-9.86 11.66-9.86 4.08 0 8.16 1.03 11.06 3.38l-2.34 6.05c-2.66-1.73-5.97-2.97-9.12-2.97-2.13 0-3.55 1.03-3.55 2.36.04 4.28 15.82 1.94 15.98 12.4 0 5.7-4.72 9.69-11.5 9.69-4.96 0-9.52-1.2-12.99-3.75zm96.01-8.08a7.16 7.16 0 0 1-8.11 3.5 7.35 7.35 0 0 1-5.38-7.13c0-3.34 2.2-6.27 5.38-7.12 3.16-.85 6.5.58 8.11 3.5l6.9-3.93a15.02 15.02 0 0 0-17.03-7.42 15.42 15.42 0 0 0-11.33 14.97c0 7.04 4.66 13.2 11.33 14.97a15.02 15.02 0 0 0 17.04-7.43l-6.9-3.9zM91.71 35.25h8.64v43.16h-8.64V35.25zm78.34 0v43.16h8.65V65.48l10.25 12.93H200l-13.03-15.37 12.06-14.34h-10.58l-9.76 11.9V35.25h-8.64zm-43.82 31.1a8.14 8.14 0 0 1-6.83 3.56 7.24 7.24 0 0 1-7.33-7.16 7.24 7.24 0 0 1 7.33-7.15 8.1 8.1 0 0 1 6.83 3.67v7.08zm0-18v3.4c-1.43-2.36-5-4-8.72-4-7.7 0-13.76 6.64-13.76 14.96 0 8.33 6.07 15.04 13.76 15.04 3.73 0 7.3-1.63 8.72-4v3.4H135v-28.8h-8.77zM10.53 66.4A5.32 5.32 0 0 1 5.3 71.8 5.32 5.32 0 0 1 .04 66.4a5.32 5.32 0 0 1 5.25-5.38h5.25v5.38zm2.63 0a5.32 5.32 0 0 1 5.25-5.38c2.9 0 5.25 2.4 5.25 5.38v13.46a5.32 5.32 0 0 1-5.25 5.39 5.32 5.32 0 0 1-5.25-5.39V66.4zm5.26-21.63a5.32 5.32 0 0 1-5.25-5.38A5.32 5.32 0 0 1 18.42 34c2.9 0 5.25 2.41 5.25 5.39v5.38h-5.25zm0 2.74c2.9 0 5.25 2.41 5.25 5.39a5.32 5.32 0 0 1-5.25 5.38H5.25A5.32 5.32 0 0 1 0 52.9a5.32 5.32 0 0 1 5.25-5.39h13.17zm21.03 5.39a5.32 5.32 0 0 1 5.25-5.39c2.9 0 5.25 2.41 5.25 5.39a5.32 5.32 0 0 1-5.25 5.38h-5.25V52.9zm-2.62 0a5.32 5.32 0 0 1-5.25 5.38 5.32 5.32 0 0 1-5.25-5.38V39.39A5.32 5.32 0 0 1 31.58 34c2.9 0 5.25 2.41 5.25 5.39v13.5zm-5.25 21.58c2.9 0 5.25 2.41 5.25 5.38a5.32 5.32 0 0 1-5.25 5.39 5.32 5.32 0 0 1-5.25-5.39v-5.38h5.25zm0-2.7a5.32 5.32 0 0 1-5.25-5.38 5.32 5.32 0 0 1 5.25-5.38h13.17c2.9 0 5.25 2.4 5.25 5.38a5.32 5.32 0 0 1-5.25 5.39H31.58z"/>
+            </svg>
+            </div>
+            -->
+
+            <div class="relative bg-white">
+            <svg class="absolute h-full text-white w-24 -ml-12" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <polygon points="50,0 100,0 50,100 0,100"/>
+            </svg>
+              <div class="relative py-12 lg:py-24 px-8 lg:px-16 text-gray-700 leading-relaxed">
+                <div id="ssl-data"> </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="absolute inset-y-0 left-0 lg:flex lg:items-center">
+            <button class="mt-24 lg:mt-0 -ml-6 h-12 w-12 rounded-full bg-white p-3 shadow-lg">
+            <svg class="h-full w-full text-indigo-900" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M5.41 11H21a1 1 0 0 1 0 2H5.41l5.3 5.3a1 1 0 0 1-1.42 1.4l-7-7a1 1 0 0 1 0-1.4l7-7a1 1 0 0 1 1.42 1.4L5.4 11z"/>
+            </svg>
+          </button>
+          </div>
+          <div class="absolute inset-y-0 right-0 lg:flex lg:items-center">
+            <button class="mt-24 lg:mt-0 -mr-6 h-12 w-12 rounded-full bg-white p-3 shadow-lg">
+            <svg class="h-full w-full text-indigo-900" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.59 13H3a1 1 0 0 1 0-2h15.59l-5.3-5.3a1 1 0 1 1 1.42-1.4l7 7a1 1 0 0 1 0 1.4l-7 7a1 1 0 0 1-1.42-1.4l5.3-5.3z"/>
+            </svg>
+          </button>
+          </div> -->
+        </div>
+      </div>    
+<!-- </div> -->
+ 
+  {% endblock %}
+  
+  </body>
+
+
+  <footer class="text-gray-600 body-font">
+    <div
+      class="
+        container
+        px-5
+        py-24
+        mx-auto
+        flex
+        md:items-center
+        lg:items-start
+        md:flex-row md:flex-nowrap
+        flex-wrap flex-col
+      "
+    >
+      <div
+        class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left"
+      >
+        <a
+          href=""
+          class="
+            flex
+            title-font
+            font-medium
+            items-center
+            md:justify-start
+            justify-center
+            text-gray-900
+          "
+        >
+          <i class="fas fa-cubes fa-lg text-purple-500"></i>
+          <span class="ml-3 text-xl">SSLAlly</span>
+        </a>
+        <p class="mt-2 text-sm text-gray-500">
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi,
+          quam?
+        </p>
+      </div>
+      <div
+        class="
+          flex-grow flex flex-wrap
+          md:pl-20
+          -mb-10
+          md:mt-0
+          mt-10
+          md:text-left
+          text-center
+        "
+      >
+        <div class="lg:w-1/4 md:w-1/2 w-full px-4">
+          <h2
+            class="
+              title-font
+              font-medium
+              text-gray-900
+              tracking-widest
+              text-sm
+              mb-3
+            "
+          >
+            CATEGORIES
+          </h2>
+          <nav class="list-none mb-10">
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >First Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Second Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Third Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Fourth Link</a
+              >
+            </li>
+          </nav>
+        </div>
+        <div class="lg:w-1/4 md:w-1/2 w-full px-4">
+          <h2
+            class="
+              title-font
+              font-medium
+              text-gray-900
+              tracking-widest
+              text-sm
+              mb-3
+            "
+          >
+            CATEGORIES
+          </h2>
+          <nav class="list-none mb-10">
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >First Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Second Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Third Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Fourth Link</a
+              >
+            </li>
+          </nav>
+        </div>
+        <div class="lg:w-1/4 md:w-1/2 w-full px-4">
+          <h2
+            class="
+              title-font
+              font-medium
+              text-gray-900
+              tracking-widest
+              text-sm
+              mb-3
+            "
+          >
+            CATEGORIES
+          </h2>
+          <nav class="list-none mb-10">
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >First Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Second Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Third Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Fourth Link</a
+              >
+            </li>
+          </nav>
+        </div>
+        <div class="lg:w-1/4 md:w-1/2 w-full px-4">
+          <h2
+            class="
+              title-font
+              font-medium
+              text-gray-900
+              tracking-widest
+              text-sm
+              mb-3
+            "
+          >
+            CATEGORIES
+          </h2>
+          <nav class="list-none mb-10">
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >First Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Second Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Third Link</a
+              >
+            </li>
+            <li>
+              <a href="" class="text-gray-600 hover:text-gray-800"
+                >Fourth Link</a
+              >
+            </li>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <div class="bg-gray-100">
+      <div
+        class="
+          container
+          mx-auto
+          py-4
+          px-5
+          flex flex-wrap flex-col
+          sm:flex-row
+        "
+      >
+        <p class="text-gray-500 text-sm text-center sm:text-left">
+          © 2021 Copyright:
+          <a
+            href="/"
+            class="text-gray-600 ml-1"
+            target="_blank"
+            >SSLAlly</a>
+        </p>
+        <span
+          class="
+            inline-flex
+            sm:ml-auto sm:mt-0
+            mt-2
+            justify-center
+            sm:justify-start
+          "
+        >
+          <a href="" class="text-gray-500">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="" class="ml-3 text-gray-500">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="" class="ml-3 text-gray-500">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="" class="ml-3 text-gray-500">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="" class="ml-3 text-gray-500">
+            <i class="fab fa-instagram"></i>
+          </a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+</html>
