@@ -4,42 +4,49 @@
 
 {% block javascript %}
 <script>
+ var counter = 5;
+ var pingInterval 
+function poll() {
+  // document.getElementById("ping-data").innerHTML.replace("test")
+  myFunction()
+  pingInterval = setInterval(myFunction, 1000)
+  
+}
+  
+  // setTimeout(function () {
+  //   myFunction();
+  // }, 100);
+  
 function myFunction(){
 var website_port = document.getElementById("website_port").value;
+counter--
+console.log(counter)
+if (counter == 0){clearInterval(pingInterval) 
+  counter=5 }
 
 $.ajax({
     type: "GET",
     url:"result/?website_port="+website_port,
     success: function(data)
     {   
-        $("#ping-data").html(data);
+      // $("#ping-data").html(data);
+      // for (let i = 0; i < 2; i++) {
+    document.getElementById("ping-data").innerHTML +=  (data + "<br>")  
     },
     failure: function(data) { 
         console.log('Got an error dude');
     }})
-}
+  }
+
 </script>
+
 {% endblock %}
 
 
 {% block content %}
 
-<div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
-    <div class="uk-text-large uk-margin-right">Hostname:</div>
-    <div><input id="website_port" class="uk-input" type="text" placeholder="" ></div>
-    <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
-    </div>
-
-
-<div class="uk-card uk-card-default">
-<div  class=" uk-margin-left">
-    <div id="ping-data"> </div>
-</div>
-</div>
-
-
 <div class="container mx-auto">
-    <div class="max-w-6xl shadow-sm mx-auto px-8 py-16">
+    <div class="max-w-6xl mx-auto border px-8 py-6 mt-10">
      
         <div class="relative lg:flex rounded-lg overflow-hidden">
           <!-- 
@@ -77,7 +84,7 @@ $.ajax({
             />
           </div>
           <button 
-          onclick="myFunction()"
+          onclick="poll()"
           class="
             bg-purple-500
             text-white
@@ -114,12 +121,10 @@ $.ajax({
             " >
         </div>
       </div>
-    
+
       </div>
     </div>
-    
-    
-    
+
     
         <!-- <div class="absolute inset-y-0 left-0 lg:flex lg:items-center">
           <button class="mt-24 lg:mt-0 -ml-6 h-12 w-12 rounded-full bg-white p-3 shadow-lg">
@@ -136,11 +141,8 @@ $.ajax({
         </button>
         </div> -->
       
-        <div class="place-self-auto">
-            <a>
-              Hi this is bullshit
-            </a>
-        </div>
+        
+        <div id="ping-data"> </div>
 
       </div>
     </div>    

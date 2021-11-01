@@ -39,17 +39,18 @@ def result(request):
         # Could not connect to the server; abort
         print(f"Error connecting to {server_location}: {e.error_message}")
         return
-       # Then queue some scan commands for the server
+    # Then queue some scan commands for the server
     scanner = Scanner()
     server_scan_req = ServerScanRequest(
-        server_info=server_info, scan_commands={ScanCommand.CERTIFICATE_INFO, ScanCommand.SSL_2_0_CIPHER_SUITES,ScanCommand.SSL_3_0_CIPHER_SUITES,ScanCommand.TLS_1_0_CIPHER_SUITES,ScanCommand.TLS_1_1_CIPHER_SUITES,ScanCommand.TLS_1_2_CIPHER_SUITES,ScanCommand.TLS_1_3_CIPHER_SUITES},
-    )
+        #server_info=server_info, scan_commands={ScanCommand.CERTIFICATE_INFO, ScanCommand.SSL_2_0_CIPHER_SUITES,ScanCommand.SSL_3_0_CIPHER_SUITES,ScanCommand.TLS_1_0_CIPHER_SUITES,ScanCommand.TLS_1_1_CIPHER_SUITES,ScanCommand.TLS_1_2_CIPHER_SUITES,ScanCommand.TLS_1_3_CIPHER_SUITES},
+        server_info=server_info, scan_commands={ScanCommand.CERTIFICATE_INFO},
+   )
     scanner.queue_scan(server_scan_req)
 
     # Then retrieve the results
     for server_scan_result in scanner.get_results():
+        '''
         print(f"\nResults for {server_scan_result.server_info.server_location.hostname}:")
-
         # SSL 2.0 results
         ssl2_result = server_scan_result.scan_commands_results[ScanCommand.SSL_2_0_CIPHER_SUITES]
         accepted_ssl20 = []
@@ -93,7 +94,7 @@ def result(request):
         # TLS 1.3 results
         tls13_result = server_scan_result.scan_commands_results[ScanCommand.TLS_1_3_CIPHER_SUITES]
         print(tls13_result)
-        '''
+        
         accepted_tls13 = []
         print("\nAccepted cipher suites for TLS 1.3:")
         for accepted_cipher_suite in tls12_result.accepted_cipher_suites:
@@ -125,17 +126,25 @@ def result(request):
 
         # Certificate info results
         certinfo_result = server_scan_result.scan_commands_results[ScanCommand.CERTIFICATE_INFO]
-        print(certinfo_result)
+        #print(certinfo_result)
         server_scan_result_as_json = json.dumps(asdict(certinfo_result), cls=sslyze.JsonEncoder)
         certinfo_json = json.loads(server_scan_result_as_json)
+
+        '''
         cert_dns_subject_alternative = certinfo_json['certificate_deployments'][0]['received_certificate_chain'][0]['subject_alternative_name']['dns']
         cert_expiration_date = certinfo_json['certificate_deployments'][0]['received_certificate_chain'][0]['not_valid_after']
         certinfo_view = {'sn' : cert_dns_subject_alternative, 
                          'exp' : cert_expiration_date}
-                         
+                      
         for cert_deployment in certinfo_result.certificate_deployments:
             print(f"Leaf certificate: \n{cert_deployment.received_certificate_chain}")
-    return JsonResponse(certinfo_json)
+        ''' 
+        expiration_date = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["not_valid_after"]
+        dns_name = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["subject_alternative_name"]["dns"]
+        print(expiration_date)
+        print(dns_name)
+        json.loads(str(dns_name))
+    return JsonResponse(dns_name)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
 def check(Ip): 

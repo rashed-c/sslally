@@ -2,21 +2,17 @@
 
 {% extends "polls/base.html" %}
 
-
 {% block javascript %}
 <script>
 function myFunction(){
 var website_port = document.getElementById("website_port").value;
-var record_type = document.getElementById("record_type").value;
+
 $.ajax({
     type: "GET",
-    url:"result/?website_port="+website_port+"&record_type="+record_type,
+    url:"result/?website_port="+website_port,
     success: function(data)
     {   
-      
-      console.log(JSON.stringify(data))
-    
-        $("#dig-data").html(data);
+        $("#ping-data").html(data);
     },
     failure: function(data) { 
         console.log('Got an error dude');
@@ -28,39 +24,22 @@ $.ajax({
 
 {% block content %}
 
-<!-- <div>
-    <fieldset class="uk-fieldset">
-        <div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
-        <div class="uk-text-large uk-margin-right">Hostname:</div>
-        <div><input id="website_port1" class="uk-input" type="text" placeholder=""></div>
-        <div class="uk-text-large uk-margin-right uk-margin-left">Record Type</div>
-        <div class="uk-margin-left">
-            <select id="record_type1" class="uk-select" name="record_type">
-                <option>A</option>
-                <option>AAAA</option>
-                <option>ANY</option>
-                <option>CAA</option>
-                <option>CNAME</option>
-                <option>MX</option>
-                <option>NS</option>
-                <option>PTR</option>
-                <option>SOA</option>
-                <option>SRV</option>
-                <option>TXT</option>
-            </select> 
-        </div>
-        <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
-        </div>
-    </fieldset>
-</div>
+<div class="uk-flex-inline uk-position-center uk-position-relative uk-margin uk-margin-large-top">
+    <div class="uk-text-large uk-margin-right">Hostname:</div>
+    <div><input id="website_port" class="uk-input" type="text" placeholder="" ></div>
+    <div><button onclick="myFunction()" class="uk-button uk-button-default uk-button uk-margin-left">Submit</button></div>
+    </div>
+
+
 <div class="uk-card uk-card-default">
 <div  class=" uk-margin-left">
-    <div id="dig-data2"> </div>
+    <div id="ping-data"> </div>
 </div>
-</div> -->
+</div>
+
 
 <div class="container mx-auto">
-    <div class="max-w-6xl mx-auto border px-8 py-6 mt-10">
+    <div class="max-w-6xl shadow-sm mx-auto px-8 py-16">
      
         <div class="relative lg:flex rounded-lg overflow-hidden">
           <!-- 
@@ -76,11 +55,11 @@ $.ajax({
          
       <div class="mx-auto flex items-center justify-center p-5 space-x-2">
         <div class="">Hostname:</div>    
-        <div>
+        <div class="">
             <input
               id="website_port"
               type="text"
-              placeholder=""
+              placeholder="Placeholder"
               class="
                 px-3
                 py-3
@@ -97,22 +76,6 @@ $.ajax({
               "
             />
           </div>
-          <div class="uk-text-large uk-margin-right uk-margin-left">Record Type</div>
-        <div class="uk-margin-left">
-            <select id="record_type" class="uk-select" name="record_type">
-                <option>A</option>
-                <option>AAAA</option>
-                <option>ANY</option>
-                <option>CAA</option>
-                <option>CNAME</option>
-                <option>MX</option>
-                <option>NS</option>
-                <option>PTR</option>
-                <option>SOA</option>
-                <option>SRV</option>
-                <option>TXT</option>
-            </select> 
-        </div>
           <button 
           onclick="myFunction()"
           class="
@@ -133,7 +96,8 @@ $.ajax({
             transition-all
             duration-150
           "
-          type="button">
+          type="button"
+        >
         TEST SSL
         </button>
  
@@ -172,14 +136,13 @@ $.ajax({
         </button>
         </div> -->
       
-       
-    <!-- This is the dig result div -->
-    <div class="place-self-auto" id="dig-data">  </div>
-     
-     
+        <div class="place-self-auto">
+            <a>
+              Hi this is bullshit
+            </a>
+        </div>
 
       </div>
     </div>    
-    
 
 {% endblock %}

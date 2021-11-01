@@ -11,8 +11,8 @@ def home(request):
 def do_ping(request):
     website = request.GET.get('website_port')
     ping_result = []
-    host = ping(website, count=5, interval=1, privileged=True)
-    print(host)
-    #return JsonResponse()
-    return HttpResponse(host)
-    #return render(request, 'polls/ping-result.html', {'pinginfo':host})
+    host = ping(website, count=1, interval=1, privileged=False, payload_size=32)
+    result = ("Reply from " + host.address + ":  bytes=32"+"  time=" + str(host.max_rtt))
+    print(result)
+    return HttpResponse(result)
+    
