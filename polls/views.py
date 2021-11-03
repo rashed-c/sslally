@@ -15,10 +15,8 @@ regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-
 
 
 def home(request):
-    return render(request, 'polls/home.html')
+    return render(request, 'polls/ssl-home.html')
 
-def test(request):
-    return HttpResponse("Hello world!")
 
 def result(request):
     #checkSSL("google.com","TLS_1_3_CIPHER_SUITES")
@@ -141,10 +139,12 @@ def result(request):
         ''' 
         expiration_date = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["not_valid_after"]
         dns_name = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["subject_alternative_name"]["dns"]
-        print(expiration_date)
-        print(dns_name)
-        json.loads(str(dns_name))
-    return JsonResponse(dns_name)
+        custom_json = {
+        "expiration":expiration_date,
+        "dns":dns_name}
+        custom_json = json.dumps(custom_json)
+        print(custom_json)
+    return JsonResponse(custom_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
 def check(Ip): 

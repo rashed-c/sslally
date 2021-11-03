@@ -1,0 +1,155 @@
+
+
+{% extends "polls/base.html" %}
+
+{% block javascript %}
+<script>
+function myFunction(){
+var website_port = document.getElementById("website_port").value;
+var ssl_data = document.getElementById("ssl-data");
+//document.getElementById("ssl-data").innerHTML.replace(" ");
+$.ajax({
+   
+    type: "GET",
+    url:"result/?website_port="+website_port,
+    beforeSend: function(){
+        $('#loading-spinner').show();
+    },
+    success: function(data)
+    {   
+      //console.log(JSON.parse(json))
+    // p = data
+    // for (var key in p) {
+    // if (p.hasOwnProperty(key)) {
+    //     console.log(data);
+    //     document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
+    // }
+    // }
+    data=JSON.parse(data)
+    ssl_data.innerHTML ="";
+    for (var key in data) { if (data.hasOwnProperty(key)) {
+      console.log(data[key]);
+
+      //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
+      ssl_data.innerHTML += (data[key])+"<br>";
+      //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
+    }
+  }
+    
+    },
+    complete: function(){
+        $('#loading-spinner').hide();
+    },
+    failure: function(data) { 
+        console.log('Got an error dude');
+    }})
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<style>
+    .loader {
+      border-top-color: #3498db;
+      -webkit-animation: spinner 1.5s linear infinite;
+      animation: spinner 1.5s linear infinite;
+    }
+  
+    @-webkit-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+  
+    @keyframes spinner {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+
+<div class="container mx-auto">
+
+  <div class="max-w-6xl mx-auto border px-6 py-6 mt-10">
+ 
+  <div class="relative lg:flex rounded-lg overflow-hidden">
+
+     
+  <div class="mx-auto flex items-center justify-center p-5 space-x-2">
+    <div class="">Hostname:</div>    
+    <div class="">
+        <input
+          id="website_port"
+          type="text"
+          placeholder="Placeholder"
+          class="
+            px-3
+            py-3
+            placeholder-gray-400
+            text-gray-600
+            bg-white bg-white
+            rounded
+            text-sm
+            border border-gray-400
+            outline-none
+            focus:outline-none focus:ring
+            w-full
+          "
+        />
+      </div>
+      <button 
+      onclick="myFunction()"
+      class="
+        bg-purple-500
+        text-white
+        active:bg-purple-600
+        font-bold
+        uppercase
+        text-sm
+        px-6
+        py-3
+        rounded
+        shadow
+        hover:shadow-lg
+        outline-none
+        focus:outline-none
+        ease-linear
+        transition-all
+        duration-150
+      "
+      type="button"
+    >
+    TEST SSL
+    </button>
+
+  </div>
+ </div>
+
+    
+  <div id="loading-spinner" style="display: none;" class="flex justify-center items-center">
+    <div
+        class="
+            loader
+            ease-linear
+            rounded-full
+            border-8 border-t-8 border-gray-200
+            h-16
+            w-16
+        " >
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto border px-8 py-6 mt-10" id="ssl-data"> </div>
+  
+  </div>
+</div>   
+
+
+  {% endblock %}

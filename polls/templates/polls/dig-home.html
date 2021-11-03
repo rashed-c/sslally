@@ -1,28 +1,36 @@
-
-
 {% extends "polls/base.html" %}
 
 
 {% block javascript %}
+
 <script>
-function myFunction(){
-var website_port = document.getElementById("website_port").value;
-var record_type = document.getElementById("record_type").value;
-$.ajax({
-    type: "GET",
-    url:"result/?website_port="+website_port+"&record_type="+record_type,
-    success: function(data)
-    {   
-      
-      console.log(JSON.stringify(data))
-    
-        $("#dig-data").html(data);
-    },
-    failure: function(data) { 
-        console.log('Got an error dude');
-    }})
-}
+
+
+$(document).ready(function() {
+
+
+
+ $("button").click(function(){
+  var button_value = $(this).val();
+  var website_port = document.getElementById("website_port").value;
+  console.log(button_value);
+  console.log(website_port);
+  $.ajax({
+        type: "GET",
+        url: "result/?website_port=" + website_port + "&record_type=" + button_value,
+        success: function (data) {
+          $("#dig-data").html(data);
+        },
+        failure: function (data) {
+          console.log('Got an error dude');
+        }
+      });  
+  });
+});
+
+
 </script>
+
 {% endblock %}
 
 
@@ -57,13 +65,14 @@ $.ajax({
 <div  class=" uk-margin-left">
     <div id="dig-data2"> </div>
 </div>
-</div> -->
+</div> 
+-->
 
 <div class="container mx-auto">
-    <div class="max-w-6xl mx-auto border px-8 py-6 mt-10">
-     
-        <div class="relative lg:flex rounded-lg overflow-hidden">
-          <!-- 
+  <div class="max-w-6xl mx-auto border px-8 py-6 mt-10">
+
+    <div class="relative lg:flex rounded-lg overflow-hidden">
+      <!-- 
           <div class="h-56 lg:h-auto lg:w-5/12 relative flex items-center justify-center">
             <img class="absolute h-full w-full object-cover" src="https://stripe.com/img/v3/payments/overview/photos/slack.jpg" alt="" />
             <div class="absolute inset-0 bg-indigo-900 opacity-75"></div>
@@ -72,16 +81,12 @@ $.ajax({
           </svg>
           </div>
           -->
-    
-         
+
+
       <div class="mx-auto flex items-center justify-center p-5 space-x-2">
-        <div class="">Hostname:</div>    
+        <div class="">Hostname:</div>
         <div>
-            <input
-              id="website_port"
-              type="text"
-              placeholder=""
-              class="
+          <input id="website_port" type="text" placeholder="" class="
                 px-3
                 py-3
                 placeholder-gray-400
@@ -94,28 +99,25 @@ $.ajax({
                 outline-none
                 focus:outline-none focus:ring
                 w-full
-              "
-            />
-          </div>
-          <div class="uk-text-large uk-margin-right uk-margin-left">Record Type</div>
-        <div class="uk-margin-left">
-            <select id="record_type" class="uk-select" name="record_type">
-                <option>A</option>
-                <option>AAAA</option>
-                <option>ANY</option>
-                <option>CAA</option>
-                <option>CNAME</option>
-                <option>MX</option>
-                <option>NS</option>
-                <option>PTR</option>
-                <option>SOA</option>
-                <option>SRV</option>
-                <option>TXT</option>
-            </select> 
+              " />
         </div>
-          <button 
-          onclick="myFunction()"
-          class="
+        <div class="">Record Type</div>
+        <div class="">
+          <select id="record_type1" class="" name="record_type1">
+            <option>A</option>
+            <option>AAAA</option>
+            <option>ANY</option>
+            <option>CAA</option>
+            <option>CNAME</option>
+            <option>MX</option>
+            <option>NS</option>
+            <option>PTR</option>
+            <option>SOA</option>
+            <option>SRV</option>
+            <option>TXT</option>
+          </select>
+        </div>
+        <button onclick="myFunction()" class="
             bg-purple-500
             text-white
             active:bg-purple-600
@@ -132,32 +134,16 @@ $.ajax({
             ease-linear
             transition-all
             duration-150
-          "
-          type="button">
-        TEST SSL
+          " type="button">
+          TEST SSL
         </button>
- 
-    
-      <div id="loading-spinner" style="display: none;" class="flex justify-center items-center">
-        <div
-            class="
-                loader
-                ease-linear
-                rounded-full
-                border-8 border-t-8 border-gray-200
-                h-32
-                w-32
-            " >
-        </div>
-      </div>
-    
       </div>
     </div>
-    
-    
-    
-    
-        <!-- <div class="absolute inset-y-0 left-0 lg:flex lg:items-center">
+
+
+
+
+    <!-- <div class="absolute inset-y-0 left-0 lg:flex lg:items-center">
           <button class="mt-24 lg:mt-0 -ml-6 h-12 w-12 rounded-full bg-white p-3 shadow-lg">
           <svg class="h-full w-full text-indigo-900" fill="currentColor" viewBox="0 0 24 24">
             <path d="M5.41 11H21a1 1 0 0 1 0 2H5.41l5.3 5.3a1 1 0 0 1-1.42 1.4l-7-7a1 1 0 0 1 0-1.4l7-7a1 1 0 0 1 1.42 1.4L5.4 11z"/>
@@ -171,15 +157,59 @@ $.ajax({
           </svg>
         </button>
         </div> -->
-      
-       
-    <!-- This is the dig result div -->
-    <div class="place-self-auto" id="dig-data">  </div>
-     
-     
 
-      </div>
-    </div>    
-    
+
+    <div class="max-w-max mx-auto mt-10 flex flex-row border border-purple-600 rounded-sm bg-gray-100 divide-purple-600 text-base text-purple-600 leading-5">
+      <button  value="A"
+          class="px-4 py-2 cursor-pointer bg-purple-600  text-white focus:scale-110 focus:outline-none hover:bg-blue-400 transition duration-200 ease-in-out flex justify-center items-center">
+          <span class="ml-2">A</span>
+        </button>
+        <button  value="AAAA"
+          class="px-4 py-2 cursor-pointer focus:scale-600 focus:outline-none hover:bg-purple-600 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
+          <span class="ml-2">AAAA</span>
+        </button>
+        <button  value="ANY"
+          class="px-4 py-2 cursor-pointer focus:scale-110 focus:outline-none hover:bg-blue-400 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
+          <span class="ml-2">ANY</span>
+        </button>
+        <button  value="CAA"
+          class="px-4 py-2 cursor-pointer focus:scale-110 focus:outline-none hover:bg-blue-400 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
+          <span class="ml-2">CAA</span>
+        </button>
+        <button  value="CNAME"
+          class="px-4 py-2 cursor-pointer focus:scale-110 focus:outline-none hover:bg-blue-400 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
+          <span class="ml-2">CNAME</span>
+        </button>
+        <button  value="MX"
+          class="px-4 py-2 cursor-pointer focus:scale-110 focus:outline-none hover:bg-blue-400 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
+          <span class="ml-2">MX</span>
+        </button>
+        <button  value="NS"
+          class="px-4 py-2 cursor-pointer focus:scale-110 focus:outline-none hover:bg-blue-400 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
+          <span class="ml-2">NS</span>
+        </button>
+        <button  value="PTR"
+          class="px-4 py-2 cursor-pointer focus:scale-110 focus:outline-none hover:bg-blue-400 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
+          <span class="ml-2">PTR</span>
+        </button>
+        <button  value="SOA"
+          class="px-4 py-2 cursor-pointer focus:scale-110 focus:outline-none hover:bg-blue-400 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
+          <span class="ml-2">SOA</span>
+        </button>
+        <button  value="SRV"
+          class="px-4 py-2 cursor-pointer focus:scale-110 focus:outline-none hover:bg-blue-400 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
+          <span class="ml-2">SRV</span>
+        </button>
+        <button  value="TXT"
+          class="px-4 py-2 cursor-pointer focus:scale-110 focus:outline-none hover:bg-blue-400 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
+          <span class="ml-2">TXT</span>
+        </button>
+    </div>
+
+    <!-- This is the dig result div -->
+    <div class="max-w-6xl mx-auto border bg-gray-100 px-8 py-6 mt-10" id="dig-data"> </div>
+  </div>
+</div>
+
 
 {% endblock %}
