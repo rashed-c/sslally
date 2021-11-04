@@ -127,10 +127,16 @@ STATIC_URL = '/static/'
 
 TAILWIND_APP_NAME = 'theme'
 
-NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+#Windows NPM path
 
-#NPM_BIN_PATH = "/usr/local/bin/npm"
+#NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
+
+#Mac NPM path
+NPM_BIN_PATH = "/usr/local/bin/npm"
+
+
+#Linux NPM path
 #NPM_BIN_PATH = "/usr/bin/npm"
                                                 
 
