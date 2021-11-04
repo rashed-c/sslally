@@ -13,13 +13,26 @@ $(document).ready(function() {
  $("button").click(function(){
   var button_value = $(this).val();
   var website_port = document.getElementById("website_port").value;
-  console.log(button_value);
-  console.log(website_port);
+  var dns_server = document.getElementById("dns_server").value;
+  var dig_data = document.getElementById("dig-data");
+
   $.ajax({
         type: "GET",
-        url: "result/?website_port=" + website_port + "&record_type=" + button_value,
+        url: "result/?website_port=" + website_port + "&record_type=" + button_value +"&dns_server=" + dns_server,
         success: function (data) {
-          $("#dig-data").html(data);
+          data = JSON.parse(data);
+          //$("#dig-data").html(data);
+
+          for (var key in data) { 
+          if (data.hasOwnProperty(key)) {
+          console.log(data[key][0]);
+
+          //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
+          //ssl_data.innerHTML += (data[key])+"<br>";
+          dig_data.innerHTML = (data[key][0]["MX"]);
+          }}
+
+
         },
         failure: function (data) {
           console.log('Got an error dude');
@@ -84,7 +97,7 @@ $(document).ready(function() {
 
 
       <div class="mx-auto flex items-center justify-center p-5 space-x-2">
-        <div class="">Hostname:</div>
+        <div class="">Domain name:</div>
         <div>
           <input id="website_port" type="text" placeholder="" class="
                 px-3
@@ -101,42 +114,15 @@ $(document).ready(function() {
                 w-full
               " />
         </div>
-        <div class="">Record Type</div>
+        <div class="">DNS Server</div>
         <div class="">
-          <select id="record_type1" class="" name="record_type1">
-            <option>A</option>
-            <option>AAAA</option>
-            <option>ANY</option>
-            <option>CAA</option>
-            <option>CNAME</option>
-            <option>MX</option>
-            <option>NS</option>
-            <option>PTR</option>
-            <option>SOA</option>
-            <option>SRV</option>
-            <option>TXT</option>
+          <select id="dns_server" class="" name="record_type1">
+            <option>Google</option>
+            <option>OpenDNS</option>
+            <option>Cloudflare</option>
           </select>
         </div>
-        <button onclick="myFunction()" class="
-            bg-purple-500
-            text-white
-            active:bg-purple-600
-            font-bold
-            uppercase
-            text-sm
-            px-6
-            py-3
-            rounded
-            shadow
-            hover:shadow-lg
-            outline-none
-            focus:outline-none
-            ease-linear
-            transition-all
-            duration-150
-          " type="button">
-          TEST SSL
-        </button>
+       
       </div>
     </div>
 
@@ -159,13 +145,13 @@ $(document).ready(function() {
         </div> -->
 
 
-    <div class="max-w-max mx-auto mt-10 flex flex-row border border-purple-600 rounded-sm bg-gray-100 divide-purple-600 text-base text-purple-600 leading-5">
-      <button  value="A"
-          class="px-4 py-2 cursor-pointer bg-purple-600  text-white focus:scale-110 focus:outline-none hover:bg-blue-400 transition duration-200 ease-in-out flex justify-center items-center">
+    <div  class="max-w-max mx-auto mt-10 flex flex-row border divide-indigo-400 border-indigo-500 rounded-sm bg-gray-100 divide-indigo-400 text-base text-indigo-500 leading-5">
+      <button value="A"
+          class="px-4 py-2 cursor-pointer bg-indigo-500 divide-indigo-400  text-white focus:scale-110 focus:outline-none hover:bg-blue-400 transition duration-200 ease-in-out flex justify-center items-center">
           <span class="ml-2">A</span>
         </button>
         <button  value="AAAA"
-          class="px-4 py-2 cursor-pointer focus:scale-600 focus:outline-none hover:bg-purple-600 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
+          class="px-4 py-2 cursor-pointer active:bg-purple-600 focus:scale-600 focus:outline-none hover:bg-purple-600 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
           <span class="ml-2">AAAA</span>
         </button>
         <button  value="ANY"

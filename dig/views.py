@@ -2,28 +2,41 @@ import dig
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
 from modules.dns import *
-import json
+import json 
+from pprint import pprint
 
 # Create your views here.
 
 
 def home(request):
-    return render(request, 'polls/dig-home.html', {'dnsinfo':rdata})
+    return render(request, 'polls/dig-home.html')
 
 def do_dig(request):
+    my_resolver = resolver.Resolver()
+    
     website = request.GET.get('website_port')
     record_type = request.GET.get('record_type')
+    dns_server = request.GET.get('dns_server')
     dig_result={}
-    
+    print(dns_server)
+    if(dns_server == "Google"):
+        my_resolver.nameservers = ['8.8.8.8', '8.8.4.4']
+    elif(dns_server == "OpenDNS"):
+        my_resolver.nameservers = ['1.2.3.4']
+    elif(dns_server == "Cloudflare"):
+        my_resolver.nameservers = ['1.1.1.1']
    
     
     def A():
         dig_result={"A Records":[]}
         try:
-            answer_a = resolver.query(website, "A")
+            answer_a = my_resolver.query(website, "A")
             for rdata in answer_a:
                 dig_result["A Records"].append({"A": str(rdata)})
-        except:
+                print(rdata)
+                print(rdata.rrset.ttl)
+        except Exception as e:
+            print(e)
             pass
         return dig_result
 
@@ -40,17 +53,20 @@ def do_dig(request):
     def MX():
         dig_result={"MX Records":[]}
         try:
-            answer_mx = resolver.query(website, "MX")
+            answer_mx = my_resolver.query(website, "MX")
             for rdata in answer_mx:
                 dig_result["MX Records"].append({"MX":str(rdata.exchange),
                                         "Preference": rdata.preference})
+                
+                pprint(vars(rdata))
         except:
             pass
         return dig_result
+
     def NS():
         dig_result={"NS Records":[]}
         try:
-            answer_NS = resolver.query(website, "NS")
+            answer_NS = my_resolver.query(website, "NS")
             for rdata in answer_NS:
                 dig_result["NS Records"].append({"NS":str(rdata)})
         except:
@@ -61,7 +77,7 @@ def do_dig(request):
     def TXT():
         dig_result={"TXT Records":[]}
         try:
-            answer_TXT = resolver.query(website, "TXT")
+            answer_TXT = my_resolver.query(website, "TXT")
             for rdata in answer_TXT:
                 dig_result["TXT Records"].append({"TXT":str(rdata)})
         except:
@@ -102,9 +118,10 @@ def do_dig(request):
         dig_result=SOA()
     if record_type=="CAA":
         dig_result=CAA()
+
     if record_type=="CNAME":
         try:
-            answer = resolver.query(website, "CNAME")
+            answer = my_resolver.query(website, "CNAME")
             for rdata in answer:
                 print(rdata)
         except:
