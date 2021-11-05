@@ -4,39 +4,51 @@
 
 {% block javascript %}
 <script>
- var counter = 5;
- var pingInterval 
-function poll() {
+
+var counter; 
+function endInterval(interval) {
+      clearInterval(interval)}; 
+
+function poll() { 
+    counter = 5; 
+    myFunction();
+    ping_interval = pingInterval();  
+
+    function pingInterval(){
+    p_interval = setInterval(myFunction, 1000);
+    return p_interval; }; 
+}; 
+
+  // var pingInterval 
   // document.getElementById("ping-data").innerHTML.replace("test")
-  myFunction()
-  pingInterval = setInterval(myFunction, 1000)
-  
-}
+
   
   // setTimeout(function () {
   //   myFunction();
   // }, 100);
   
 function myFunction(){
+
 var website_port = document.getElementById("website_port").value;
 counter--
 console.log(counter)
-if (counter == 0){clearInterval(pingInterval) 
-  counter=5 }
+if (counter == 0){endInterval(ping_interval)}
 
 $.ajax({
     type: "GET",
     url:"result/?website_port="+website_port,
+    
+
     success: function(data)
     {   
-      // $("#ping-data").html(data);
-      // for (let i = 0; i < 2; i++) {
-    document.getElementById("ping-data").innerHTML +=  (data + "<br>")  
+    document.getElementById("ping-data").innerHTML +=  (data + "<br>") 
     },
     failure: function(data) { 
         console.log('Got an error dude');
-    }})
-  }
+    }}); 
+
+   
+  }; 
 
 </script>
 
@@ -45,7 +57,6 @@ $.ajax({
 
 {% block content %}
 
-<div class="container mx-auto">
     <div class="max-w-6xl mx-auto border px-8 py-6 mt-10">
      
         <div class="relative lg:flex rounded-lg overflow-hidden">
@@ -148,6 +159,5 @@ $.ajax({
         </div>
 
       </div>
-    </div>    
-
+    
 {% endblock %}

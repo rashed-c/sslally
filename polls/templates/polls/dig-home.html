@@ -81,10 +81,11 @@ $(document).ready(function() {
 </div> 
 -->
 
-<div class="container mx-auto">
-  <div class="max-w-6xl mx-auto border px-8 py-6 mt-10">
 
-    <div class="relative lg:flex rounded-lg overflow-hidden">
+
+  <div class="max-w-6xl mx-auto border px-8 py-6">
+
+    <!-- <div class="relative lg:flex rounded-lg overflow-hidden border"> -->
       <!-- 
           <div class="h-56 lg:h-auto lg:w-5/12 relative flex items-center justify-center">
             <img class="absolute h-full w-full object-cover" src="https://stripe.com/img/v3/payments/overview/photos/slack.jpg" alt="" />
@@ -124,7 +125,7 @@ $(document).ready(function() {
         </div>
        
       </div>
-    </div>
+    <!-- </div> -->
 
 
 
@@ -145,7 +146,7 @@ $(document).ready(function() {
         </div> -->
 
 
-    <div  class="max-w-max mx-auto mt-10 flex flex-row border divide-indigo-400 border-indigo-500 rounded-sm bg-gray-100 divide-indigo-400 text-base text-indigo-500 leading-5">
+    <div  class="flex-wrap max-w-max mx-auto  mt-10 flex  border divide-indigo-400 border-indigo-500 rounded-sm bg-gray-100 divide-indigo-400 text-base text-indigo-500 leading-5">
       <button value="A"
           class="px-4 py-2 cursor-pointer bg-indigo-500 divide-indigo-400  text-white focus:scale-110 focus:outline-none hover:bg-blue-400 transition duration-200 ease-in-out flex justify-center items-center">
           <span class="ml-2">A</span>
@@ -195,7 +196,4 @@ $(document).ready(function() {
     <!-- This is the dig result div -->
     <div class="max-w-6xl mx-auto border bg-gray-100 px-8 py-6 mt-10" id="dig-data"> </div>
   </div>
-</div>
-
-
 {% endblock %}

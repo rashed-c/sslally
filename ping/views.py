@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse, JsonResponse
 from modules.icmplib import *
+from ratelimit.decorators import ratelimit
 
 # Create your views here.
 
-
+@ratelimit(key='ip', rate='1/m')
 def home(request):
     return render(request, 'polls/ping-home.html')
 
+@ratelimit(key='ip', rate='1/s')
 def do_ping(request):
     website = request.GET.get('website_port')
     try:

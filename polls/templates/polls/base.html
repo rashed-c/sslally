@@ -25,7 +25,7 @@
     
 
   
-<div class="shadow-sm w-full text-gray-700 bg-white dark-mode:text-gray-200 dark-mode:bg-gray-800">
+<div class="bg-white shadow w-full mb-20 text-gray-700 dark-mode:text-gray-200 dark-mode:bg-gray-800">
   <div x-data="{ open: false }" class="flex flex-col py-1 md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
     <div class="p-4 flex flex-row items-center justify-between">
       <a href="/" class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">SSL Ally</a>
@@ -81,13 +81,15 @@
   </head>
 
 
-  <body>
+  <body class="">
+    <div class="container mx-auto mt-24 mb-24">
     {% block content %}
     {% endblock %}
+  </div>
   </body>
 
 
-  <footer class="text-gray-600 body-font">
+  <footer class="bg-gray-300">
     <div
       class="
         container
@@ -133,6 +135,7 @@
           mt-10
           md:text-left
           text-center
+          text-gray-300
         "
       >
         <div class="lg:w-1/4 md:w-1/2 w-full px-4">
@@ -186,7 +189,7 @@
           </h2>
           <nav class="list-none mb-10">
             <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
+              <a href="" class="text-gray-400 hover:text-gray-800"
                 >First Link</a
               >
             </li>
@@ -281,7 +284,9 @@
         </div>
       </div>
     </div>
-    <div class="bg-gray-100">
+
+    <!-- Footer bread crumb-->
+    <div class="bg-gray-900">
       <div
         class="
           container
@@ -292,11 +297,11 @@
           sm:flex-row
         "
       >
-        <p class="text-gray-500 text-sm text-center sm:text-left">
+        <p class="text-gray-400 text-sm text-center sm:text-left">
           © 2021 Copyright:
           <a
             href="/"
-            class="text-gray-600 ml-1"
+            class="font-bold text-gray-400 ml-1"
             target="_blank"
             >SSLAlly</a>
         </p>
