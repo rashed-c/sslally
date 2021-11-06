@@ -6,19 +6,30 @@
 <script>
 
 var counter; 
+var isRunning = false; 
+
+
+
+
+function poll() {
+    if(!isRunning){
+    counter = 5; 
+    myFunction();
+    ping_interval = pingInterval();}
+    else{
+      endInterval(ping_interval); 
+      isRunning = true; 
+    }  
+}; 
+
+
 function endInterval(interval) {
       clearInterval(interval)}; 
 
-function poll() { 
-    counter = 5; 
-    myFunction();
-    ping_interval = pingInterval();  
-
-    function pingInterval(){
-    p_interval = setInterval(myFunction, 1000);
-    return p_interval; }; 
-}; 
-
+function pingInterval(){
+  p_interval = setInterval(myFunction, 1000);
+  return p_interval; }; 
+  
   // var pingInterval 
   // document.getElementById("ping-data").innerHTML.replace("test")
 
@@ -28,7 +39,7 @@ function poll() {
   // }, 100);
   
 function myFunction(){
-
+isRunning = true;
 var website_port = document.getElementById("website_port").value;
 counter--
 console.log(counter)
