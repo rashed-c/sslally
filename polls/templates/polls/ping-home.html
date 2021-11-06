@@ -18,7 +18,8 @@ function poll() {
     ping_interval = pingInterval();}
     else{
       endInterval(ping_interval); 
-      isRunning = true; 
+      isRunning = false;
+      poll(); 
     }  
 }; 
 
@@ -29,7 +30,7 @@ function endInterval(interval) {
 function pingInterval(){
   p_interval = setInterval(myFunction, 1000);
   return p_interval; }; 
-  
+
   // var pingInterval 
   // document.getElementById("ping-data").innerHTML.replace("test")
 
