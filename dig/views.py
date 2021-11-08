@@ -57,7 +57,6 @@ def do_dig(request):
             for rdata in answer_mx:
                 dig_result["MX Records"].append({"MX":str(rdata.exchange),
                                         "Preference": rdata.preference})
-                
                 pprint(vars(rdata))
         except:
             pass

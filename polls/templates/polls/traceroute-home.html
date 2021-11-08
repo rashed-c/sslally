@@ -6,28 +6,18 @@
 <script>
 
 var counter; 
-var isRunning = false; 
-
-function poll() {
-    if(!isRunning){
-    document.getElementById("ping-data").innerHTML =  ""
-    counter = 5; 
-    myFunction();
-    ping_interval = pingInterval();}
-    else{
-      endInterval(ping_interval); 
-      isRunning = false;
-      poll(); 
-    }  
-}; 
-
-
 function endInterval(interval) {
       clearInterval(interval)}; 
 
-function pingInterval(){
-  p_interval = setInterval(myFunction, 1000);
-  return p_interval; }; 
+function poll() { 
+    counter = 5; 
+    myFunction();
+    ping_interval = pingInterval();  
+
+    function pingInterval(){
+    p_interval = setInterval(myFunction, 1000);
+    return p_interval; }; 
+}; 
 
   // var pingInterval 
   // document.getElementById("ping-data").innerHTML.replace("test")
@@ -38,7 +28,7 @@ function pingInterval(){
   // }, 100);
   
 function myFunction(){
-isRunning = true;
+
 var website_port = document.getElementById("website_port").value;
 counter--
 console.log(counter)
@@ -69,7 +59,7 @@ $.ajax({
 
     <div class="max-w-6xl mx-auto border px-8 py-6 mt-10">
      
-        <div class="lg:flex rounded-lg overflow-hidden">
+        <div class="relative lg:flex rounded-lg overflow-hidden">
           <!-- 
           <div class="h-56 lg:h-auto lg:w-5/12 relative flex items-center justify-center">
             <img class="absolute h-full w-full object-cover" src="https://stripe.com/img/v3/payments/overview/photos/slack.jpg" alt="" />
@@ -93,6 +83,7 @@ $.ajax({
                 py-3
                 placeholder-gray-400
                 text-gray-600
+                relative
                 bg-white bg-white
                 rounded
                 text-sm

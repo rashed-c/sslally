@@ -6,7 +6,7 @@ import sslyze
 from dataclasses import asdict
 import json
 import re
- 
+import datetime
 # Make a regular expression
 # for validating an Ip-address
 regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
@@ -19,7 +19,6 @@ def home(request):
 
 
 def result(request):
-    #checkSSL("google.com","TLS_1_3_CIPHER_SUITES")
     website = request.GET.get('website_port')
     if ":" in website:
         port = website[-3:] # Get port number
@@ -121,7 +120,7 @@ def result(request):
         http_headers: HttpHeadersScanResult
         elliptic_curves: SupportedEllipticCurvesScanResult
         '''
-
+        
         # Certificate info results
         certinfo_result = server_scan_result.scan_commands_results[ScanCommand.CERTIFICATE_INFO]
         #print(certinfo_result)
@@ -138,12 +137,15 @@ def result(request):
             print(f"Leaf certificate: \n{cert_deployment.received_certificate_chain}")
         ''' 
         expiration_date = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["not_valid_after"]
+        expiration_date = expiration_date[0:-9]
+        # Convert date format
+        expiration_date = datetime.datetime.strptime(expiration_date, '%Y-%m-%d').strftime('%b %d %Y')
         dns_name = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["subject_alternative_name"]["dns"]
-        custom_json = {
-        "expiration":expiration_date,
-        "dns":dns_name}
-        custom_json = json.dumps(custom_json)
-        print(custom_json)
+        dns_data = {
+        "Expiration: ":expiration_date,
+        "Host name: ":dns_name}
+        custom_json = json.dumps(dns_data)
+        
     return JsonResponse(custom_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 

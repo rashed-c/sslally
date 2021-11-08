@@ -3,7 +3,7 @@
 {% extends "polls/base.html" %}
 
 {% block javascript %}
-<script>
+<!-- <script>
 function myFunction(){
 var website_port = document.getElementById("website_port").value;
 var ssl_data = document.getElementById("ssl-data");
@@ -36,16 +36,38 @@ $.ajax({
         console.log('Got an error dude');
     }})
 }
-</script>
+</script> -->
 {% endblock %}
 
 {% block content %}
 
 
+<div class="mx-auto bg-indigo-500 px-6 py-6">
+  <div class="lg:flex rounded-lg overflow-hidden">
+    <div class="mx-auto flex items-center justify-center p-5 space-x-2"> 
+      This is home page. 
+    </div>
+  </div>
+</div>
 
+<div class="mx-auto bg-indigo-900 px-6 py-6">
+  <div class="lg:flex rounded-lg overflow-hidden">
+    <div class="mx-auto flex items-center justify-center p-5 space-x-2"> 
+      This is home page. 
+    </div>
+  </div>
+</div>
 
-  <div class="max-w-6xl mx-auto px-6 py-6 mt-10 mb-10">
-    <div class="relative lg:flex rounded-lg overflow-hidden">
+<div class="mx-auto bg-blue-500 px-6 py-6">
+  <div class="lg:flex rounded-lg overflow-hidden">
+    <div class="mx-auto flex items-center justify-center p-5 space-x-2"> 
+      This is home page. 
+    </div>
+  </div>
+</div>
+
+  <div class="mx-auto bg-blue-900 px-6 py-6">
+    <div class="lg:flex rounded-lg overflow-hidden">
       <div class="mx-auto flex items-center justify-center p-5 space-x-2"> 
         This is home page. 
 
@@ -53,6 +75,14 @@ $.ajax({
     </div>
   </div>
 
+  <div class="mx-auto bg-blue-500 px-6 py-6">
+    <div class="lg:flex rounded-lg overflow-hidden">
+      <div class="mx-auto flex items-center justify-center p-5 space-x-2"> 
+        This is home page. 
+
+      </div>
+    </div>
+  </div>
 
 
   {% endblock %}

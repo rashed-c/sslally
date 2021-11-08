@@ -25,14 +25,23 @@ $(document).ready(function() {
 
           for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-          console.log(data[key][0]);
+          
 
+          dig_data.innerHTML = (data[key][0]);
+          console.log(data[key][0])
+          //   inner_data = data[key][1]
+          // console.log(data[key]);
           //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
           //ssl_data.innerHTML += (data[key])+"<br>";
-          dig_data.innerHTML = (data[key][0]["MX"]);
+          //dig_data.innerHTML = (data[key][0]["MX"]) + "Preference: " + (data[key][0]["Preference"]);
+          // for (var inner_key in inner_data){
+          //   if (inner_data.hasOwnProperty(inner_key)){
+          //     console.log(inner_data[inner_key]);
+          //   }}
+          // 
+
+
           }}
-
-
         },
         failure: function (data) {
           console.log('Got an error dude');

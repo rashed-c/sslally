@@ -27,11 +27,13 @@ $.ajax({
     // }
     data=JSON.parse(data)
     ssl_data.innerHTML ="";
-    for (var key in data) { if (data.hasOwnProperty(key)) {
+    ssl_data.innerHTML = '<div class="font-bold border py-2 px-2"> Certificate overview <br> </div>';
+    for (var key in data) { 
+      if (data.hasOwnProperty(key)) {
+      console.log(key)
       console.log(data[key]);
-
       //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
-      ssl_data.innerHTML += (data[key])+"<br>";
+      ssl_data.innerHTML += (key)+(data[key])+"<br>";
       //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
     }
   }
@@ -44,6 +46,7 @@ $.ajax({
         console.log('Got an error dude');
     }})
 }
+
 </script>
 {% endblock %}
 
@@ -104,7 +107,7 @@ $.ajax({
       <button 
       onclick="myFunction()"
       class="
-        bg-purple-500
+        bg-red-600
         text-white
         active:bg-purple-600
         font-bold
