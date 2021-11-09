@@ -30,13 +30,16 @@ $.ajax({
     ssl_data.innerHTML = '<div class="font-bold border py-2 px-2"> Certificate overview <br> </div>';
     for (var key in data) { 
       if (data.hasOwnProperty(key)) {
+      console.log(data)
       console.log(key)
       console.log(data[key]);
       //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
-      ssl_data.innerHTML += (key)+(data[key])+"<br>";
+      ssl_data.innerHTML += '<div class="text-bold flex items-center">'+(key)+(data[key])+"</div> <br>";
       //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
     }
-  }
+ }
+
+  ssl_data.innerHTML += '<div class="font-bold border py-2 px-2"> Security <br> </div>';
     
     },
     complete: function(){
@@ -145,10 +148,8 @@ $.ajax({
     </div>
   </div>
 
-  <div class="max-w-6xl mx-auto border px-8 py-6 mt-10" id="ssl-data"> </div>
+  <div class="mx-auto mt-10" id="ssl-data"> </div>
   
   </div>
-
-
 
   {% endblock %}
