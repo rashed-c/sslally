@@ -7,17 +7,18 @@ from dataclasses import asdict
 import json
 import re
 from datetime import datetime
+from ratelimit.decorators import ratelimit
 # Make a regular expression
 # for validating an Ip-address
 regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
  
 
 
-
+@ratelimit(key='ip')
 def home(request):
     return render(request, 'polls/ssl-home.html')
 
-
+@ratelimit(key='ip', rate='1/h')
 def result(request):
     website = request.GET.get('website_port')
     if ":" in website:
@@ -142,33 +143,41 @@ def result(request):
         # print(full_cert)
 
        
-        serial_number_hex = hex(certinfo_json["certificate_deployments"][0]["received_certificate_chain"][1]["serial_number"])
+        cert_serial_number = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][1]["serial_number"]
+        serial_number_hex = checkCA(cert_serial_number)
 
         expiration_date = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["not_valid_after"]
-        
         expiration_date = expiration_date[0:-9]
         
-        # Convert date format
-        #expiration_date = datetime.strptime(expiration_date, '%Y-%m-%d').strftime('%b %d %Y')
-        #Check if 
-        if (datetime.strptime(expiration_date,'%Y-%m-%d') - datetime.today()).days <= 30: 
-            print( (datetime.strptime(expiration_date,'%Y-%m-%d') - datetime.today()).days)
-
-        print( (datetime.strptime(expiration_date,'%Y-%m-%d') - datetime.today()).days)
-
         valid_svg='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-current text-green-600" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
-        expiring_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
-        invalid_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
+        expiring_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
+        invalid_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
        
         dns_name = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["subject_alternative_name"]["dns"]
+
+        public_key_size = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["public_key"]["key_size"]
+        print(public_key_size)
+
+        if (datetime.strptime(expiration_date,'%Y-%m-%d') - datetime.today()).days > 30: 
+            expiration_status = valid_svg
+        elif (datetime.strptime(expiration_date,'%Y-%m-%d') - datetime.today()).days > 0: 
+            expiration_status = expiring_svg
+        else: 
+            expiration_status = invalid_svg
+
         host_name = ""
         
         for name in dns_name:
             host_name += name+"<br>"
 
+        if website in host_name:
+            host_status = valid_svg
+        else:
+            host_status = invalid_svg
+         
         dns_data = {
-        "Expiration: ":expiration_date+ valid_svg+expiring_svg+invalid_svg,
-        "Host name: ":host_name,
+        "<div> Expiration: </div>":"<div>"+expiration_date+"</div><div>"+expiration_status+"</div>",
+        "<div> Host name: </div>":"<div>"+host_name+"</div>"+"<div>"+host_status+"</div>",
         "Certificate Authority: ": serial_number_hex}
         
         custom_json = json.dumps(dns_data)
@@ -177,7 +186,7 @@ def result(request):
     return JsonResponse(custom_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
-def check(Ip): 
+def checkIP(Ip): 
  
     # pass the regular expression
     # and the string in search() method
@@ -186,5 +195,10 @@ def check(Ip):
     else: 
         print("Invalid Ip address") 
 
+
+def checkCA(cert_serial):
+    cert_serial_hex = hex(cert_serial)
+    return cert_serial_hex
+    
 
 
