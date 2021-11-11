@@ -18,25 +18,30 @@ regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-
 def home(request):
     return render(request, 'polls/ssl-home.html')
 
-@ratelimit(key='ip', rate='1/h')
+@ratelimit(key='user_or_ip', rate='5/m', method=ratelimit.ALL)
 def result(request):
+    was_limited = getattr(request, 'limited', False)
+    print("Rate limited: "+str(was_limited))
     website = request.GET.get('website_port')
     if ":" in website:
         port = website[-3:] # Get port number
         website = website[0:-4] # All exepct port number and colon
     else:
         port=443
-
     
+    # try:
     server_location = ServerNetworkLocationViaDirectConnection.with_ip_address_lookup(website, port)
+    # except Exception as e:
+    #     print(e)
 
     # Do connectivity testing to ensure SSLyze is able to connect
-    try:
-        server_info = ServerConnectivityTester().perform(server_location)
-    except ConnectionToServerFailed as e:
-        # Could not connect to the server; abort
-        print(f"Error connecting to {server_location}: {e.error_message}")
-        return
+    # try:
+    #     print("here")
+    server_info = ServerConnectivityTester().perform(server_location)
+    # except Exception as e:
+    #     # Could not connect to the server; abort
+    #     print(f"Error connecting to {server_location}: {e}")
+    #     return
     # Then queue some scan commands for the server
     scanner = Scanner()
     server_scan_req = ServerScanRequest(

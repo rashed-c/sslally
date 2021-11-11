@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ratelimit.middleware.RatelimitMiddleware',
 ]
 
 ROOT_URLCONF = 'sslally_site.urls'
@@ -126,6 +127,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TAILWIND_APP_NAME = 'theme'
+
+
+
+# RATELIMIT SETTINGS
+#RATELIMIT_CACHE_PREFIX = 'rl:'
+RATELIMIT_ENABLE = True
+RATELIMIT_USE_CACHE = 'default'
+#RATELIMIT_VIEW = None
+
+
 
 #Windows NPM path
 
