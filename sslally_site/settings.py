@@ -140,7 +140,7 @@ RATELIMIT_USE_CACHE = 'default'
 
 #Windows NPM path
 
-NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+#NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 
 #Mac NPM path
@@ -148,7 +148,7 @@ NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 
 #Linux NPM path
-#NPM_BIN_PATH = "/usr/bin/npm"
+NPM_BIN_PATH = "/usr/bin/npm"
                                                 
 
                     

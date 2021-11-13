@@ -1,4 +1,5 @@
 
+from typing import Match
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render
 from modules.sslyze import *
@@ -6,20 +7,48 @@ import sslyze
 from dataclasses import asdict
 import json
 import re
+import requests
 from datetime import datetime
 from ratelimit.decorators import ratelimit
+import pandas as pd
 # Make a regular expression
 # for validating an Ip-address
 regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
- 
+df = pd.read_csv('https://ccadb-public.secure.force.com/mozilla/PublicAllIntermediateCertsCSV', header=0, index_col='Certificate Serial Number') 
+
+
+
+
 
 
 @ratelimit(key='ip')
 def home(request):
     return render(request, 'polls/ssl-home.html')
 
-@ratelimit(key='user_or_ip', rate='5/m', method=ratelimit.ALL)
+@ratelimit(key='user_or_ip', rate='5/s', method=ratelimit.ALL)
 def result(request):
+    #data = pd.read_csv('https://ccadb-public.secure.force.com/mozilla/PublicAllIntermediateCertsCSV', skipinitialspace=True)
+    
+    
+    
+    #print(df.loc["067f94578587e8ac77deb253325bbc998b560d"]["CA Owner"])
+    
+    # data = pd.read_csv('https://ccadb-public.secure.force.com/mozilla/PublicAllIntermediateCertsCSV', header=0, index_col=7, squeeze=True).to_dict()
+    # for key, value in data.items():
+    #     print (data[key])
+    
+    # for row in df2:
+    #     print(row[0]) 
+    # # mydict = df.applymap(str).groupby('Certificate Serial Number')['CA Owner'].apply(list).to_dict()
+    # # mydict2 = df2.groupby(['Certificate Serial Number']).groups
+    # df_test = df2.groupby('Certificate Serial Number')['CA Owner']['Subordinate CA Owner'].apply(list).to_dict()
+    # print(df_test)
+
+    #print(data)
+    #print(data)
+    #print(data['0203bc53596b34c718f5015066'])Certificate Serial Number
+
+
     was_limited = getattr(request, 'limited', False)
     print("Rate limited: "+str(was_limited))
     website = request.GET.get('website_port')
@@ -150,6 +179,19 @@ def result(request):
        
         cert_serial_number = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][1]["serial_number"]
         serial_number_hex = checkCA(cert_serial_number)
+        print(serial_number_hex)
+        cert_organization = df.loc[serial_number_hex]['Certificate Subject Organization']
+        
+        # for x in df.index.values:
+        #     if serial_number_hex in x: 
+        #         print(x)
+
+
+        # for serial in data['Certificate Serial Number']:
+        #     #print(serial_number_hex)
+        #     if(serial_number_hex in serial):
+        #         print(data['Certificate Issuer Common Name'])
+        #         print(serial)
 
         expiration_date = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["not_valid_after"]
         expiration_date = expiration_date[0:-9]
@@ -161,7 +203,7 @@ def result(request):
         dns_name = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["subject_alternative_name"]["dns"]
 
         public_key_size = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["public_key"]["key_size"]
-        print(public_key_size)
+        
 
         if (datetime.strptime(expiration_date,'%Y-%m-%d') - datetime.today()).days > 30: 
             expiration_status = valid_svg
@@ -174,6 +216,7 @@ def result(request):
         
         for name in dns_name:
             host_name += name+"<br>"
+            print(host_name)
 
         if website in host_name:
             host_status = valid_svg
@@ -183,7 +226,7 @@ def result(request):
         dns_data = {
         "<div> Expiration: </div>":"<div>"+expiration_date+"</div><div>"+expiration_status+"</div>",
         "<div> Host name: </div>":"<div>"+host_name+"</div>"+"<div>"+host_status+"</div>",
-        "Certificate Authority: ": serial_number_hex}
+        "Certificate Authority: ": cert_organization}
         
         custom_json = json.dumps(dns_data)
         #full_cert = json.dumps(full_cert)
@@ -192,7 +235,6 @@ def result(request):
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
 def checkIP(Ip): 
- 
     # pass the regular expression
     # and the string in search() method
     if(re.search(regex, Ip)): 
@@ -203,6 +245,7 @@ def checkIP(Ip):
 
 def checkCA(cert_serial):
     cert_serial_hex = hex(cert_serial)
+    cert_serial_hex = ("0"+cert_serial_hex[2:]).upper()
     return cert_serial_hex
     
 
