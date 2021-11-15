@@ -1,4 +1,5 @@
 
+import re
 from typing import Match
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -6,15 +7,21 @@ from modules.sslyze import *
 import sslyze
 from dataclasses import asdict
 import json
+from tld import get_tld, get_fld
 import re
 import requests
 from datetime import datetime
 from ratelimit.decorators import ratelimit
 import pandas as pd
+import fnmatch
 # Make a regular expression
 # for validating an Ip-address
 regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
 df = pd.read_csv('https://ccadb-public.secure.force.com/mozilla/PublicAllIntermediateCertsCSV', header=0, index_col='Certificate Serial Number') 
+valid_svg='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-current text-green-600" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
+warning_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
+invalid_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
+
 
 
 
@@ -28,15 +35,10 @@ def home(request):
 @ratelimit(key='user_or_ip', rate='5/s', method=ratelimit.ALL)
 def result(request):
     #data = pd.read_csv('https://ccadb-public.secure.force.com/mozilla/PublicAllIntermediateCertsCSV', skipinitialspace=True)
-    
-    
-    
     #print(df.loc["067f94578587e8ac77deb253325bbc998b560d"]["CA Owner"])
-    
     # data = pd.read_csv('https://ccadb-public.secure.force.com/mozilla/PublicAllIntermediateCertsCSV', header=0, index_col=7, squeeze=True).to_dict()
     # for key, value in data.items():
     #     print (data[key])
-    
     # for row in df2:
     #     print(row[0]) 
     # # mydict = df.applymap(str).groupby('Certificate Serial Number')['CA Owner'].apply(list).to_dict()
@@ -47,7 +49,6 @@ def result(request):
     #print(data)
     #print(data)
     #print(data['0203bc53596b34c718f5015066'])Certificate Serial Number
-
 
     was_limited = getattr(request, 'limited', False)
     print("Rate limited: "+str(was_limited))
@@ -161,7 +162,7 @@ def result(request):
         #print(certinfo_result)
         server_scan_result_as_json = json.dumps(asdict(certinfo_result), cls=sslyze.JsonEncoder)
         certinfo_json = json.loads(server_scan_result_as_json)
-
+        #print(certinfo_json)
         '''
         cert_dns_subject_alternative = certinfo_json['certificate_deployments'][0]['received_certificate_chain'][0]['subject_alternative_name']['dns']
         cert_expiration_date = certinfo_json['certificate_deployments'][0]['received_certificate_chain'][0]['not_valid_after']
@@ -179,8 +180,14 @@ def result(request):
        
         cert_serial_number = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][1]["serial_number"]
         serial_number_hex = checkCA(cert_serial_number)
-        print(serial_number_hex)
-        cert_organization = df.loc[serial_number_hex]['Certificate Subject Organization']
+        filtered = fnmatch.filter(df.index.values, '*'+serial_number_hex)
+
+        if(filtered):
+            cert_organization = df.loc[filtered[0]]['Certificate Subject Organization']
+            ca_status = valid_svg
+        else:
+            cert_organization = "Unknown"
+            ca_status = invalid_svg
         
         # for x in df.index.values:
         #     if serial_number_hex in x: 
@@ -196,37 +203,56 @@ def result(request):
         expiration_date = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["not_valid_after"]
         expiration_date = expiration_date[0:-9]
         
-        valid_svg='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-current text-green-600" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
-        expiring_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
-        invalid_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
+       
        
         dns_name = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["subject_alternative_name"]["dns"]
 
-        public_key_size = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["public_key"]["key_size"]
+        key_size = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["public_key"]["key_size"]
         
 
         if (datetime.strptime(expiration_date,'%Y-%m-%d') - datetime.today()).days > 30: 
             expiration_status = valid_svg
         elif (datetime.strptime(expiration_date,'%Y-%m-%d') - datetime.today()).days > 0: 
-            expiration_status = expiring_svg
+            expiration_status = warning_svg
         else: 
             expiration_status = invalid_svg
 
-        host_name = ""
-        
-        for name in dns_name:
-            host_name += name+"<br>"
-            print(host_name)
 
-        if website in host_name:
+
+
+        host_name = "" 
+
+        filtered = fnmatch.filter(dns_name,website)
+        if filtered:
             host_status = valid_svg
+            for name in dns_name:
+                if name == website:
+                    host_name += '<div class="font-bold">'+name+"</div>"
+                else:
+                    host_name += name+"<br>"
         else:
-            host_status = invalid_svg
+            website = (get_fld(website, fix_protocol=True))
+            filtered = fnmatch.filter(dns_name,"*."+website)
+            if(filtered):
+                website_highlight = "*."+website
+                for name in dns_name:
+                    if name == website_highlight:
+                       host_name += '<div class="bg-gray-100">'+name+"</div><br>"
+                    else:
+                        host_name += name+"<br>"
+                host_status = valid_svg
+            else:
+                host_status = invalid_svg
+
+
          
         dns_data = {
         "<div> Expiration: </div>":"<div>"+expiration_date+"</div><div>"+expiration_status+"</div>",
-        "<div> Host name: </div>":"<div>"+host_name+"</div>"+"<div>"+host_status+"</div>",
-        "Certificate Authority: ": cert_organization}
+        "<div> Host name: </div>":'<div class="focus:outline-none focus:ring focus:border-blue-300">'+host_name+"</div>"+"<div>"+host_status+"</div>",
+        "Certificate Authority: ":"<div>"+cert_organization+"</div>"+"<div>"+ca_status+"</div>",
+        "Key Size: ": key_size}
+
+
         
         custom_json = json.dumps(dns_data)
         #full_cert = json.dumps(full_cert)
@@ -245,7 +271,8 @@ def checkIP(Ip):
 
 def checkCA(cert_serial):
     cert_serial_hex = hex(cert_serial)
-    cert_serial_hex = ("0"+cert_serial_hex[2:]).upper()
+    #cert_serial_hex = ("0"+cert_serial_hex[2:]).upper()
+    cert_serial_hex = (cert_serial_hex[2:]).upper()
     return cert_serial_hex
     
 
