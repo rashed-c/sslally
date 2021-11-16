@@ -18,9 +18,9 @@ import fnmatch
 # for validating an Ip-address
 regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
 df = pd.read_csv('https://ccadb-public.secure.force.com/mozilla/PublicAllIntermediateCertsCSV', header=0, index_col='Certificate Serial Number') 
-valid_svg='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-current text-green-600" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
-warning_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
-invalid_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
+valid_svg='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 fill-current text-green-600" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
+warning_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>'
+invalid_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>'
 
 
 
@@ -202,12 +202,14 @@ def result(request):
 
         expiration_date = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["not_valid_after"]
         expiration_date = expiration_date[0:-9]
-        
-       
-       
         dns_name = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["subject_alternative_name"]["dns"]
-
         key_size = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["public_key"]["key_size"]
+        
+
+        if(key_size >= 2048):
+            key_status = valid_svg
+        else:
+            key_status = warning_svg
         
 
         if (datetime.strptime(expiration_date,'%Y-%m-%d') - datetime.today()).days > 30: 
@@ -218,16 +220,17 @@ def result(request):
             expiration_status = invalid_svg
 
 
+        
+        expiration_date = (datetime.strptime(expiration_date,'%Y-%m-%d').strftime('%B %d, %Y'))
 
 
         host_name = "" 
-
         filtered = fnmatch.filter(dns_name,website)
         if filtered:
             host_status = valid_svg
             for name in dns_name:
                 if name == website:
-                    host_name += '<div class="font-bold">'+name+"</div>"
+                    host_name += '<div class="bg-gray-300 font-bold">'+name+"</div>"
                 else:
                     host_name += name+"<br>"
         else:
@@ -237,7 +240,7 @@ def result(request):
                 website_highlight = "*."+website
                 for name in dns_name:
                     if name == website_highlight:
-                       host_name += '<div class="bg-gray-100">'+name+"</div><br>"
+                       host_name += '<div class="bg-gray-300 font-bold">'+name+"</div>"
                     else:
                         host_name += name+"<br>"
                 host_status = valid_svg
@@ -247,16 +250,13 @@ def result(request):
 
          
         dns_data = {
-        "<div> Expiration: </div>":"<div>"+expiration_date+"</div><div>"+expiration_status+"</div>",
-        "<div> Host name: </div>":'<div class="focus:outline-none focus:ring focus:border-blue-300">'+host_name+"</div>"+"<div>"+host_status+"</div>",
-        "Certificate Authority: ":"<div>"+cert_organization+"</div>"+"<div>"+ca_status+"</div>",
-        "Key Size: ": key_size}
+        '<div class="cursor-pointer pr-2 font-semibold"> Expiration: </div>':'<div class="fontawesome">'+expiration_date+"</div><div class=''>"+expiration_status+"</div>",
+        '<div class="cursor-pointer pr-2 font-semibold"> Host name: </div>':'<div class="cursor-pointer fontawesome">'+host_name+"</div>"+"<div class=''>"+host_status+"</div>",
+        '<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>",
+        '<div class="cursor-pointer pr-2 font-semibold"> Key Size: </div>':'<div class="fontawesome">'+str(key_size)+"</div>"+"<div class=''>"+key_status+"</div>"}
 
-
-        
         custom_json = json.dumps(dns_data)
-        #full_cert = json.dumps(full_cert)
-        
+        #full_cert = json.dumps(full_cert)    
     return JsonResponse(custom_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 

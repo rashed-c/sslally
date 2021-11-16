@@ -226,14 +226,16 @@
       -->
 
      
-<div class="mx-auto flex items-center justify-center p-5 space-x-2">
-  <div class="">Hostname:</div>    
+<div class="mx-auto flex items-center justify-items-stretch justify-center justify-items-center p-5 space-x-2 content-center space-y-10">
+  <div class="">THeme:</div>    
   <div class="">
       <input
         id="website_port"
         type="text"
         placeholder="Placeholder"
         class="
+        self-auto
+        self-start
           px-3
           py-3
           placeholder-gray-400
@@ -268,6 +270,7 @@
       ease-linear
       transition-all
       duration-150
+      content-between
     "
     type="button"
   >
@@ -338,11 +341,10 @@
               <polygon points="50,0 100,0 50,100 0,100"/>
             </svg>
               <div class="relative py-12 lg:py-24 px-8 lg:px-16 text-gray-700 leading-relaxed">
-                <div id="ssl-data"> </div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-current text-green-600 " viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-
+                <div class='pr-2' id="ssl-data"> </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 fill-current text-green-600" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
               </div>
             </div>
           </div>
@@ -401,7 +403,7 @@
           <i class="fas fa-cubes fa-lg text-purple-500"></i>
           <span class="ml-3 text-xl">SSLAlly</span>
         </a>
-        <p class="mt-2 text-sm text-gray-500">
+        <p class="mt-2 text-sm text-gray-500 justify-start">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi,
           quam?
         </p>
@@ -415,6 +417,9 @@
           mt-10
           md:text-left
           text-center
+          grid
+          justify-items-stretch 
+          grid-cols-2
         "
       >
         <div class="lg:w-1/4 md:w-1/2 w-full px-4">
@@ -594,7 +599,7 @@
           <a href="" class="text-gray-500">
             <i class="fab fa-facebook-f"></i>
           </a>
-          <a href="" class="ml-3 text-gray-500">
+          <a href="" class="ml-3 pl-20 text-gray-500">
             <i class="fab fa-twitter"></i>
           </a>
           <a href="" class="ml-3 text-gray-500">
