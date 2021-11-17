@@ -37,12 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #Other django apps
+    'tailwind',
+    'theme',
     'polls',
     'ping',
     'dig',
-    #Other django apps
-    'tailwind',
-    'theme'
+    'background_task'
 ]
 
 MIDDLEWARE = [
