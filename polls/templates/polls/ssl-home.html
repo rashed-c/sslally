@@ -37,7 +37,7 @@ $.ajax({
     // }
     data=JSON.parse(data)
     //ssl_data.innerHTML ="";
-    ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
+    // ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
     ssl_data.innerHTML += '<div class="font-bold border shadow-sm mb-6 py-2 px-2"> Certificate overview <br> </div>';
     for (var key in data) { 
       if (data.hasOwnProperty(key)) {

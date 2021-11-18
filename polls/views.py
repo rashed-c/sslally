@@ -89,9 +89,9 @@ def get_ssl_2_0(request):
 #         #TLS 1.3 results
         cipher_result = server_scan_result.scan_commands_results[ScanCommand.SSL_2_0_CIPHER_SUITES]
         accepted_ciphers = ""
-        print("\nAccepted cipher suites for TLS 1.3:")
+        print("\nAccepted cipher suites for SSL 2.0:")
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
-            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name)
+            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
 #         '''
@@ -143,7 +143,7 @@ def get_ssl_2_0(request):
        
         #print(cipher_scan_result_as_json)
 
-        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> Expiration: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
+        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> SSL 2.0 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
     
         accepted_ciphers = json.dumps(accepted_ciphers)
 
@@ -212,9 +212,9 @@ def get_ssl_3_0(request):
 #         #TLS 1.3 results
         cipher_result = server_scan_result.scan_commands_results[ScanCommand.SSL_3_0_CIPHER_SUITES]
         accepted_ciphers = ""
-        print("\nAccepted cipher suites for TLS 1.3:")
+        print("\nAccepted cipher suites for SSL 3.0:")
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
-            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name)
+            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
@@ -267,7 +267,7 @@ def get_ssl_3_0(request):
        
         #print(cipher_scan_result_as_json)
 
-        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> Expiration: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
+        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> SSL 3.0 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
         accepted_ciphers = json.dumps(accepted_ciphers)
 
     return JsonResponse(accepted_ciphers, safe=False)
@@ -337,9 +337,9 @@ def get_tls_1_0(request):
 #         #TLS 1.3 results
         cipher_result = server_scan_result.scan_commands_results[ScanCommand.TLS_1_0_CIPHER_SUITES]
         accepted_ciphers = ""
-        print("\nAccepted cipher suites for TLS 1.3:")
+        print("\nAccepted cipher suites for TLS 1.0:")
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
-            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name)
+            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
@@ -392,7 +392,7 @@ def get_tls_1_0(request):
        
         #print(cipher_scan_result_as_json)
 
-        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> Expiration: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
+        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.0 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
         accepted_ciphers = json.dumps(accepted_ciphers)
 
     return JsonResponse(accepted_ciphers, safe=False)
@@ -460,9 +460,9 @@ def get_tls_1_1(request):
 #         #TLS 1.3 results
         cipher_result = server_scan_result.scan_commands_results[ScanCommand.TLS_1_1_CIPHER_SUITES]
         accepted_ciphers = ""
-        print("\nAccepted cipher suites for TLS 1.2:")
+        print("\nAccepted cipher suites for TLS 1.1:")
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
-            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name)
+            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
@@ -515,7 +515,7 @@ def get_tls_1_1(request):
        
         #print(cipher_scan_result_as_json)
 
-        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> Expiration: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
+        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.1 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
         accepted_ciphers = json.dumps(accepted_ciphers)
 
     return JsonResponse(accepted_ciphers, safe=False)
@@ -587,7 +587,7 @@ def get_tls_1_2(request):
         accepted_ciphers = ""
         print("\nAccepted cipher suites for TLS 1.2:")
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
-            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name)
+            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
@@ -640,7 +640,7 @@ def get_tls_1_2(request):
        
         #print(cipher_scan_result_as_json)
 
-        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> Expiration: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
+        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.2 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
         accepted_ciphers = json.dumps(accepted_ciphers)
 
     return JsonResponse(accepted_ciphers, safe=False)
@@ -712,7 +712,7 @@ def get_tls_1_3(request):
         accepted_ciphers = ""
         print("\nAccepted cipher suites for TLS 1.3:")
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
-            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name)
+            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
@@ -763,9 +763,9 @@ def get_tls_1_3(request):
         # print(cipher_scan_result_as_json)
 
        
-        #print(cipher_scan_result_as_json)
+        #print(cipher_scan_result_as_json) 
 
-        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> Expiration: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
+        accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.3 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
         accepted_ciphers = json.dumps(accepted_ciphers)
 
     return JsonResponse(accepted_ciphers, safe=False)
@@ -1004,15 +1004,15 @@ def result(request):
         expiration_date = (datetime.strptime(expiration_date,'%Y-%m-%d').strftime('%B %d, %Y'))
 
 
-        host_name = "" 
+        host_name = [] 
         filtered = fnmatch.filter(dns_name,website)
         if filtered:
             host_status = valid_svg
             for name in dns_name:
                 if name == website:
-                    host_name += '<div class="bg-gray-300 font-bold">'+name+"</div>"
+                    host_name.append('<div class="bg-gray-300 font-bold">'+name+"</div>")
                 else:
-                    host_name += name+"<br>"
+                    host_name.append(name+", ")
         else:
             website = (get_fld(website, fix_protocol=True))
             filtered = fnmatch.filter(dns_name,"*."+website)
@@ -1020,18 +1020,25 @@ def result(request):
                 website_highlight = "*."+website
                 for name in dns_name:
                     if name == website_highlight:
-                       host_name += '<div class="bg-gray-300 font-bold">'+name+"</div>"
+                       host_name.append('<div class="bg-gray-300 font-bold">'+name+"</div>")
                     else:
-                        host_name += name+"<br>"
+                        host_name.append(name+"<br>")
                 host_status = valid_svg
             else:
                 host_status = invalid_svg
+            
+        
+        print(host_name.sort())
+        host_names = ""
+
+        for name in host_name:
+            host_names += name
 
 
          
         dns_data = {
         '<div class="cursor-pointer pr-2 font-semibold"> Expiration: </div>':'<div class="fontawesome">'+expiration_date+"</div><div class=''>"+expiration_status+"</div>",
-        '<div class="cursor-pointer pr-2 font-semibold"> Host name: </div>':'<div class="cursor-pointer fontawesome">'+host_name+"</div>"+"<div class=''>"+host_status+"</div>",
+        '<div class="cursor-pointer pr-2 font-semibold"> Host name: </div>':'<div class="cursor-pointer fontawesome">'+host_names+"</div>"+"<div class=''>"+host_status+"</div>",
         '<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>",
         '<div class="cursor-pointer pr-2 font-semibold"> Key Size: </div>':'<div class="fontawesome">'+str(key_size)+"</div>"+"<div class=''>"+key_status+"</div>"}
 
