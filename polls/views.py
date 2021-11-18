@@ -22,7 +22,7 @@ df = pd.read_csv('https://ccadb-public.secure.force.com/mozilla/PublicAllInterme
 valid_svg='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 fill-current text-green-600" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
 warning_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>'
 invalid_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>'
-
+supported_suites = {'ssl2.0':[],'ssl3.0':[],'tls1.0':[],'tls1.1':[], 'tls1.2':[], 'tls1.3':[]}
 
 
 #@background(schedule = 0)
@@ -92,6 +92,7 @@ def get_ssl_2_0(request):
         print("\nAccepted cipher suites for SSL 2.0:")
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
             accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
+            supported_suites["ssl2.0"].append(accepted_cipher_suite.cipher_suite.name)
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
 #         '''
@@ -142,7 +143,10 @@ def get_ssl_2_0(request):
 
        
         #print(cipher_scan_result_as_json)
-
+        if(accepted_ciphers):
+            pass
+        else:
+            accepted_ciphers = "SSL 2.0 not supported"
         accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> SSL 2.0 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
     
         accepted_ciphers = json.dumps(accepted_ciphers)
@@ -215,6 +219,7 @@ def get_ssl_3_0(request):
         print("\nAccepted cipher suites for SSL 3.0:")
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
             accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
+            supported_suites["ssl3.0"].append(accepted_cipher_suite.cipher_suite.name)
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
@@ -266,7 +271,10 @@ def get_ssl_3_0(request):
 
        
         #print(cipher_scan_result_as_json)
-
+        if(accepted_ciphers):
+            pass
+        else:
+            accepted_ciphers = "SSL 3.0 not supported"
         accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> SSL 3.0 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
         accepted_ciphers = json.dumps(accepted_ciphers)
 
@@ -340,6 +348,7 @@ def get_tls_1_0(request):
         print("\nAccepted cipher suites for TLS 1.0:")
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
             accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
+            supported_suites["tls1.0"].append(accepted_cipher_suite.cipher_suite.name)
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
@@ -391,7 +400,10 @@ def get_tls_1_0(request):
 
        
         #print(cipher_scan_result_as_json)
-
+        if(accepted_ciphers):
+            pass
+        else:
+            accepted_ciphers = "TLS 1.0 not supported"
         accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.0 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
         accepted_ciphers = json.dumps(accepted_ciphers)
 
@@ -463,6 +475,7 @@ def get_tls_1_1(request):
         print("\nAccepted cipher suites for TLS 1.1:")
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
             accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
+            supported_suites["tls1.1"].append(accepted_cipher_suite.cipher_suite.name)
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
@@ -515,6 +528,10 @@ def get_tls_1_1(request):
        
         #print(cipher_scan_result_as_json)
 
+        if(accepted_ciphers):
+            pass
+        else:
+            accepted_ciphers = "TLS 1.1 not supported"
         accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.1 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
         accepted_ciphers = json.dumps(accepted_ciphers)
 
@@ -586,8 +603,11 @@ def get_tls_1_2(request):
         cipher_result = server_scan_result.scan_commands_results[ScanCommand.TLS_1_2_CIPHER_SUITES]
         accepted_ciphers = ""
         print("\nAccepted cipher suites for TLS 1.2:")
+    
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
             accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
+            supported_suites["tls1.2"].append(accepted_cipher_suite.cipher_suite.name)
+            
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
@@ -639,10 +659,13 @@ def get_tls_1_2(request):
 
        
         #print(cipher_scan_result_as_json)
-
+        if(accepted_ciphers):
+            pass
+        else:
+            accepted_ciphers = "TLS 1.2 not supported"
         accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.2 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
         accepted_ciphers = json.dumps(accepted_ciphers)
-
+        
     return JsonResponse(accepted_ciphers, safe=False)
 
 
@@ -713,6 +736,7 @@ def get_tls_1_3(request):
         print("\nAccepted cipher suites for TLS 1.3:")
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
             accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
+            supported_suites["tls1.3"].append(accepted_cipher_suite.cipher_suite.name)
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
             #print(f"* {accepted_cipher_suite.cipher_suite.name}") 
 
@@ -764,10 +788,13 @@ def get_tls_1_3(request):
 
        
         #print(cipher_scan_result_as_json) 
-
+        if(accepted_ciphers):
+            pass
+        else:
+            accepted_ciphers = "TLS 1.3 not supported"
         accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.3 Ciphers: </div>':'<div class="fontawesome">'+accepted_ciphers+"</div><div class=''>"+valid_svg+"</div>"}
         accepted_ciphers = json.dumps(accepted_ciphers)
-
+    print(supported_suites)
     return JsonResponse(accepted_ciphers, safe=False)
 
 
@@ -959,6 +986,19 @@ def result(request):
 
        
         cert_serial_number = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][1]["serial_number"]
+       
+        chains = 0
+        deployments = 0 
+        for cert in (certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]):
+            cert = 1
+            chains += cert
+        print("Deployment chain 1:"+ str(chains))
+
+        for dep in (certinfo_json["certificate_deployments"]):
+            dep = 1
+            deployments += dep
+        print("Deployments: " + str(deployments))
+
         serial_number_hex = checkCA(cert_serial_number)
         filtered = fnmatch.filter(df.index.values, '*'+serial_number_hex)
 
@@ -982,6 +1022,8 @@ def result(request):
 
         expiration_date = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["not_valid_after"]
         expiration_date = expiration_date[0:-9]
+        validfrom_date = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["not_valid_before"]
+        validfrom_date = validfrom_date[0:-9]
         dns_name = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["subject_alternative_name"]["dns"]
         key_size = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["public_key"]["key_size"]
         
@@ -1002,7 +1044,8 @@ def result(request):
 
         
         expiration_date = (datetime.strptime(expiration_date,'%Y-%m-%d').strftime('%B %d, %Y'))
-
+        validfrom_date = (datetime.strptime(validfrom_date,'%Y-%m-%d').strftime('%B %d, %Y'))
+        print(validfrom_date)
 
         host_name = [] 
         filtered = fnmatch.filter(dns_name,website)
@@ -1037,16 +1080,23 @@ def result(request):
 
          
         dns_data = {
-        '<div class="cursor-pointer pr-2 font-semibold"> Expiration: </div>':'<div class="fontawesome">'+expiration_date+"</div><div class=''>"+expiration_status+"</div>",
+        '<div class="cursor-pointer pr-2 font-semibold"> Valid between: </div>':'<div class="fontawesome">'+validfrom_date+" - "+expiration_date+"</div><div class=''>"+expiration_status+"</div>",
         '<div class="cursor-pointer pr-2 font-semibold"> Host name: </div>':'<div class="cursor-pointer fontawesome">'+host_names+"</div>"+"<div class=''>"+host_status+"</div>",
-        '<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>",
-        '<div class="cursor-pointer pr-2 font-semibold"> Key Size: </div>':'<div class="fontawesome">'+str(key_size)+"</div>"+"<div class=''>"+key_status+"</div>"}
+        '<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>"}
+        #'<div class="cursor-pointer pr-2 font-semibold"> Key Size: </div>':'<div class="fontawesome">'+str(key_size)+"</div>"+"<div class=''>"+key_status+"</div>"}
 
         custom_json = json.dumps(dns_data)
-        #full_cert = json.dumps(full_cert)
-
+        full_cert = json.dumps(certinfo_json)
+        #print(full_cert)
     return JsonResponse(custom_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
+
+
+def get_supported_ciphersuites(request):
+    cipher_suites = json.dumps(supported_suites)
+    return JsonResponse(cipher_suites, safe=False)
+
+
 
 def checkIP(Ip): 
     # pass the regular expression

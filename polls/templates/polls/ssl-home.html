@@ -14,8 +14,9 @@ function myFunction(){
 var website_port = document.getElementById("website_port").value;
 var ssl_data = document.getElementById("ssl-data");
 var spinner_div = document.getElementById("loading-spinner");
+var scanner_text = document.getElementById("scanning-update");
 
-
+scanner_text.innerHTML=""
 ssl_data.innerHTML=""
 //document.getElementById("ssl-data").innerHTML.replace(" ");
 $.ajax({
@@ -24,6 +25,7 @@ $.ajax({
     url:"result/?website_port="+website_port,
     beforeSend: function(){
     $('#loading-spinner').show();
+    scanner_text.innerHTML="Scanning certificate..."
     },
     success: function(data)
     {   
@@ -38,12 +40,12 @@ $.ajax({
     data=JSON.parse(data)
     //ssl_data.innerHTML ="";
     // ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
-    ssl_data.innerHTML += '<div class="font-bold border shadow-sm mb-6 py-2 px-2"> Certificate overview <br> </div>';
+    ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Certificate Information</div>';
     for (var key in data) { 
       if (data.hasOwnProperty(key)) {
       //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
       // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
-      ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+      ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
       //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
     }
  }  
@@ -56,6 +58,7 @@ $.ajax({
         url:"ssl2_0/?website_port="+website_port,
         beforeSend: function(){
         $('#loading-spinner').show();
+        scanner_text.innerHTML="Scanning for SSL 2.0"
         },
         success: function(data)
         {   
@@ -70,23 +73,24 @@ $.ajax({
         data=JSON.parse(data)
         //ssl_data.innerHTML ="";
         //ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
-        ssl_data.innerHTML += '<div class="font-bold border shadow-sm mb-6 py-2 px-2"> Security <br> </div>';
+        ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2">SSL Protocols</div>';
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
           //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
           // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
           //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
         }
       }
   
         },
         complete: function(){
-          $.ajax({
+        $.ajax({
         type: "GET",
         url:"ssl3_0/?website_port="+website_port,
         beforeSend: function(){
         $('#loading-spinner').show();
+        scanner_text.innerHTML="Scanning for SSL 3.0"
         },
         success: function(data)
         {   
@@ -105,7 +109,7 @@ $.ajax({
           if (data.hasOwnProperty(key)) {
           //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
           // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2 ">'+(key)+(data[key])+"</div>";
           //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
         }
       }
@@ -117,6 +121,7 @@ $.ajax({
         url:"tls1_0/?website_port="+website_port,
         beforeSend: function(){
         $('#loading-spinner').show();
+        scanner_text.innerHTML="Scanning for TLS 1.0"
         },
         success: function(data)
         {   
@@ -135,7 +140,7 @@ $.ajax({
           if (data.hasOwnProperty(key)) {
           //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
           // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
           //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
         }
       }
@@ -147,6 +152,7 @@ $.ajax({
         url:"tls1_1/?website_port="+website_port,
         beforeSend: function(){
         $('#loading-spinner').show();
+        scanner_text.innerHTML="Scanning for TLS 1.1"
         },
         success: function(data)
         {   
@@ -165,7 +171,7 @@ $.ajax({
           if (data.hasOwnProperty(key)) {
           //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
           // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
           //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
         }
       }
@@ -177,6 +183,7 @@ $.ajax({
         url:"tls1_2/?website_port="+website_port,
         beforeSend: function(){
         $('#loading-spinner').show();
+        scanner_text.innerHTML="Scanning for TLS 1.2"
         },
         success: function(data)
         {   
@@ -195,7 +202,7 @@ $.ajax({
           if (data.hasOwnProperty(key)) {
           //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
           // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
           //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
         }
       }
@@ -207,6 +214,7 @@ $.ajax({
         url:"tls1_3/?website_port="+website_port,
         beforeSend: function(){
         $('#loading-spinner').show();
+        scanner_text.innerHTML="Scanning for TLS 1.3"
         },
         success: function(data)
         {   
@@ -225,7 +233,7 @@ $.ajax({
           if (data.hasOwnProperty(key)) {
           //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
           // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2 auto-cols-max">'+(key)+(data[key])+"</div>";
           //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
         }
       }
@@ -233,6 +241,52 @@ $.ajax({
         },
         complete: function(){
           $('#loading-spinner').hide(); 
+          ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2">Supported Cipher Suites<br> </div>';
+          scanner_text.innerHTML=""
+
+        $.ajax({
+        type: "GET",
+        url:"supported_suites/?website_port="+website_port,
+        beforeSend: function(){
+        $('#loading-spinner').show();
+        scanner_text.innerHTML="Getting suported ciphers"
+        },
+        success: function(data)
+        {   
+          //console.log(JSON.parse(json))
+        // p = data
+        // for (var key in p) {
+        // if (p.hasOwnProperty(key)) {
+        //     console.log(data);
+        //     document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
+        // }
+        // }
+        data=JSON.parse(data)
+        //ssl_data.innerHTML ="";
+        //ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
+        for (var key in data) { 
+          if (data.hasOwnProperty(key)) {
+          //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
+          // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2 auto-cols-max">'+(key)+(data[key])+"</div>";
+          //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
+        }
+      }
+  
+        },
+        complete: function(){
+          $('#loading-spinner').hide(); 
+          scanner_text.innerHTML=""
+
+          
+          
+        },
+        failure: function(data) { 
+            console.log('Got an error dude');
+          
+        }})
+
+          
           
         },
         failure: function(data) { 
@@ -312,7 +366,7 @@ $.ajax({
 
 
 
-  <div class="border max-w-6xl mx-auto px-6 py-6">
+  <div class="max-w-6xl mx-auto">
   <div class="mx-auto flex items-center justify-center p-5 space-x-2">
     <div class="">Hostname:</div>    
     <div class="">
@@ -367,17 +421,24 @@ $.ajax({
         ease-linear
         rounded-full
         border-8 border-t-8 border-gray-200
-        h-16
-        w-16" >
+        h-12
+        w-12" >
     </div>
+
   </div>
+
+  <div class="flex justify-center items-center" id="scanning-update">
+  
+  </div>
+  
+
 
     
   <!-- <div id="loading-spinner" style="display: none;" class="flex justify-center items-center">
     
   </div> -->
 
-  <div class="mx-auto mt-10" id="ssl-data"> </div>
+  <div class="mx-auto mt-10 mb-10 bg-gray-100 rounded-md" id="ssl-data"> </div>
   
   </div>
 
