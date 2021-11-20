@@ -11,5 +11,4 @@ urlpatterns = [
     path('tls1_1/', views.get_tls_1_1, name='get_tls_1_1'),
     path('tls1_2/', views.get_tls_1_2, name='get_tls_1_2'),
     path('tls1_3/', views.get_tls_1_3, name='get_tls_1_3'),
-    path('supported_suites/', views.get_supported_ciphersuites, name='get_supported_suites'),
 ]
