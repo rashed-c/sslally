@@ -25,7 +25,6 @@ warning_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-yell
 invalid_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>'
 supported_suites = {'ssl2.0':[],'ssl3.0':[],'tls1.0':[],'tls1.1':[], 'tls1.2':[], 'tls1.3':[]}
 
-
 #@background(schedule = 0)
 def get_ssl_2_0(request):
     website = request.GET.get('website_port')
@@ -49,10 +48,9 @@ def get_ssl_3_0(request):
     else:
         port=443
     accepted_ciphers = getProtocol(website,port,"ssl3.0")
-    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.3 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
+    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> SSL 3.0 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
-
 
 def get_tls_1_0(request):
     website = request.GET.get('website_port')
@@ -63,7 +61,7 @@ def get_tls_1_0(request):
     else:
         port=443
     accepted_ciphers = getProtocol(website,port,"tls1.0")
-    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.3 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
+    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.0 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
 
@@ -76,10 +74,9 @@ def get_tls_1_1(request):
     else:
         port=443
     accepted_ciphers = getProtocol(website,port,"tls1.1")
-    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.3 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
+    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.1 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
-
 
 def get_tls_1_2(request):
     website = request.GET.get('website_port')
@@ -90,11 +87,9 @@ def get_tls_1_2(request):
     else:
         port=443
     accepted_ciphers = getProtocol(website,port,"tls1.2")
-    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.3 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
+    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.2 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
-
-
 
 def get_tls_1_3(request):
     website = request.GET.get('website_port')
@@ -109,12 +104,9 @@ def get_tls_1_3(request):
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
 
-
-
 @ratelimit(key='ip')
 def home(request):
     return render(request, 'polls/ssl-home.html')
-
 
 def test_ssl_cert(request):
     website = request.GET.get('website_port')
@@ -125,13 +117,11 @@ def test_ssl_cert(request):
         port=443
     cert = getCert(website,port)
 
-
 @ratelimit(key='user_or_ip', rate='5/s', method=ratelimit.ALL)
 def result(request):
     #Rate limit test
     was_limited = getattr(request, 'limited', False)
     print("Rate limited: "+str(was_limited))
-
 
     website = request.GET.get('website_port')
     if ":" in website:
@@ -139,157 +129,43 @@ def result(request):
         website = website[0:-4] # All exepct port number and colon
     else:
         port=443
-    
-
-    server_location = ServerNetworkLocationViaDirectConnection.with_ip_address_lookup(website, port)
-    server_info = ServerConnectivityTester().perform(server_location)
-    scanner = Scanner()
-    server_scan_req = ServerScanRequest(
-        server_info=server_info, scan_commands={ScanCommand.CERTIFICATE_INFO},
-   )
-    scanner.queue_scan(server_scan_req)
-     
-
-    
-
-    result_num = 0
-    # Then retrieve the results
-    for server_scan_result in scanner.get_results():
-        
-        '''
-        Transform to uppercase first:
-
-        SSL_2_0_CIPHER_SUITES: CipherSuitesScanResult
-        SSL_3_0_CIPHER_SUITES: CipherSuitesScanResult
-        tls_1_0_cipher_suites: CipherSuitesScanResult
-        tls_1_1_cipher_suites: CipherSuitesScanResult
-        tls_1_2_cipher_suites: CipherSuitesScanResult
-        tls_1_3_cipher_suites: CipherSuitesScanResult
-        tls_compression: CompressionScanResult
-        tls_1_3_early_data: EarlyDataScanResult
-        openssl_ccs_injection: OpenSslCcsInjectionScanResult
-        tls_fallback_scsv: FallbackScsvScanResult
-        heartbleed: HeartbleedScanResult
-        robot: RobotScanResult
-        session_renegotiation: SessionRenegotiationScanResult
-        session_resumption: SessionResumptionSupportScanResult
-        session_resumption_rate: SessionResumptionRateScanResult
-        http_headers: HttpHeadersScanResult
-        elliptic_curves: SupportedEllipticCurvesScanResult
-        '''
-        
-        # Certificate info results
-        certinfo_result = server_scan_result.scan_commands_results[ScanCommand.CERTIFICATE_INFO]
-        #readCert(certinfo_result)
-        server_scan_result_as_json = json.dumps(asdict(certinfo_result), cls=sslyze.JsonEncoder)
-        certinfo_json = json.loads(server_scan_result_as_json)
-        #print(certinfo_json)
-        '''
-        cert_dns_subject_alternative = certinfo_json['certificate_deployments'][0]['received_certificate_chain'][0]['subject_alternative_name']['dns']
-        cert_expiration_date = certinfo_json['certificate_deployments'][0]['received_certificate_chain'][0]['not_valid_after']
-        certinfo_view = {'sn' : cert_dns_subject_alternative, 
-                         'exp' : cert_expiration_date}
-                      
-        for cert_deployment in certinfo_result.certificate_deployments:
-            print(f"Leaf certificate: \n{cert_deployment.received_certificate_chain}")
-        ''' 
-        
-
-        # full_cert = certinfo_json["certificate_deployments"]
-        # print(full_cert)
-
-       
-        cert_serial_number = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][1]["serial_number"]
-        serial_number_hex = checkCA(cert_serial_number)
-        filtered = fnmatch.filter(df.index.values, '*'+serial_number_hex)
-
-        if(filtered):
-            cert_organization = df.loc[filtered[0]]['Certificate Subject Organization']
-            ca_status = valid_svg
-        else:
-            cert_organization = "Unknown"
-            ca_status = invalid_svg
-        
-        # for x in df.index.values:
-        #     if serial_number_hex in x: 
-        #         print(x)
-
-
-        # for serial in data['Certificate Serial Number']:
-        #     #print(serial_number_hex)
-        #     if(serial_number_hex in serial):
-        #         print(data['Certificate Issuer Common Name'])
-        #         print(serial)
-
-        expiration_date = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["not_valid_after"]
-        expiration_date = expiration_date[0:-9]
-        validfrom_date = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["not_valid_before"]
-        validfrom_date = validfrom_date[0:-9]
-        dns_name = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["subject_alternative_name"]["dns"]
-        key_size = certinfo_json["certificate_deployments"][0]["received_certificate_chain"][0]["public_key"]["key_size"]
-        
-
-        if(key_size >= 2048):
-            key_status = valid_svg
-        else:
-            key_status = warning_svg
-        
-
-        if (datetime.strptime(expiration_date,'%Y-%m-%d') - datetime.today()).days > 30: 
-            expiration_status = valid_svg
-        elif (datetime.strptime(expiration_date,'%Y-%m-%d') - datetime.today()).days > 0: 
-            expiration_status = warning_svg
-        else: 
-            expiration_status = invalid_svg
-
-
-        
-        expiration_date = (datetime.strptime(expiration_date,'%Y-%m-%d').strftime('%B %d, %Y'))
-        validfrom_date = (datetime.strptime(validfrom_date,'%Y-%m-%d').strftime('%B %d, %Y'))
-        print(validfrom_date)
-
-        host_name = [] 
-        filtered = fnmatch.filter(dns_name,website)
-        if filtered:
-            host_status = valid_svg
-            for name in dns_name:
-                if name == website:
-                    host_name.append('<div class="bg-gray-300 font-bold">'+name+"</div>")
-                else:
-                    host_name.append(name+", ")
-        else:
-            website = (get_fld(website, fix_protocol=True))
-            filtered = fnmatch.filter(dns_name,"*."+website)
-            if(filtered):
-                website_highlight = "*."+website
-                for name in dns_name:
-                    if name == website_highlight:
-                       host_name.append('<div class="bg-gray-300 font-bold">'+name+"</div>")
-                    else:
-                        host_name.append(name+"<br>")
-                host_status = valid_svg
-            else:
-                host_status = invalid_svg
-            
-        
-        print(host_name.sort())
-        host_names = ""
-
-        for name in host_name:
-            host_names += name
          
-        dns_data = {
-        '<div class="cursor-pointer pr-2 font-semibold"> Valid between: </div>':'<div class="fontawesome">'+validfrom_date+" - "+expiration_date+"</div><div class=''>"+expiration_status+"</div>",
-        '<div class="cursor-pointer pr-2 font-semibold"> Host name: </div>':'<div class="cursor-pointer fontawesome">'+host_names+"</div>"+"<div class=''>"+host_status+"</div>",
-        '<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>"}
-        #'<div class="cursor-pointer pr-2 font-semibold"> Key Size: </div>':'<div class="fontawesome">'+str(key_size)+"</div>"+"<div class=''>"+key_status+"</div>"}
+    '''
+    Transform to uppercase first:
+    SSL_2_0_CIPHER_SUITES: CipherSuitesScanResult
+    SSL_3_0_CIPHER_SUITES: CipherSuitesScanResult
+    tls_1_0_cipher_suites: CipherSuitesScanResult
+    tls_1_1_cipher_suites: CipherSuitesScanResult
+    tls_1_2_cipher_suites: CipherSuitesScanResult
+    tls_1_3_cipher_suites: CipherSuitesScanResult
+    tls_compression: CompressionScanResult
+    tls_1_3_early_data: EarlyDataScanResult
+    openssl_ccs_injection: OpenSslCcsInjectionScanResult
+    tls_fallback_scsv: FallbackScsvScanResult
+    heartbleed: HeartbleedScanResult
+    robot: RobotScanResult
+    session_renegotiation: SessionRenegotiationScanResult
+    session_resumption: SessionResumptionSupportScanResult
+    session_resumption_rate: SessionResumptionRateScanResult
+    http_headers: HttpHeadersScanResult
+    elliptic_curves: SupportedEllipticCurvesScanResult
+    '''
 
-        custom_json = json.dumps(dns_data)
-        full_cert = json.dumps(certinfo_json)
-        #print(full_cert)
-        cert = getCert(website,port)
-        print(cert[1])
-    return JsonResponse(custom_json, safe=False)
+    cert_deployments = getCert(website,port)
+    for deployment in cert_deployments:
+        for cert in deployment:
+            if (cert == cert_deployments[0][0]):
+                validfrom_date = cert[0]["Valid from"]
+                host_names = cert[0]["DNS Name"]
+                expiration_date = cert[0]["Expiration Date"]
+
+    cert_data = {'<div class="cursor-pointer pr-2 font-semibold"> Valid between: </div>':'<div class="fontawesome">'+validfrom_date+" - "+expiration_date+"</div>",
+    '<div class="cursor-pointer pr-2 font-semibold"> Host name: </div>':'<div class="cursor-pointer fontawesome">'+str(host_names)+"</div>"+"<div class=''>"+valid_svg+"</div>",}
+    #'<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>"}
+    
+    cert_json = json.dumps(cert_data)
+
+    return JsonResponse(cert_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
 def getCert(website,port):
@@ -305,6 +181,7 @@ def getCert(website,port):
         certinfo_json = json.loads(server_scan_result_as_json)
         deployment_num = 0     
         for deployment in (certinfo_json["certificate_deployments"]):
+            cert.append([])
             chain_num = 0
             for cert_chain in (certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"]):
                 hpkp_pin = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["hpkp_pin"]
@@ -316,14 +193,40 @@ def getCert(website,port):
                 validfrom_date = validfrom_date[0:-9]
                 validfrom_date = (datetime.strptime(validfrom_date,'%Y-%m-%d').strftime('%B %d, %Y'))
                 dns_name = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["subject_alternative_name"]["dns"]
+                host_name = [] 
+                filtered = fnmatch.filter(dns_name,website)
+                if filtered:
+                    host_status = valid_svg
+                    for name in dns_name:
+                        if name == website:
+                            host_name.append('<div class="bg-gray-300 font-bold">'+name+"</div>")
+                        else:
+                            host_name.append(name+", ")
+                else:
+                    website = (get_fld(website, fix_protocol=True))
+                    filtered = fnmatch.filter(dns_name,"*."+website)
+                    if(filtered):
+                        website_highlight = "*."+website
+                        for name in dns_name:
+                            if name == website_highlight:
+                                host_name.append('<div class="bg-gray-300 font-bold">'+name+"</div>")
+                            else:
+                                host_name.append(name+"<br>")
+                        host_status = valid_svg
+                    else:
+                        host_status = invalid_svg
+                host_names = ""
+                for name in host_name:
+                    host_names += name
                 key_size = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["public_key"]["key_size"]
                 cert_serial_number = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["serial_number"]
                 serial_number_hex = checkCA(cert_serial_number)
-                cert.append({deployment_num:{chain_num:{"Serial Number" : serial_number_hex, "hpkp_pin": hpkp_pin, "Expiration Date": expiration_date, "Valid from": validfrom_date,"DNS Name": dns_name, "Key size": key_size}}})
+                cert[deployment_num].append([])
+                cert[deployment_num][chain_num].append({"Serial Number" : serial_number_hex, "hpkp_pin": hpkp_pin, "Expiration Date": expiration_date, "Valid from": validfrom_date,"DNS Name": host_name, "Key size": key_size})
+                #cert.append({deployment_num:{chain_num:{"Serial Number" : serial_number_hex, "hpkp_pin": hpkp_pin, "Expiration Date": expiration_date, "Valid from": validfrom_date,"DNS Name": dns_name, "Key size": key_size}}})
                 chain_num +=1
             deployment_num +=1
     return (cert)
-
 
 def getProtocol(website,port,protocol):
     supported_suites = {protocol:[]}
@@ -369,7 +272,6 @@ def checkIP(Ip):
         print("Valid Ip address") 
     else: 
         print("Invalid Ip address") 
-
 
 def checkCA(cert_serial):
     cert_serial_hex = hex(cert_serial)
