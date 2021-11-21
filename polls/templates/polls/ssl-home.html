@@ -29,7 +29,7 @@ $.ajax({
     },
     success: function(data)
     {   
-      //console.log(JSON.parse(json))
+    console.log(JSON.parse(data))
     // p = data
     // for (var key in p) {
     // if (p.hasOwnProperty(key)) {
@@ -47,7 +47,7 @@ $.ajax({
       // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
       ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
       //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
-    }
+       }
  }  
     },
 

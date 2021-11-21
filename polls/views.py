@@ -117,6 +117,7 @@ def test_ssl_cert(request):
         port=443
     cert = getCert(website,port)
 
+
 @ratelimit(key='user_or_ip', rate='5/s', method=ratelimit.ALL)
 def result(request):
     #Rate limit test
@@ -152,19 +153,28 @@ def result(request):
     '''
 
     cert_deployments = getCert(website,port)
+    cert_data=[]
     for deployment in cert_deployments:
         for cert in deployment:
+            cert_num = 0
             if (cert == cert_deployments[0][0]):
-                validfrom_date = cert[0]["Valid from"]
-                host_names = cert[0]["DNS Name"]
-                expiration_date = cert[0]["Expiration Date"]
+                cert_data.append([{"Main cert" : 
+                {"Valid from" : cert[0]["Valid from"],
+                "Host name" : cert[0]["DNS Name"],
+                "Expiration date" : cert[0]["Expiration Date"]}}])
+            else: 
+                cert_data[0].append([{"Valid from" : cert[cert_num]["Valid from"],
+                "Serial Number" : cert[cert_num]["Serial Number"],
+              #  "Host name" : cert[cert_num]["DNS Name"],
+                "Expiration Date" : cert[cert_num]["Expiration Date"]}])
+            #     "Host name" : cert_deployments[deployment][cert]["DNS Name"],
+            #     "Expiration date" : cert_deployments[deployment][cert]["Expiration Date"]}])
 
-    cert_data = {'<div class="cursor-pointer pr-2 font-semibold"> Valid between: </div>':'<div class="fontawesome">'+validfrom_date+" - "+expiration_date+"</div>",
-    '<div class="cursor-pointer pr-2 font-semibold"> Host name: </div>':'<div class="cursor-pointer fontawesome">'+str(host_names)+"</div>"+"<div class=''>"+valid_svg+"</div>",}
-    #'<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>"}
-    
+    # cert_data = {'<div class="cursor-pointer pr-2 font-semibold"> Valid between: </div>':'<div class="fontawesome">'+validfrom_date+" - "+expiration_date+"</div>",
+    # '<div class="cursor-pointer pr-2 font-semibold"> Host name: </div>':'<div class="cursor-pointer fontawesome">'+str(host_names)+"</div>"+"<div class=''>"+valid_svg+"</div>",}
+    # #'<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>"}
+    print(cert_data)
     cert_json = json.dumps(cert_data)
-
     return JsonResponse(cert_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
@@ -260,7 +270,6 @@ def getProtocol(website,port,protocol):
             pass
         else:
             accepted_ciphers = protocol + " not supported"
-
         #accepted_ciphers = json.dumps(accepted_ciphers)
         print(supported_suites)
         return (supported_suites[protocol])
