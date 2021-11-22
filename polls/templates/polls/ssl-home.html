@@ -37,18 +37,43 @@ $.ajax({
     //     document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
     // }
     // }
+    console.log(data)
     data=JSON.parse(data)
+    console.log(data)
     //ssl_data.innerHTML ="";
     // ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
     ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Certificate Information</div>';
-    for (var key in data) { 
-      if (data.hasOwnProperty(key)) {
-      //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
-      // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
-      ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
-      //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
-       }
- }  
+
+  //   for (var i in data){
+  //     for(var x in i){
+       
+  //       console.log(data[i][x]["Main cert"])
+  //       for (var key in (data[i][x]["Main cert"])) { 
+  //    if (data.hasOwnProperty(key)) {
+  //     ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
+  //       }
+
+  //     }
+  //     }
+  // }
+  //   for (var i in data[0]){
+  //     for(var x in i){
+  //       console.log(data[0][i][x])
+  //       for (var key in (data[0][i][x])) { 
+  //    if (data.hasOwnProperty(key)) {
+  //     ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
+  //       }
+
+  //     }
+      
+  //   }
+  // }
+          for (var key in data) { 
+            ssl_data.innerHTML += data[key][0]["Main cert"]["Valid from"] //test here
+        if (data.hasOwnProperty(key)) {
+        ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
+      }
+   }  
     },
 
     complete: function(){
