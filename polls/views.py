@@ -35,7 +35,7 @@ def get_ssl_2_0(request):
     else:
         port=443
     accepted_ciphers = getProtocol(website,port,"ssl2.0")
-    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.3 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
+    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> SSL 2.0 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
 
@@ -157,11 +157,14 @@ def result(request):
     for deployment in cert_deployments:
         for cert in deployment:
             cert_num = 0
+            #Main cert
             if (cert == cert_deployments[0][0]):
                 cert_data.append([{"Main cert" : 
-                {"Valid from" : cert[0]["Valid from"],
-                "Host name" : cert[0]["DNS Name"],
-                "Expiration date" : cert[0]["Expiration Date"]}}])
+                {"Valid from: " : cert[0]["Valid from"],
+                "Host name: " : cert[0]["DNS Name"],
+                "Expiration date: " : cert[0]["Expiration Date"]}}])
+
+            #Intermediate cert
             else: 
                 cert_data[0].append([{"Valid from" : cert[cert_num]["Valid from"],
                 "Serial Number" : cert[cert_num]["Serial Number"],
