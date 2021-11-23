@@ -154,13 +154,16 @@ def result(request):
 
     cert_deployments = getCert(website,port)
     cert_data=[]
+
+    deployment_num = 0
     for deployment in cert_deployments:
         for cert in deployment:
             cert_num = 0
             #Main cert
-            if (cert == cert_deployments[0][0]):
+            if (cert == cert_deployments[deployment_num][0]):
                 cert_data.append([{"Main cert" : 
-                {"Valid from: " : cert[0]["Valid from"],
+                {"Certificate #: " : cert[0]["Certificate #"],
+                "Valid from: " : cert[0]["Valid from"],
                 "Host name: " : cert[0]["DNS Name"],
                 "Expiration date: " : cert[0]["Expiration Date"]}}])
 
@@ -172,11 +175,11 @@ def result(request):
                 "Expiration Date" : cert[cert_num]["Expiration Date"]}])
             #     "Host name" : cert_deployments[deployment][cert]["DNS Name"],
             #     "Expiration date" : cert_deployments[deployment][cert]["Expiration Date"]}])
-
+        deployment_num +=1
     # cert_data = {'<div class="cursor-pointer pr-2 font-semibold"> Valid between: </div>':'<div class="fontawesome">'+validfrom_date+" - "+expiration_date+"</div>",
     # '<div class="cursor-pointer pr-2 font-semibold"> Host name: </div>':'<div class="cursor-pointer fontawesome">'+str(host_names)+"</div>"+"<div class=''>"+valid_svg+"</div>",}
     # #'<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>"}
-    print(cert_data)
+    #print(cert_data)
     cert_json = json.dumps(cert_data)
     return JsonResponse(cert_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
@@ -192,11 +195,13 @@ def getCert(website,port):
         certinfo_result = server_scan_result.scan_commands_results[ScanCommand.CERTIFICATE_INFO]
         server_scan_result_as_json = json.dumps(asdict(certinfo_result), cls=sslyze.JsonEncoder)
         certinfo_json = json.loads(server_scan_result_as_json)
+        #print(certinfo_json)
         deployment_num = 0     
         for deployment in (certinfo_json["certificate_deployments"]):
             cert.append([])
             chain_num = 0
             for cert_chain in (certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"]):
+                certificate_num = deployment_num+1
                 hpkp_pin = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["hpkp_pin"]
                 cert_serial_number = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["serial_number"]
                 expiration_date = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["not_valid_after"]
@@ -235,8 +240,12 @@ def getCert(website,port):
                 cert_serial_number = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["serial_number"]
                 serial_number_hex = checkCA(cert_serial_number)
                 cert[deployment_num].append([])
-                cert[deployment_num][chain_num].append({"Serial Number" : serial_number_hex, "hpkp_pin": hpkp_pin, "Expiration Date": expiration_date, "Valid from": validfrom_date,"DNS Name": host_name, "Key size": key_size})
+                cert[deployment_num][chain_num].append({"Certificate #": certificate_num,"Serial Number" : serial_number_hex, "hpkp_pin": hpkp_pin, "Expiration Date": expiration_date, "Valid from": validfrom_date,"DNS Name": host_name, "Key size": key_size})
                 #cert.append({deployment_num:{chain_num:{"Serial Number" : serial_number_hex, "hpkp_pin": hpkp_pin, "Expiration Date": expiration_date, "Valid from": validfrom_date,"DNS Name": dns_name, "Key size": key_size}}})
+                path_num=0
+                for path in (certinfo_json["certificate_deployments"][deployment_num]["path_validation_results"]):
+                    print(certinfo_json["certificate_deployments"][deployment_num]["path_validation_results"][path_num]["trust_store"]["name"])
+                    path_num += 1
                 chain_num +=1
             deployment_num +=1
     return (cert)
