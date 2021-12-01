@@ -197,21 +197,30 @@ def getCert(website,port):
         certinfo_json = json.loads(server_scan_result_as_json)
         #print(certinfo_json)
         for dep_num in range(len(certinfo_json['certificate_deployments'])):
-            cert["cert_deployments"].append({"path_validation_results":[],"received_certificate_chain":[]})
+            cert["cert_deployments"].append({"received_certificate_chain":[],"path_validation_results":[]})
             for cert_num in range(len(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"])):
                 serial_int = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"]
                 serial = checkCA(serial_int)
-                validfrom_date = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_before"]
-                
-                cert["cert_deployments"][dep_num]["received_certificate_chain"].append([{"serial_number": serial, "Valid from": validfrom_date}])
+                cert_authority = getCertificateAuthority(serial)
+                serial_int = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"]
+                validfrom_date = formatDate(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_before"])
+                notvalidafter_date = formatDate(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_after"])
+                hpkp_pin = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["hpkp_pin"]
+
+                cert["cert_deployments"][dep_num]["received_certificate_chain"].append({"serial_number": serial, "Valid from": validfrom_date, "Not valid after":notvalidafter_date ,"cert_authority":cert_authority, "hpkp_pin":hpkp_pin})
                 #cert["cert_deployments"][dep_num]["received_certificate_chain"][cert_num]["serial_number"] = serial_int   
                 #cert["cert_deployments"][dep_num].append({"received_certificate_chain":[cert_num]})
 
             for path_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"])):
+                chain_name = certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["trust_store"]["name"]
+                cert["cert_deployments"][dep_num]["path_validation_results"].append({"chain_name":chain_name,"verrified_certificate_chain":[]})
                 for path_chain_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"])):
                     serial_int = certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["serial_number"]
-                serial = checkCA(serial_int)
-                cert["cert_deployments"][dep_num]["path_validation_results"].append([{"serial_number": serial}])
+                    serial = checkCA(serial_int)
+                    cert_authority = getCertificateAuthority(serial)
+                    cert["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"].append({"serial_number":serial, "cert_authority":cert_authority})
+                
+                    #.append([{"serial_number": serial}])
         print(cert)
 
         # deployment_num = 0     
@@ -267,6 +276,14 @@ def getCert(website,port):
         #         chain_num +=1
         #     deployment_num +=1
     return (cert)
+    
+
+def formatDate(date):
+    date = date[0:-9]
+    date = (datetime.strptime(date,'%Y-%m-%d').strftime('%B %d, %Y'))
+    return date
+
+
 
 def getProtocol(website,port,protocol):
     supported_suites = {protocol:[]}
@@ -316,6 +333,18 @@ def checkCA(cert_serial):
     cert_serial_hex = hex(cert_serial)
     cert_serial_hex = (cert_serial_hex[2:]).upper()
     return cert_serial_hex
+
+def getCertificateAuthority(serial_number_hex):
+    filtered = fnmatch.filter(df.index.values, '*'+serial_number_hex)
+    if(filtered):
+        cert_organization = df.loc[filtered[0]]['Certificate Subject Organization']
+        ca_status = valid_svg
+    else:
+        cert_organization = "Unknown"
+        ca_status = invalid_svg
+    return(cert_organization)
+
+
     
 
 
