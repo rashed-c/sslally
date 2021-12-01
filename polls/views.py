@@ -190,28 +190,28 @@ def getCert(website,port):
     scanner = Scanner()
     server_scan_req = ServerScanRequest(server_info=server_info, scan_commands={ScanCommand.CERTIFICATE_INFO}, )
     scanner.queue_scan(server_scan_req)
-    cert = {"cert_deployments":{"path_validation_results":[],"received_certificate_chain":[]}}
+    cert = {"cert_deployments":[]}
     for server_scan_result in scanner.get_results():
         certinfo_result = server_scan_result.scan_commands_results[ScanCommand.CERTIFICATE_INFO]
         server_scan_result_as_json = json.dumps(asdict(certinfo_result), cls=sslyze.JsonEncoder)
         certinfo_json = json.loads(server_scan_result_as_json)
         #print(certinfo_json)
         for dep_num in range(len(certinfo_json['certificate_deployments'])):
+            cert["cert_deployments"].append({"path_validation_results":[],"received_certificate_chain":[]})
             for cert_num in range(len(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"])):
-                print (certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"])
                 serial_int = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"]
-                certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"] = checkCA(serial_int)
-                print (certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"])
-                cert["cert_deployments"]["received_certificate_chain"].append([cert_num])
+                serial = checkCA(serial_int)
+                validfrom_date = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_before"]
+                
+                cert["cert_deployments"][dep_num]["received_certificate_chain"].append([{"serial_number": serial, "Valid from": validfrom_date}])
+                #cert["cert_deployments"][dep_num]["received_certificate_chain"][cert_num]["serial_number"] = serial_int   
                 #cert["cert_deployments"][dep_num].append({"received_certificate_chain":[cert_num]})
 
             for path_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"])):
                 for path_chain_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"])):
-                    print (certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["serial_number"])
                     serial_int = certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["serial_number"]
-                    certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["serial_number"] = checkCA(serial_int)
-                    print (certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["serial_number"])
-                cert["cert_deployments"]["path_validation_results"].append([path_num])
+                serial = checkCA(serial_int)
+                cert["cert_deployments"][dep_num]["path_validation_results"].append([{"serial_number": serial}])
         print(cert)
 
         # deployment_num = 0     
