@@ -152,35 +152,42 @@ def result(request):
     elliptic_curves: SupportedEllipticCurvesScanResult
     '''
 
-    cert_deployments = getCert(website,port)
+    cert_deployment = getCert(website,port)
     cert_data=[]
 
-    deployment_num = 0
-    for deployment in cert_deployments:
-        for cert in deployment:
-            cert_num = 0
-            #Main cert
-            if (cert == cert_deployments[deployment_num][0]):
-                cert_data.append([{"Main cert" : 
-                {"Certificate #: " : cert[0]["Certificate #"],
-                "Valid from: " : cert[0]["Valid from"],
-                "Host name: " : cert[0]["DNS Name"],
-                "Expiration date: " : cert[0]["Expiration Date"]}}])
+    
 
-            #Intermediate cert
-            else: 
-                cert_data[0].append([{"Valid from" : cert[cert_num]["Valid from"],
-                "Serial Number" : cert[cert_num]["Serial Number"],
-              #  "Host name" : cert[cert_num]["DNS Name"],
-                "Expiration Date" : cert[cert_num]["Expiration Date"]}])
-            #     "Host name" : cert_deployments[deployment][cert]["DNS Name"],
-            #     "Expiration date" : cert_deployments[deployment][cert]["Expiration Date"]}])
-        deployment_num +=1
+        
+
+
+    # cert_data=[]
+    # deployment_num = 0
+    # for deployment in cert_deployments:
+    #     for cert in deployment:
+    #         cert_num = 0
+    #         #Main cert
+    #         if (cert == cert_deployments[deployment_num][0]):
+    #             cert_data.append([{"Main cert" : 
+    #             {"Certificate #: " : cert[0]["Certificate #"],
+    #             "Valid from: " : cert[0]["Valid from"],
+    #             "Host name: " : cert[0]["DNS Name"],
+    #             "Expiration date: " : cert[0]["Expiration Date"]}}])
+
+    #         #Intermediate cert
+    #         else: 
+    #             cert_data[0].append([{"Valid from" : cert[cert_num]["Valid from"],
+    #             "Serial Number" : cert[cert_num]["Serial Number"],
+    #           #  "Host name" : cert[cert_num]["DNS Name"],
+    #             "Expiration Date" : cert[cert_num]["Expiration Date"]}])
+    #         #     "Host name" : cert_deployments[deployment][cert]["DNS Name"],
+    #         #     "Expiration date" : cert_deployments[deployment][cert]["Expiration Date"]}])
+    #     deployment_num +=1
     # cert_data = {'<div class="cursor-pointer pr-2 font-semibold"> Valid between: </div>':'<div class="fontawesome">'+validfrom_date+" - "+expiration_date+"</div>",
     # '<div class="cursor-pointer pr-2 font-semibold"> Host name: </div>':'<div class="cursor-pointer fontawesome">'+str(host_names)+"</div>"+"<div class=''>"+valid_svg+"</div>",}
     # #'<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>"}
     #print(cert_data)
-    cert_json = json.dumps(cert_data)
+
+    cert_json = json.dumps(cert_deployment)
     return JsonResponse(cert_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
@@ -199,15 +206,14 @@ def getCert(website,port):
         for dep_num in range(len(certinfo_json['certificate_deployments'])):
             cert["cert_deployments"].append({"received_certificate_chain":[],"path_validation_results":[]})
             for cert_num in range(len(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"])):
-                serial_int = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"]
-                serial = checkCA(serial_int)
+                serial = checkCA(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"])
                 cert_authority = getCertificateAuthority(serial)
-                serial_int = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"]
                 validfrom_date = formatDate(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_before"])
                 notvalidafter_date = formatDate(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_after"])
                 hpkp_pin = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["hpkp_pin"]
+                key_size = certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["public_key"]["key_size"]
 
-                cert["cert_deployments"][dep_num]["received_certificate_chain"].append({"serial_number": serial, "Valid from": validfrom_date, "Not valid after":notvalidafter_date ,"cert_authority":cert_authority, "hpkp_pin":hpkp_pin})
+                cert["cert_deployments"][dep_num]["received_certificate_chain"].append({"serial_number": serial, "Valid from": validfrom_date, "Not valid after":notvalidafter_date ,"cert_authority":cert_authority, "hpkp_pin":hpkp_pin, "key_size":key_size})
                 #cert["cert_deployments"][dep_num]["received_certificate_chain"][cert_num]["serial_number"] = serial_int   
                 #cert["cert_deployments"][dep_num].append({"received_certificate_chain":[cert_num]})
 
@@ -215,13 +221,12 @@ def getCert(website,port):
                 chain_name = certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["trust_store"]["name"]
                 cert["cert_deployments"][dep_num]["path_validation_results"].append({"chain_name":chain_name,"verrified_certificate_chain":[]})
                 for path_chain_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"])):
-                    serial_int = certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["serial_number"]
-                    serial = checkCA(serial_int)
+                    serial = checkCA(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["serial_number"])
                     cert_authority = getCertificateAuthority(serial)
                     cert["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"].append({"serial_number":serial, "cert_authority":cert_authority})
                 
                     #.append([{"serial_number": serial}])
-        print(cert)
+
 
         # deployment_num = 0     
         # for deployment in (certinfo_json["certificate_deployments"]):
