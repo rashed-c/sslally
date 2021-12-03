@@ -1,5 +1,5 @@
 
-from os import read
+from os import path, read
 import re
 from typing import Match
 from django.http.response import HttpResponse, JsonResponse
@@ -152,10 +152,36 @@ def result(request):
     elliptic_curves: SupportedEllipticCurvesScanResult
     '''
 
-    cert_deployment = getCert(website,port)
-    cert_data=[]
-
+    certs= getCert(website,port)
+    print(certs)
+    cert_data={"Main Certs":[],"Other Certs":[], "Cert Path":[]}
     
+    for dep_num in range(len(certs["cert_deployments"])):
+        for cert_num in range(len(certs["cert_deployments"][dep_num]["received_certificate_chain"])):
+            if cert_num == 0:
+                cert_data["Main Certs"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
+            else:
+                cert_data["Other Certs"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
+        for path_num in range(len(certs["cert_deployments"][dep_num]["path_validation_results"])):
+            path_name = certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["chain_name"]
+            cert_data["Cert Path"].append({"Name":path_name, "Path Chain":[]})
+            for path_chain_num in range(len(certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"])):
+                cert_data["Cert Path"][path_num]["Path Chain"].append(certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"][path_chain_num])
+        
+        # for cert_num in range(len(certs["cert_deployments"][dep_num]["received_certificate_chain"])):
+        #     if cert_num == 0:
+        #         cert_data["Main Certs"].append(certs["cert_deployments"][0]["received_certificate_chain"][cert_num])
+        #     else:
+        #         cert_data["Other Certs"].append(certs["cert_deployments"][0]["received_certificate_chain"][cert_num])
+        # for path_num in range(len(certs["cert_deployments"][0]["path_validation_results"])):
+        #     path_name = certs["cert_deployments"][0]["path_validation_results"][path_num]["chain_name"]
+        #     cert_data["Cert Path"].append({"Name":path_name, "Path Chain":[]})
+        #     for path_chain_num in range(len(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"])):
+        #         cert_data["Cert Path"][path_num]["Path Chain"].append(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"][path_chain_num])
+        
+    print(cert_data)
+
+
 
         
 
@@ -187,8 +213,8 @@ def result(request):
     # #'<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>"}
     #print(cert_data)
 
-    cert_json = json.dumps(cert_deployment)
-    return JsonResponse(cert_json, safe=False)
+    cert_data_json = json.dumps(cert_data)
+    return JsonResponse(cert_data_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
 def getCert(website,port):

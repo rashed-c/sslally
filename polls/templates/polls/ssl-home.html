@@ -39,10 +39,38 @@ $.ajax({
     // }
     console.log(data)
     data=JSON.parse(data)
-    console.log(data)
+    for (var num in data["Main Certs"]){
+      console.log(num)
+      for (var key in (data["Main Certs"][num])){
+     console.log(key)
+  }
+
+    }
+   
     //ssl_data.innerHTML ="";
     // ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
-    ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Certificate Information</div>';
+    ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Main Certificate Information</div>';
+
+    for (var num in data["Main Certs"]){
+      for (var key in (data["Main Certs"][num])){
+        ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Main Certs"][num][key])+"</div>";
+  }
+}
+
+ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Other Certificate Information</div>'; 
+for (var num in data["Other Certs"]){
+      for (var key in (data["Other Certs"][num])){
+        ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Other Certs"][num][key])+"</div>";
+  }
+}
+ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Cert Path Information</div>';
+
+for (var num in data["Cert Path"]){
+      for (var key in (data["Cert Path"][num])){
+        ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Cert Path"][num][key])+"</div>";
+  }
+}
+
 
   //   for (var i in data){
   //     for(var x in i){
@@ -68,35 +96,39 @@ $.ajax({
       
   //   }
   // }
-      for (var i in data){
+
+  //============================== NEW DATA ==============================
+      // for (var i in data){
          
   
-            for ( var x in data[i]){
-              for (var key in (data[i][x]["Main cert"])){
-                console.log("hizz"+data[i][x]["Main cert"][key])
-                  if (data[i][x]["Main cert"].hasOwnProperty(key)) {
-                ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[i][x]["Main cert"][key])+"</div>";
-                  }
+      //       for ( var x in data[i]){
+      //         for (var key in (data[i][x]["Main cert"])){
+      //           console.log("hizz"+data[i][x]["Main cert"][key])
+      //             if (data[i][x]["Main cert"].hasOwnProperty(key)) {
+      //           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[i][x]["Main cert"][key])+"</div>";
+      //             }
 
-              }
-              for (var key in (data[i][x][0])){
-                console.log("hizz"+data[i][x][0][key])
+      //         }
+      //         for (var key in (data[i][x][0])){
+      //           console.log("hizz"+data[i][x][0][key])
 
-                if (data[i][x][0].hasOwnProperty(key)) {
-                ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[i][x][0][key])+"</div>";
-                  }
+      //           if (data[i][x][0].hasOwnProperty(key)) {
+      //           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[i][x][0][key])+"</div>";
+      //             }
 
 
-              }
+      //         }
 
           
-          }
-      }
+      //     }
+      // }
+
+
     
     },
 
     complete: function(){
-      // //Second AJAX FUNCTION
+      //Second AJAX FUNCTION
       $.ajax({
         type: "GET",
         url:"ssl2_0/?website_port="+website_port,
