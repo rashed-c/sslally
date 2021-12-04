@@ -39,24 +39,24 @@ $.ajax({
     // }
     console.log(data)
     data=JSON.parse(data)
-    for (var num in data["Main Certs"]){
-      console.log(num)
-      for (var key in (data["Main Certs"][num])){
-     console.log(key)
-  }
+    console.log(data)
 
-    }
+    
    
     //ssl_data.innerHTML ="";
     // ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
     ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Main Certificate Information</div>';
 
     for (var num in data["Main Certs"]){
-      for (var key in (data["Main Certs"][num])){
-        ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Main Certs"][num][key])+"</div>";
-  }
+      console.log(num)
+      for (var inner_num in (data["Main Certs"][num])){
+        for (var key in (data["Main Certs"][num][inner_num])){
+        console.log(key)
+        ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Main Certs"][num][inner_num][key])+"</div>";
+        }
+      }
 }
-
+  
 ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Other Certificate Information</div>'; 
 for (var num in data["Other Certs"]){
       for (var key in (data["Other Certs"][num])){
