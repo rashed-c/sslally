@@ -118,6 +118,7 @@ def test_ssl_cert(request):
     cert = getCert(website,port)
 
 
+
 @ratelimit(key='user_or_ip', rate='5/s', method=ratelimit.ALL)
 def result(request):
     #Rate limit test
@@ -172,7 +173,7 @@ def result(request):
 
 
 
-             #cert_data[0]["Main Cert"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
+    #cert_data[0]["Main Cert"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
     # cert_data={"Main Certs":[],"Other Certs":[], "Cert Path":[]}
     
     # for dep_num in range(len(certs["cert_deployments"])):
