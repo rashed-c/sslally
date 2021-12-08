@@ -15,6 +15,17 @@ var website_port = document.getElementById("website_port").value;
 var ssl_data = document.getElementById("ssl-data");
 var spinner_div = document.getElementById("loading-spinner");
 var scanner_text = document.getElementById("scanning-update");
+var ssl_path_div = document.getElementById("ssl-path-div");
+var path_expand_block = '<div id="ssl-path-div"' + 
+'  <ul  class="block w-11/12 my-4 mx-auto" x-data="{selected:null}">' + 
+'    <li class="flex align-center flex-col">' + 
+'        <h4 @click="selected !== 2 ? selected = 2 : selected = null"' + 
+'            :class="{\'cursor-pointer px-5 py-3 bg-indigo-500 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3\': true, \'rounded-b\': selected != 2}">Accordion item 3</h4>' + 
+'        <div id="ssl-path-data" x-show="selected == 2" :class="{\'border py-4 px-2\': true, \'rounded-b\': selected == 2}"> </div>' + 
+'    </li>' + 
+'</ul>' + 
+'<div>' + 
+'';
 
 scanner_text.innerHTML=""
 ssl_data.innerHTML=""
@@ -66,11 +77,14 @@ for (var num in data["Other Certs"]){
 
 
 ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Cert Path Information</div>';
+ssl_data.innerHTML += path_expand_block
+var ssl_path_data = document.getElementById("ssl-path-data");
+
 
 for (var num in data["Cert Path"]){
       for (var inner_num in (data["Cert Path"][num])){
         for (var key in (data["Cert Path"][num][inner_num])){
-        ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Cert Path"][num][inner_num][key])+"</div>";
+        ssl_path_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Cert Path"][num][inner_num][key])+"</div>";
         }
     }
 }
