@@ -16,15 +16,30 @@ var ssl_data = document.getElementById("ssl-data");
 var spinner_div = document.getElementById("loading-spinner");
 var scanner_text = document.getElementById("scanning-update");
 var ssl_path_div = document.getElementById("ssl-path-div");
-var path_expand_block = '<div id="ssl-path-div"' + 
-'  <ul  class="block w-11/12 my-4 mx-auto" x-data="{selected:null}">' + 
-'    <li class="flex align-center flex-col">' + 
-'        <h4 @click="selected !== 2 ? selected = 2 : selected = null"' + 
-'            :class="{\'cursor-pointer px-5 py-3 bg-indigo-500 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3\': true, \'rounded-b\': selected != 2}">Accordion item 3</h4>' + 
+var path_expand_block = '<div class="grid" id="ssl-path-div">'+ 
+'<div>1</div><div>2</div></div>  </div><ul block w-11/12 my-4 mx-auto" x-data="{selected:null}">'+ 
+'    <div><li>'+ 
+'        <h4 @click="selected !== 2 ? selected = 2 : selected = null"'+ 
+'            :class="{\'cursor-pointer px-5 py-3 bg-indigo-500 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3\': true, \'rounded-b\': selected != 2}">Windows</h4>' + 
 '        <div id="ssl-path-data" x-show="selected == 2" :class="{\'border py-4 px-2\': true, \'rounded-b\': selected == 2}"> </div>' + 
-'    </li>' + 
+'    </li></div' + 
+'   <div><li>'+ 
+'        <h4 @click="selected !== 2 ? selected = 2 : selected = null"'+ 
+'            :class="{\'cursor-pointer px-5 py-3 bg-indigo-500 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3\': true, \'rounded-b\': selected != 2}">Windows</h4>' + 
+'        <div id="ssl-path-data" x-show="selected == 2" :class="{\'border py-4 px-2\': true, \'rounded-b\': selected == 2}"> </div>' + 
+'    </li></div' +  
+'   <div><li>'+ 
+'        <h4 @click="selected !== 2 ? selected = 2 : selected = null"'+ 
+'            :class="{\'cursor-pointer px-5 py-3 bg-indigo-500 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3\': true, \'rounded-b\': selected != 2}">Windows</h4>' + 
+'        <div id="ssl-path-data" x-show="selected == 2" :class="{\'border py-4 px-2\': true, \'rounded-b\': selected == 2}"> </div>' + 
+'    </li></div' + 
+'   <div><li>'+ 
+'        <h4 @click="selected !== 2 ? selected = 2 : selected = null"'+ 
+'            :class="{\'cursor-pointer px-5 py-3 bg-indigo-500 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3\': true, \'rounded-b\': selected != 2}">Windows</h4>' + 
+'        <div id="ssl-path-data" x-show="selected == 2" :class="{\'border py-4 px-2\': true, \'rounded-b\': selected == 2}"> </div>' + 
+'    </li></div' + 
 '</ul>' + 
-'<div>' + 
+'</div>'+ 
 '';
 
 scanner_text.innerHTML=""
