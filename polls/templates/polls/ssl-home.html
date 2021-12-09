@@ -16,30 +16,30 @@ var ssl_data = document.getElementById("ssl-data");
 var spinner_div = document.getElementById("loading-spinner");
 var scanner_text = document.getElementById("scanning-update");
 var ssl_path_div = document.getElementById("ssl-path-div");
-var path_expand_block = '<div class="grid" id="ssl-path-div">'+ 
-'<div>1</div><div>2</div></div>  </div><ul block w-11/12 my-4 mx-auto" x-data="{selected:null}">'+ 
-'    <div><li>'+ 
-'        <h4 @click="selected !== 2 ? selected = 2 : selected = null"'+ 
-'            :class="{\'cursor-pointer px-5 py-3 bg-indigo-500 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3\': true, \'rounded-b\': selected != 2}">Windows</h4>' + 
-'        <div id="ssl-path-data" x-show="selected == 2" :class="{\'border py-4 px-2\': true, \'rounded-b\': selected == 2}"> </div>' + 
-'    </li></div' + 
-'   <div><li>'+ 
-'        <h4 @click="selected !== 2 ? selected = 2 : selected = null"'+ 
-'            :class="{\'cursor-pointer px-5 py-3 bg-indigo-500 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3\': true, \'rounded-b\': selected != 2}">Windows</h4>' + 
-'        <div id="ssl-path-data" x-show="selected == 2" :class="{\'border py-4 px-2\': true, \'rounded-b\': selected == 2}"> </div>' + 
-'    </li></div' +  
-'   <div><li>'+ 
-'        <h4 @click="selected !== 2 ? selected = 2 : selected = null"'+ 
-'            :class="{\'cursor-pointer px-5 py-3 bg-indigo-500 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3\': true, \'rounded-b\': selected != 2}">Windows</h4>' + 
-'        <div id="ssl-path-data" x-show="selected == 2" :class="{\'border py-4 px-2\': true, \'rounded-b\': selected == 2}"> </div>' + 
-'    </li></div' + 
-'   <div><li>'+ 
-'        <h4 @click="selected !== 2 ? selected = 2 : selected = null"'+ 
-'            :class="{\'cursor-pointer px-5 py-3 bg-indigo-500 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3\': true, \'rounded-b\': selected != 2}">Windows</h4>' + 
-'        <div id="ssl-path-data" x-show="selected == 2" :class="{\'border py-4 px-2\': true, \'rounded-b\': selected == 2}"> </div>' + 
-'    </li></div' + 
-'</ul>' + 
-'</div>'+ 
+var path_expand_block = '' + 
+'<div class="flex border-b-2 py-2 px-2">' + 
+'    <div x-data="{id: 1}">' + 
+'      <button  @click="$dispatch(\'open-dropdown\',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">' + 
+'      Windows' + 
+'      </button>' + 
+'    </div>' + 
+'      <div x-data="{id: 2}">' + 
+'        <button  @click="$dispatch(\'open-dropdown\',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">' + 
+'        Windows' + 
+'        </button>' + 
+'      </div>' + 
+'      <div x-data="{id: 3}">' + 
+'        <button  @click="$dispatch(\'open-dropdown\',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">' + 
+'        Windows' + 
+'        </button>' + 
+'      </div>' + 
+'      <div x-data="{id: 4}">' + 
+'        <button  @click="$dispatch(\'open-dropdown\',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">' + 
+'        Windows' + 
+'        </button>' + 
+'      </div>' + 
+'</div>' + 
+'' + 
 '';
 
 scanner_text.innerHTML=""
@@ -93,9 +93,8 @@ for (var num in data["Other Certs"]){
 
 ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Cert Path Information</div>';
 ssl_data.innerHTML += path_expand_block
-var ssl_path_data = document.getElementById("ssl-path-data");
 
-
+var ssl_path_data = document.getElementById("cert-path-apple");
 for (var num in data["Cert Path"]){
       for (var inner_num in (data["Cert Path"][num])){
         for (var key in (data["Cert Path"][num][inner_num])){
@@ -548,6 +547,57 @@ for (var num in data["Cert Path"]){
   </div> -->
 
   <div class="mx-auto mt-10 mb-10 bg-gray-100 rounded-md" id="ssl-data"> </div>
+
+<div class="flex border-b-2 py-2 px-2">
+    <div x-data="{id: 1}">
+      <button  @click="$dispatch('open-dropdown',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">
+      Windows
+      </button>
+    </div>
+      <div x-data="{id: 2}">
+        <button  @click="$dispatch('open-dropdown',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">
+        Windows
+        </button>
+      </div>
+      <div x-data="{id: 3}">
+        <button  @click="$dispatch('open-dropdown',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">
+        Windows
+        </button>
+      </div>
+      <div x-data="{id: 4}">
+        <button  @click="$dispatch('open-dropdown',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">
+        Windows
+        </button>
+      </div>
+</div>
+
+  <div x-data="{ open: false }"
+    x-show="open"
+    @open-dropdown.window="if ($event.detail.id == 1) open = true"
+    @click.away="open = false">
+    <div id="cert-path-android"></div>
+  </div>
+
+  <div x-data="{ open: false }"
+    x-show="open"
+    @open-dropdown.window="if ($event.detail.id == 2) open = true"
+    @click.away="open = false">
+    <div id="cert-path-apple"></div>
+  </div>
+
+  <div x-data="{ open: false }"
+    x-show="open"
+    @open-dropdown.window="if ($event.detail.id == 3) open = true"
+    @click.away="open = false">
+    <div id="cert-path-mozilla"></div>
+  </div>
+
+  <div x-data="{ open: false }"
+    x-show="open"
+    @open-dropdown.window="if ($event.detail.id == 4) open = true"
+    @click.away="open = false">
+    <div id="cert-path-windows"></div>
+  </div>
   
   </div>
 
