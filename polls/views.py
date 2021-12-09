@@ -154,52 +154,55 @@ def result(request):
     '''
 
     certs= getCert(website,port)
+    print(certs)
     # cert_data=[{"Main Certs":[],"Other Certs":[], "Cert Path":[]}]
-    cert_data={"Main Certs":[],"Other Certs":[],"Cert Path":[]}
-    for dep_num in range(len(certs["cert_deployments"])):
-        cert_data["Main Certs"].append([])
-        cert_data["Other Certs"].append([])
-        cert_data["Cert Path"].append([])
-        for cert_num in range(len(certs["cert_deployments"][dep_num]["received_certificate_chain"])):
-            if cert_num == 0:
-                cert_data["Main Certs"][dep_num].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
-            else:
-                cert_data["Other Certs"][dep_num].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
-        for path_num in range(len(certs["cert_deployments"][dep_num]["path_validation_results"])):
-            cert_data["Cert Path"][dep_num].append([])
-            cert_data["Cert Path"][dep_num][path_num].append({"Name": certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["chain_name"]})
-            for path_cert_num in range(len(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"])):
-                cert_data["Cert Path"][dep_num][path_num].append(certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"][path_cert_num])
-
-
-
-    #cert_data[0]["Main Cert"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
-    # cert_data={"Main Certs":[],"Other Certs":[], "Cert Path":[]}
-    
+    # cert_data={"Main Certs":[],"Other Certs":[],"Cert Path":[]}
     # for dep_num in range(len(certs["cert_deployments"])):
+    #     cert_data["Main Certs"].append([])
+    #     cert_data["Other Certs"].append([])
+    #     cert_data["Cert Path"].append([])
     #     for cert_num in range(len(certs["cert_deployments"][dep_num]["received_certificate_chain"])):
     #         if cert_num == 0:
-    #             cert_data["Main Certs"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
+    #             cert_data["Main Certs"][dep_num].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
     #         else:
-    #             cert_data["Other Certs"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
+    #             cert_data["Other Certs"][dep_num].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
     #     for path_num in range(len(certs["cert_deployments"][dep_num]["path_validation_results"])):
-    #         path_name = certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["chain_name"]
-    #         cert_data["Cert Path"].append({"Name":path_name, "Path Chain":[]})
-    #         for path_chain_num in range(len(certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"])):
-    #             cert_data["Cert Path"][path_num]["Path Chain"].append(certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"][path_chain_num])
+    #         cert_data["Cert Path"][dep_num].append([])
+    #         cert_data["Cert Path"][dep_num][path_num].append({certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["chain_name"]:[]})
+    #         #print(cert_data["Cert Path"][dep_num][path_num])
+    #         for path_cert_num in range(len(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"])):
+    #             #print(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"])
+    #             cert_data["Cert Path"][dep_num][path_num].append(certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"][path_cert_num])
+
+
+
+    # #cert_data[0]["Main Cert"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
+    # # cert_data={"Main Certs":[],"Other Certs":[], "Cert Path":[]}
+    
+    # # for dep_num in range(len(certs["cert_deployments"])):
+    # #     for cert_num in range(len(certs["cert_deployments"][dep_num]["received_certificate_chain"])):
+    # #         if cert_num == 0:
+    # #             cert_data["Main Certs"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
+    # #         else:
+    # #             cert_data["Other Certs"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
+    # #     for path_num in range(len(certs["cert_deployments"][dep_num]["path_validation_results"])):
+    # #         path_name = certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["chain_name"]
+    # #         cert_data["Cert Path"].append({"Name":path_name, "Path Chain":[]})
+    # #         for path_chain_num in range(len(certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"])):
+    # #             cert_data["Cert Path"][path_num]["Path Chain"].append(certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"][path_chain_num])
         
-        # for cert_num in range(len(certs["cert_deployments"][dep_num]["received_certificate_chain"])):
-        #     if cert_num == 0:
-        #         cert_data["Main Certs"].append(certs["cert_deployments"][0]["received_certificate_chain"][cert_num])
-        #     else:
-        #         cert_data["Other Certs"].append(certs["cert_deployments"][0]["received_certificate_chain"][cert_num])
-        # for path_num in range(len(certs["cert_deployments"][0]["path_validation_results"])):
-        #     path_name = certs["cert_deployments"][0]["path_validation_results"][path_num]["chain_name"]
-        #     cert_data["Cert Path"].append({"Name":path_name, "Path Chain":[]})
-        #     for path_chain_num in range(len(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"])):
-        #         cert_data["Cert Path"][path_num]["Path Chain"].append(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"][path_chain_num])
+    #     # for cert_num in range(len(certs["cert_deployments"][dep_num]["received_certificate_chain"])):
+    #     #     if cert_num == 0:
+    #     #         cert_data["Main Certs"].append(certs["cert_deployments"][0]["received_certificate_chain"][cert_num])
+    #     #     else:
+    #     #         cert_data["Other Certs"].append(certs["cert_deployments"][0]["received_certificate_chain"][cert_num])
+    #     # for path_num in range(len(certs["cert_deployments"][0]["path_validation_results"])):
+    #     #     path_name = certs["cert_deployments"][0]["path_validation_results"][path_num]["chain_name"]
+    #     #     cert_data["Cert Path"].append({"Name":path_name, "Path Chain":[]})
+    #     #     for path_chain_num in range(len(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"])):
+    #     #         cert_data["Cert Path"][path_num]["Path Chain"].append(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"][path_chain_num])
         
-    print(cert_data)
+    # print(cert_data)
 
 
 
@@ -233,8 +236,8 @@ def result(request):
     # #'<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>"}
     #print(cert_data)
 
-    cert_data_json = json.dumps(cert_data)
-    return JsonResponse(cert_data_json, safe=False)
+    #cert_data_json = json.dumps(cert_data)
+    #return JsonResponse(cert_data_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
 def getCert(website,port):
@@ -250,7 +253,7 @@ def getCert(website,port):
         certinfo_json = json.loads(server_scan_result_as_json)
         #print(certinfo_json)
         for dep_num in range(len(certinfo_json['certificate_deployments'])):
-            cert["cert_deployments"].append({"received_certificate_chain":[],"path_validation_results":[]})
+            cert["cert_deployments"].append({"received_certificate_chain":[],"path_validation_results":{}})
             for cert_num in range(len(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"])):
                 serial = checkCA(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"])
                 cert_authority = getCertificateAuthority(serial)
@@ -265,11 +268,12 @@ def getCert(website,port):
 
             for path_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"])):
                 chain_name = certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["trust_store"]["name"]
-                cert["cert_deployments"][dep_num]["path_validation_results"].append({"chain_name":chain_name,"verrified_certificate_chain":[]})
+                #cert["cert_deployments"][dep_num]["path_validation_results"].append({"chain_name":chain_name,"verrified_certificate_chain":[]})
+                cert["cert_deployments"][dep_num]["path_validation_results"][chain_name] = []
                 for path_chain_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"])):
                     serial = checkCA(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["serial_number"])
                     cert_authority = getCertificateAuthority(serial)
-                    cert["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"].append({"serial_number":serial, "cert_authority":cert_authority})
+                    cert["cert_deployments"][dep_num]["path_validation_results"][chain_name].append({"serial_number":serial, "cert_authority":cert_authority})
                 
                     #.append([{"serial_number": serial}])
 
