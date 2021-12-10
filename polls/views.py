@@ -154,7 +154,7 @@ def result(request):
     '''
 
     certs= getCert(website,port)
-    print(certs)
+    # print(certs)
     # cert_data=[{"Main Certs":[],"Other Certs":[], "Cert Path":[]}]
     # cert_data={"Main Certs":[],"Other Certs":[],"Cert Path":[]}
     # for dep_num in range(len(certs["cert_deployments"])):
@@ -236,8 +236,8 @@ def result(request):
     # #'<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>"}
     #print(cert_data)
 
-    #cert_data_json = json.dumps(cert_data)
-    #return JsonResponse(cert_data_json, safe=False)
+    cert_data_json = json.dumps(certs)
+    return JsonResponse(cert_data_json, safe=False)
     #return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
 def getCert(website,port):
