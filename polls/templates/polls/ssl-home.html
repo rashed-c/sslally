@@ -18,20 +18,22 @@ var scanner_text = document.getElementById("scanning-update");
 ssl_data.innerHTML=""
 
 function path_block(path,num){
+  path_id_num=0
+  if (num != 0){path_id_num = num*5}
   if (path == "Android"){
-     path_id_num = 1
+     path_id_num = 1 + path_id_num
   }
   else if (path == "Apple"){
-     path_id_num = 2
+     path_id_num = 2 + path_id_num
   }
   else if (path == "Java"){
-     path_id_num = 3
+     path_id_num = 3 + path_id_num
   }
   else if (path == "Mozilla"){
-     path_id_num = 4
+     path_id_num = 4 + path_id_num
   }
   else if (path == "Windows"){
-     path_id_num = 5
+     path_id_num = 5 + path_id_num
   }
   var path_block = ''+
   '<div x-data="{id: '+path_id_num+'}">' + 
@@ -39,20 +41,33 @@ function path_block(path,num){
 '      '+path+ 
 '      </button>' + 
 '</div>' +
-// '<div x-data="{ open: false }"' + 
-// '    x-show="open"' + 
-// '    @open-dropdown.window="if ($event.detail.id =='+path_id_num+') open = true"' + 
-// '    @click.away="open = false">' + 
-// '    <div id="cert-path-'+path+num+'"></div>' + 
-// '</div>' + 
  '';
-//console.log(path_block)
+
 return path_block
 }
 
 function path_data_block(path,num){
+  path_id_num=0
+  if (num != 0){path_id_num = num*5}
+  console.log(path_id_num)
+  if (path == "Android"){
+     path_id_num = 1 + path_id_num
+     console.log(path_id_num)
+  }
+  else if (path == "Apple"){
+     path_id_num = 2 + path_id_num
+  }
+  else if (path == "Java"){
+     path_id_num = 3 + path_id_num
+  }
+  else if (path == "Mozilla"){
+     path_id_num = 4 + path_id_num
+  }
+  else if (path == "Windows"){
+     path_id_num = 5 + path_id_num
+  }
 var path_data_block = ''+
-'<div x-data="{ open: false }"' + 
+'<div class="bg-white border" x-data="{ open: false }"' + 
 '    x-show="open"' + 
 '    @open-dropdown.window="if ($event.detail.id =='+path_id_num+') open = true"' + 
 '    @click.away="open = false">' + 
@@ -61,55 +76,6 @@ var path_data_block = ''+
 '';
 return path_data_block
 }
-
-var path_expand_block = '' + 
-'<div class="flex border-b-2 py-2 px-2">' + 
-'    <div x-data="{id: 1}">' + 
-'      <button  @click="$dispatch(\'open-dropdown\',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">' + 
-'      Windows' + 
-'      </button>' + 
-'    </div>' + 
-'      <div x-data="{id: 2}">' + 
-'        <button  @click="$dispatch(\'open-dropdown\',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">' + 
-'        Windows' + 
-'        </button>' + 
-'      </div>' + 
-'      <div x-data="{id: 3}">' + 
-'        <button  @click="$dispatch(\'open-dropdown\',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">' + 
-'        Windows' + 
-'        </button>' + 
-'      </div>' + 
-'      <div x-data="{id: 4}">' + 
-'        <button  @click="$dispatch(\'open-dropdown\',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">' + 
-'        Windows' + 
-'        </button>' + 
-'      </div>' + 
-'</div>' + 
-'  <div x-data="{ open: false }"' + 
-'    x-show="open"' + 
-'    @open-dropdown.window="if ($event.detail.id == 1) open = true"' + 
-'    @click.away="open = false">' + 
-'    <div id="cert-path-android"></div>' + 
-'  </div>' + 
-'  <div x-data="{ open: false }"' + 
-'    x-show="open"' + 
-'    @open-dropdown.window="if ($event.detail.id == 2) open = true"' + 
-'    @click.away="open = false">' + 
-'    <div id="cert-path-apple"></div>' + 
-'  </div>' + 
-'  <div x-data="{ open: false }"' + 
-'    x-show="open"' + 
-'    @open-dropdown.window="if ($event.detail.id == 3) open = true"' + 
-'    @click.away="open = false">' + 
-'    <div id="cert-path-mozilla"></div>' + 
-'  </div>' + 
-'  <div x-data="{ open: false }"' + 
-'    x-show="open"' + 
-'    @open-dropdown.window="if ($event.detail.id == 4) open = true"' + 
-'    @click.away="open = false">' + 
-'    <div id="cert-path-windows"></div>' + 
-'  </div>' + 
-'';
 
 scanner_text.innerHTML=""
 // ssl_data.innerHTML=""
@@ -126,157 +92,67 @@ $.ajax({
     },
     success: function(data)
     {   
-    // console.log(JSON.parse(data))
-    // p = data
-    // for (var key in p) {
-    // if (p.hasOwnProperty(key)) {
-    //     console.log(data);
-    //     document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
-    // }
-    // }
+  
     console.log(data)
     data=JSON.parse(data)
     console.log(data)
 
     
    
-    //ssl_data.innerHTML ="";
-    // ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
+  
     ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Main Certificate Information</div>';
 
     for (var num in data["cert_deployments"]){
-      for (var innner_num in (data["cert_deployments"][num]["received_certificate_chain"])){
-        for (var key in  (data["cert_deployments"][num]["received_certificate_chain"][innner_num])){
-        ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+key+(data["cert_deployments"][num]["received_certificate_chain"][innner_num][key])+"</div>";
+        for (var innner_num in (data["cert_deployments"][num]["received_certificate_chain"])){
+            for (var key in  (data["cert_deployments"][num]["received_certificate_chain"][innner_num])){
+            ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+key+(data["cert_deployments"][num]["received_certificate_chain"][innner_num][key])+"</div>";
+            }
+          
         }
         
-      }
-      ssl_data.innerHTML +='<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md">Cert Path </div>';
       ssl_data.innerHTML += '<div id="ssl-path-data'+num+'" class="flex border-b-2 py-2 px-2"></div>';
       var ssl_path_div = document.getElementById('ssl-path-data'+num);  
+      ssl_path_div.innerHTML +='<div class="font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-sm">Cert Paths: </div>';
 
       //section for creating path
       
       for (var key in (data["cert_deployments"][num]["path_validation_results"])){
        
         ssl_path_div.innerHTML += path_block(key,num)
-        //ssl_data.innerHTML += path_data_block(key,num)
-        //path_data = document.getElementById('cert-path-'+key+num);
-        //console.log(path_data)
-        //console.log(data["cert_deployments"][num]["path_validation_results"][key])
+       
         for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])){
           console.log(inner_num)
-          //console.log(data["cert_deployments"][num]["path_validation_results"][key][inner_num])
+         
           for(var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])){
             if(inner_key.hasOwnProperty){
               console.log(data["cert_deployments"][num]["path_validation_results"][key][inner_num][inner_key])
-              //path_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+inner_key+(data["cert_deployments"][num]["path_validation_results"][key][inner_num][inner_key])+"</div>";
-              //console.log(data["cert_deployments"][num]["path_validation_results"][key][innner_num])
             }
-            
-            //console.log(data["cert_deployments"][num]["path_validation_results"][key][innner_num][inner_key])
-            //console.log(data["cert_deployments"][num]["path_validation_results"][key][inner_num][inner_key])
-            //path_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+inner_key+(data["cert_deployments"][num]["path_validation_results"][key][innner_num][inner_key])+"</div>"; 
           }
         }
-        //ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+key+(data["cert_deployments"][num]["path_validation_results"][key])+"</div>";   
       }
+
+
+      for (var key in (data["cert_deployments"][num]["path_validation_results"])){
+       ssl_data.innerHTML += path_data_block(key,num)
+       path_data = document.getElementById('cert-path-'+key+num);
+ 
+       for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])){
+         console.log(inner_num)
+        
+         for(var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])){
+           if(inner_key.hasOwnProperty){
+             console.log(data["cert_deployments"][num]["path_validation_results"][key][inner_num][inner_key])
+             path_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">'+inner_key+(data["cert_deployments"][num]["path_validation_results"][key][inner_num][inner_key])+"</div>";
+            
+           }
+           
+          
+         }
+       }
+     
+     }
       
     }
-
-//     for (var num in data["Main Certs"]){
-//       console.log(num)
-//       for (var inner_num in (data["Main Certs"][num])){
-//         for (var key in (data["Main Certs"][num][inner_num])){
-//         console.log(key)
-//         ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Main Certs"][num][inner_num][key])+"</div>";
-//         }
-//       }
-// }
-  
-// ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Other Certificate Information</div>'; 
-
-// for (var num in data["Other Certs"]){
-//       for (var key in (data["Other Certs"][num])){
-//         ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Other Certs"][num][key])+"</div>";}
-// }
-
-
-// ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Cert Path Information</div>';
-// ssl_data.innerHTML += path_expand_block
-
-
-// var ssl_path_android = document.getElementById("cert-path-android");
-// var ssl_path_apple = document.getElementById("cert-path-apple");
-// var ssl_path_mozilla = document.getElementById("cert-path-mozilla");
-// var ssl_path_windows = document.getElementById("cert-path-windows");
-
-
-// for (var num in data["Cert Path"]){
-//       for (var inner_num in (data["Cert Path"][num])){
-//         for (var key in (data["Cert Path"][num][inner_num])){
-//         ssl_path_android.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Cert Path"][num][inner_num][key])+"</div>";
-//         ssl_path_apple.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Cert Path"][num][inner_num][key])+"</div>";
-//         ssl_path_mozilla.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Cert Path"][num][inner_num][key])+"</div>";
-//         ssl_path_windows.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data["Cert Path"][num][inner_num][key])+"</div>";
-//         }
-//     }
-// }
-
-// console.log(data["Cert Path"])
-
-  //   for (var i in data){
-  //     for(var x in i){
-       
-  //       console.log(data[i][x]["Main cert"])
-  //       for (var key in (data[i][x]["Main cert"])) { 
-  //    if (data.hasOwnProperty(key)) {
-  //     ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
-  //       }
-
-  //     }
-  //     }
-  // }
-  //   for (var i in data[0]){
-  //     for(var x in i){
-  //       console.log(data[0][i][x])
-  //       for (var key in (data[0][i][x])) { 
-  //    if (data.hasOwnProperty(key)) {
-  //     ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
-  //       }
-
-  //     }
-      
-  //   }
-  // }
-
-  //============================== NEW DATA ==============================
-      // for (var i in data){
-         
-  
-      //       for ( var x in data[i]){
-      //         for (var key in (data[i][x]["Main cert"])){
-      //           console.log("hizz"+data[i][x]["Main cert"][key])
-      //             if (data[i][x]["Main cert"].hasOwnProperty(key)) {
-      //           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[i][x]["Main cert"][key])+"</div>";
-      //             }
-
-      //         }
-      //         for (var key in (data[i][x][0])){
-      //           console.log("hizz"+data[i][x][0][key])
-
-      //           if (data[i][x][0].hasOwnProperty(key)) {
-      //           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[i][x][0][key])+"</div>";
-      //             }
-
-
-      //         }
-
-          
-      //     }
-      // }
-
-
     
     },
 
@@ -291,24 +167,15 @@ $.ajax({
         },
         success: function(data)
         {   
-          //console.log(JSON.parse(json))
-        // p = data
-        // for (var key in p) {
-        // if (p.hasOwnProperty(key)) {
-        //     console.log(data);
-        //     document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
-        // }
-        // }
+        
         data=JSON.parse(data)
-        //ssl_data.innerHTML ="";
-        //ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
+       
         ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2">SSL Protocols</div>';
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-          //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
-          // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+          
           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
-          //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
+          
         }
       }
   
@@ -323,23 +190,14 @@ $.ajax({
         },
         success: function(data)
         {   
-          //console.log(JSON.parse(json))
-        // p = data
-        // for (var key in p) {
-        // if (p.hasOwnProperty(key)) {
-        //     console.log(data);
-        //     document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
-        // }
-        // }
+   
         data=JSON.parse(data)
-        //ssl_data.innerHTML ="";
-        //ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
+       
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-          //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
-          // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+        
           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2 ">'+(key)+(data[key])+"</div>";
-          //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
+       
         }
       }
   
@@ -354,23 +212,14 @@ $.ajax({
         },
         success: function(data)
         {   
-          //console.log(JSON.parse(json))
-        // p = data
-        // for (var key in p) {
-        // if (p.hasOwnProperty(key)) {
-        //     console.log(data);
-        //     document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
-        // }
-        // }
+        
         data=JSON.parse(data)
-        //ssl_data.innerHTML ="";
-        //ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
+       
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-          //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
-          // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+          
           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
-          //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
+        
         }
       }
   
@@ -385,23 +234,14 @@ $.ajax({
         },
         success: function(data)
         {   
-          //console.log(JSON.parse(json))
-        // p = data
-        // for (var key in p) {
-        // if (p.hasOwnProperty(key)) {
-        //     console.log(data);
-        //     document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
-        // }
-        // }
+
         data=JSON.parse(data)
-        //ssl_data.innerHTML ="";
-        //ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
+       
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-          //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
-          // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+         
           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
-          //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
+    
         }
       }
   
@@ -416,23 +256,14 @@ $.ajax({
         },
         success: function(data)
         {   
-          //console.log(JSON.parse(json))
-        // p = data
-        // for (var key in p) {
-        // if (p.hasOwnProperty(key)) {
-        //     console.log(data);
-        //     document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
-        // }
-        // }
+      
         data=JSON.parse(data)
-        //ssl_data.innerHTML ="";
-        //ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
+      
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-          //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
-          // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+         
           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
-          //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
+          
         }
       }
   
@@ -447,23 +278,14 @@ $.ajax({
         },
         success: function(data)
         {   
-          //console.log(JSON.parse(json))
-        // p = data
-        // for (var key in p) {
-        // if (p.hasOwnProperty(key)) {
-        //     console.log(data);
-        //     document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
-        // }
-        // }
+       
         data=JSON.parse(data)
-        //ssl_data.innerHTML ="";
-        //ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
+      
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-          //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
-          // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
+        
           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2 auto-cols-max">'+(key)+(data[key])+"</div>";
-          //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
+        
         }
       }
   
@@ -482,23 +304,11 @@ $.ajax({
         },
         success: function(data)
         {   
-          //console.log(JSON.parse(json))
-        // p = data
-        // for (var key in p) {
-        // if (p.hasOwnProperty(key)) {
-        //     console.log(data);
-        //     document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] ) 
-        // }
-        // }
+       
         data=JSON.parse(data)
-        //ssl_data.innerHTML ="";
-        //ssl_data.innerHTML = '<div class="flex items-center justify-center font-bold border shadow-sm mb-6 py-2 px-2">' + valid_svg + '= Valid' + warning_svg + '= Warning' + invalid_svg + '= Invalid </div>'
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-          //document.getElementById("ssl-data").innerHTML += (key + " : " + p[key] );
-          // ssl_data.innerHTML += '<div class="flex flex-row justify-between items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div> <br>";
           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2 auto-cols-max">'+(key)+(data[key])+"</div>";
-          //ssl_data.innerHTML = (data['expiration']+"<br>"+data['dns']);
         }
       }
   
@@ -552,14 +362,12 @@ $.ajax({
             console.log('Got an error dude');
           
         }})
-
-        //Internal AJAX Function
     },
     failure: function(data) { 
         console.log('Got an error dude');
         
     }})
-    //$('#loading-spinner').hide(); 
+    
 }
 
 </script>
@@ -656,48 +464,9 @@ $.ajax({
 
   </div>
 
-  <div class="flex justify-center items-center" id="scanning-update">
-  
-  </div>
-  
+  <div class="flex justify-center items-center" id="scanning-update"> </div>
 
-
-    
-  <!-- <div id="loading-spinner" style="display: none;" class="flex justify-center items-center">
-    
-  </div> -->
-
-  <div class="mx-auto mt-10 mb-10 bg-gray-100 rounded-md" id="ssl-data"> 
-
-
-
-  </div>
-
-  <!-- <div id="ssl-path-data" class="flex border-b-2 py-2 px-2"></div> -->
-
-<!-- <div class="flex border-b-2 py-2 px-2">
-    <div x-data="{id: 1}">
-      <button  @click="$dispatch('open-dropdown',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">
-      Windows
-      </button>
-    </div>
-      <div x-data="{id: 2}">
-        <button  @click="$dispatch('open-dropdown',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">
-        Windows
-        </button>
-      </div>
-      <div x-data="{id: 3}">
-        <button  @click="$dispatch('open-dropdown',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">
-        Windows
-        </button>
-      </div>
-      <div x-data="{id: 4}">
-        <button  @click="$dispatch('open-dropdown',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">
-        Windows
-        </button>
-      </div>
-</div> -->
-  
+  <div class="mx-auto mt-10 mb-10 bg-gray-100 rounded-md" id="ssl-data"></div>
   </div>
 
   {% endblock %}

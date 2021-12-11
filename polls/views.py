@@ -119,10 +119,12 @@ def test_ssl_cert(request):
 
 
 
-@ratelimit(key='user_or_ip', rate='5/s', method=ratelimit.ALL)
+@ratelimit(key='user_or_ip', rate='1/5s', method=ratelimit.ALL)
 def result(request):
     #Rate limit test
     was_limited = getattr(request, 'limited', False)
+    if was_limited:
+        print("please wait 10 seconds")
     print("Rate limited: "+str(was_limited))
 
     website = request.GET.get('website_port')
