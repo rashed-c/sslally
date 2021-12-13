@@ -49,10 +49,8 @@ return path_block
 function path_data_block(path,num){
   path_id_num=0
   if (num != 0){path_id_num = num*5}
-  console.log(path_id_num)
   if (path == "Android"){
      path_id_num = 1 + path_id_num
-     console.log(path_id_num)
   }
   else if (path == "Apple"){
      path_id_num = 2 + path_id_num
@@ -93,21 +91,30 @@ $.ajax({
     success: function(data)
     {   
   
-    console.log(data)
+
     data=JSON.parse(data)
-    console.log(data)
+   
 
     
-   
-  
-    ssl_data.innerHTML += '<div class="flex font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-md"> Main Certificate Information</div>';
+
+    ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2"> Main Certificate Information</div>';
 
     for (var num in data["cert_deployments"]){
-        for (var innner_num in (data["cert_deployments"][num]["received_certificate_chain"])){
-            for (var key in  (data["cert_deployments"][num]["received_certificate_chain"][innner_num])){
-            ssl_data.innerHTML += '<div class="grid grid-cols-5 justify-items-start items-center border-b-2 py-2 px-2">'+key+(data["cert_deployments"][num]["received_certificate_chain"][innner_num][key])+"</div>";
+        for (var inner_num in (data["cert_deployments"][num]["received_certificate_chain"])){
+          if(inner_num == 0){
+            for (var key in  (data["cert_deployments"][num]["received_certificate_chain"][inner_num])){
+            ssl_data.innerHTML += '<div class="grid grid-cols-4 justify-items-start items-center border-b-2 py-2 px-2">'+key+(data["cert_deployments"][num]["received_certificate_chain"][inner_num][key])+"</div>";
             }
-          
+            ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2"> Other Certificates</div>';
+
+          }
+          else{
+            for (var key in  (data["cert_deployments"][num]["received_certificate_chain"][inner_num])){
+              if(!key.includes("Subject")){
+              ssl_data.innerHTML += '<div class="grid grid-cols-4 justify-items-start items-center border-b-1 py-2 px-2">'+key+(data["cert_deployments"][num]["received_certificate_chain"][inner_num][key])+"</div>";
+              }
+            }
+          } 
         }
         
       ssl_data.innerHTML += '<div id="ssl-path-data'+num+'" class="flex border-b-2 py-2 px-2"></div>';
@@ -121,8 +128,6 @@ $.ajax({
         ssl_path_div.innerHTML += path_block(key,num)
        
         for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])){
-          console.log(inner_num)
-         
           for(var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])){
             if(inner_key.hasOwnProperty){
             }
@@ -136,11 +141,10 @@ $.ajax({
        path_data = document.getElementById('cert-path-'+key+num);
  
        for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])){
-         console.log(inner_num)
-        
+      
          for(var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])){
            if(inner_key.hasOwnProperty){
-             console.log(data["cert_deployments"][num]["path_validation_results"][key][inner_num][inner_key])
+            //  console.log(data["cert_deployments"][num]["path_validation_results"][key][inner_num][inner_key])
              path_data.innerHTML += '<div class="grid grid-cols-5 justify-items-start items-center py-2 px-2">'+inner_key+(data["cert_deployments"][num]["path_validation_results"][key][inner_num][inner_key])+"</div>";
             
            }
@@ -170,7 +174,7 @@ $.ajax({
         data=JSON.parse(data)
        
         ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2">SSL Protocols</div>';
-        ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2"><div>Protocol</div><div>Status</div><div>Cipher Suites</div></div>';
+        ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-1 py-2 px-2"><div>Protocol</div><div>Status</div><div>Cipher Suites</div></div>';
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
           
@@ -195,7 +199,6 @@ $.ajax({
        
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-        
           ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2 ">'+(key)+(data[key])+"</div>";
           console.log(data[key])
         }
