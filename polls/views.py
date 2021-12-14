@@ -35,7 +35,7 @@ def get_ssl_2_0(request):
     else:
         port=443
     accepted_ciphers = getProtocol(website,port,"ssl2.0")
-    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> SSL 2.0 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
+    accepted_ciphers = {'<div class="cursor-pointer pr-2">SSL 2.0</div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
 
@@ -48,7 +48,7 @@ def get_ssl_3_0(request):
     else:
         port=443
     accepted_ciphers = getProtocol(website,port,"ssl3.0")
-    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> SSL 3.0 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
+    accepted_ciphers = {'<div class="cursor-pointer pr-2">SSL 3.0</div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
 
@@ -61,7 +61,7 @@ def get_tls_1_0(request):
     else:
         port=443
     accepted_ciphers = getProtocol(website,port,"tls1.0")
-    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.0 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
+    accepted_ciphers = {'<div class="cursor-pointer pr-2"> TLS 1.0</div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
 
     return JsonResponse(accepted_ciphers, safe=False)
@@ -75,7 +75,7 @@ def get_tls_1_1(request):
     else:
         port=443
     accepted_ciphers = getProtocol(website,port,"tls1.1")
-    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.1 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div></div><div></div><div class=''>"+valid_svg+"</div>"}
+    accepted_ciphers = {'<div class="cursor-pointer pr-2">TLS 1.1</div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
 
@@ -88,7 +88,7 @@ def get_tls_1_2(request):
     else:
         port=443
     accepted_ciphers = getProtocol(website,port,"tls1.2")
-    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.2 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
+    accepted_ciphers = {'<div class="cursor-pointer pr-2">TLS 1.2</div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
 
@@ -101,7 +101,7 @@ def get_tls_1_3(request):
     else:
         port=443
     accepted_ciphers = getProtocol(website,port,"tls1.3")
-    accepted_ciphers = {'<div class="cursor-pointer pr-2 font-semibold"> TLS 1.3 Ciphers: </div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div><div class=''>"+valid_svg+"</div>"}
+    accepted_ciphers = {'<div class="cursor-pointer pr-2">TLS 1.3</div>':'<div class="fontawesome">'+str(accepted_ciphers)+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
 
@@ -258,17 +258,18 @@ def getCert(website,port):
         for dep_num in range(len(certinfo_json['certificate_deployments'])):
             cert["cert_deployments"].append({"received_certificate_chain":[],"path_validation_results":{}})
             for cert_num in range(len(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"])):
+                as_pem = certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["as_pem"]
                 subject =  certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["subject"]["rfc4514_string"]
-                serial = checkCA(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"])
+                serial = getSerialHex(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"])
                 subject_alternative = certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["subject_alternative_name"]["dns"]
                 cert_authority = getCertificateAuthority(serial)
                 validfrom_date = formatDate(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_before"])
-                notvalidafter_date = formatDate(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_after"])
+                notvalidafter_date = getExpirationDays(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_after"])
                 hpkp_pin = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["hpkp_pin"]
                 key_size = certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["public_key"]["key_size"]
                 signature_algorithm = certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["signature_algorithm_oid"]["name"]
 
-                cert["cert_deployments"][dep_num]["received_certificate_chain"].append({"<div>Subject: </div>": subject, "<div>Subject Alternatives: </div>": subject_alternative, "<div>Serial number: </div>": serial, "<div>Valid from: </div>": validfrom_date, "<div>Not valid after: </div>":notvalidafter_date ,"<div>Issuer: </div>":cert_authority, "<div>HPKP Pin: </div>":hpkp_pin,"<div>Signature Algorithm: </div>":signature_algorithm, "<div>Key size: </div>":key_size})
+                cert["cert_deployments"][dep_num]["received_certificate_chain"].append({"pem": as_pem,"<div>Subject: </div>": subject, "<div>Subject Alternatives: </div>": subject_alternative, "<div>Serial number: </div>": serial, "<div>Valid from: </div>": validfrom_date, "<div>Not valid after: </div>":notvalidafter_date ,"<div>Issuer: </div>":cert_authority, "<div>HPKP Pin: </div>":hpkp_pin,"<div>Signature Algorithm: </div>":signature_algorithm, "<div>Key size: </div>":key_size})
                 #cert["cert_deployments"][dep_num]["received_certificate_chain"][cert_num]["serial_number"] = serial_int   
                 #cert["cert_deployments"][dep_num].append({"received_certificate_chain":[cert_num]})
 
@@ -277,10 +278,11 @@ def getCert(website,port):
                 #cert["cert_deployments"][dep_num]["path_validation_results"].append({"chain_name":chain_name,"verrified_certificate_chain":[]})
                 cert["cert_deployments"][dep_num]["path_validation_results"][chain_name] = []
                 for path_chain_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"])):
+                    as_pem = certinfo_json["certificate_deployments"][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["as_pem"]
                     subject = certinfo_json["certificate_deployments"][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["subject"]["rfc4514_string"]
-                    serial = checkCA(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["serial_number"])
+                    serial = getSerialHex(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["serial_number"])
                     cert_authority = getCertificateAuthority(serial)
-                    cert["cert_deployments"][dep_num]["path_validation_results"][chain_name].append({"<div>Subject: </div>":subject,"<div>Serial number: </div>":serial, "<div>Issuer: </div>":cert_authority})
+                    cert["cert_deployments"][dep_num]["path_validation_results"][chain_name].append({"pem": as_pem,"<div>Subject: </div>":subject,"<div>Serial number: </div>":serial, "<div>Issuer: </div>":cert_authority})
                 
                     #.append([{"serial_number": serial}])
 
@@ -345,6 +347,18 @@ def formatDate(date):
     date = (datetime.strptime(date,'%Y-%m-%d').strftime('%B %d, %Y'))
     return date
 
+def getExpirationDays(date):
+    date = date[0:-9]
+    expiring_in_days = (datetime.strptime(date,'%Y-%m-%d') - datetime.today()).days 
+    date = (datetime.strptime(date,'%Y-%m-%d').strftime('%B %d, %Y'))
+    date_and_days = date+" (Expiring in "+str(expiring_in_days)+" days)"
+    #date = datetime.strptime(date,'%Y-%m-%d')
+    
+    #expring_in_days = (date - datetime.today()).days
+    #formatted_date = (datetime.strptime(date,'%Y-%m-%d').strftime('%B %d, %Y'))
+    #print(expring_in_days)
+    return(str(date_and_days))
+    #validfrom_date = (datetime.strptime(validfrom_date,'%Y-%m-%d').strftime('%B %d, %Y'))
 
 
 def getProtocol(website,port,protocol):
@@ -373,18 +387,20 @@ def getProtocol(website,port,protocol):
         cipher_result = server_scan_result.scan_commands_results[command]
         accepted_ciphers = ""
         for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
-            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
-            supported_suites[protocol].append(accepted_cipher_suite.cipher_suite.name)
-        if(accepted_ciphers):
-            pass
-        else:
-            accepted_ciphers = protocol + " not supported"
+             accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
+             supported_suites[protocol].append(accepted_cipher_suite.cipher_suite.name)
+        # if(accepted_ciphers):
+        #     pass
+        # else:
+        #     accepted_ciphers = protocol + " not supported"
         #accepted_ciphers = json.dumps(accepted_ciphers)
-        cipher_suites =""
-        for cipher in supported_suites[protocol]:
-            cipher_suites += "</br>"+cipher
+        if(supported_suites[protocol]):
+            cipher_suites =""
+            for cipher in supported_suites[protocol]:
+                cipher_suites += "</br>"+cipher 
+        else:
+            cipher_suites = "Protocol not supported"
 
-        #return (supported_suites[protocol])
         return(cipher_suites)
         
 def checkIP(Ip): 
@@ -395,9 +411,9 @@ def checkIP(Ip):
     else: 
         print("Invalid Ip address") 
 
-def checkCA(cert_serial):
+def getSerialHex(cert_serial):
     cert_serial_hex = hex(cert_serial)
-    cert_serial_hex = (cert_serial_hex[2:]).upper()
+    cert_serial_hex = str(0)+(cert_serial_hex[2:]).upper()
     return cert_serial_hex
 
 def getCertificateAuthority(serial_number_hex):
