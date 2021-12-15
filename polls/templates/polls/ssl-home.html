@@ -104,10 +104,10 @@ $.ajax({
               
               if(inner_num == 0){
                 main_cert_num ++
-                ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-purple-500 shadow-sm py-2 px-2"> Certificate #'+main_cert_num+'</div>';
+                ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-purple-500 shadow-sm py-2 px-2"> Certificate Chain #'+main_cert_num+'</div>';
                 for (var key in  (data["cert_deployments"][num]["received_certificate_chain"][inner_num])){
                   if(key != "pem"){  
-                    ssl_data.innerHTML += '<div class="grid grid-cols-4 justify-items-start items-center border-b-2 py-2 px-2 text-ellipsis overflow-hidden">'+key+(data["cert_deployments"][num]["received_certificate_chain"][inner_num][key])+"</div>";
+                    ssl_data.innerHTML += '<div class="grid grid-cols-4 justify-items-start items-center border-b-2 py-2 px-2 text-ellipsis overflow-hidden">'+key+(data["cert_deployments"][num]["received_certificate_chain"][inner_num][key])+"</div></div>";
                   }
                 }
                 ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-purple-500 shadow-sm py-2 px-2"> Other Certificates</div>';
@@ -153,7 +153,7 @@ $.ajax({
             for(var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])){
               if(inner_key.hasOwnProperty){
                 //  console.log(data["cert_deployments"][num]["path_validation_results"][key][inner_num][inner_key])
-                if(key != "pem"){  
+                if(inner_key != "pem"){  
                   path_data.innerHTML += '<div class="grid grid-cols-5 justify-items-start items-center py-2 px-2">'+inner_key+(data["cert_deployments"][num]["path_validation_results"][key][inner_num][inner_key])+"</div>";
                 }
               }
@@ -186,9 +186,9 @@ $.ajax({
         ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center font-bold py-2 px-2"><div>Protocol</div><div>Cipher Suites</div></div>';
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-          
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
-          
+           
+            ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
+            
         }
       }
   

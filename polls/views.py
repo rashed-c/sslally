@@ -261,21 +261,25 @@ def getCert(website,port):
                 as_pem = certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["as_pem"]
                 subject =  certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["subject"]["rfc4514_string"]
                 serial = getSerialHex(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["serial_number"])
+
+                #Subject alternative manipulations
                 subject_alternative = certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["subject_alternative_name"]["dns"]
+                subject_alternative = str(subject_alternative)
+                subject_alternative = subject_alternative.replace("'","")
+                subject_alternative = subject_alternative[1:-1]
+
                 cert_authority = getCertificateAuthority(serial)
                 validfrom_date = formatDate(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_before"])
                 notvalidafter_date = getExpirationDays(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_after"])
                 hpkp_pin = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["hpkp_pin"]
-                key_size = certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["public_key"]["key_size"]
+                key_size = str(certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["public_key"]["key_size"]) + " Bits"
                 signature_algorithm = certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["signature_algorithm_oid"]["name"]
 
                 cert["cert_deployments"][dep_num]["received_certificate_chain"].append({"pem": as_pem,"<div>Subject: </div>": subject, "<div>Subject Alternatives: </div>": subject_alternative, "<div>Serial number: </div>": serial, "<div>Valid from: </div>": validfrom_date, "<div>Not valid after: </div>":notvalidafter_date ,"<div>Issuer: </div>":cert_authority, "<div>HPKP Pin: </div>":hpkp_pin,"<div>Signature Algorithm: </div>":signature_algorithm, "<div>Key size: </div>":key_size})
-                #cert["cert_deployments"][dep_num]["received_certificate_chain"][cert_num]["serial_number"] = serial_int   
-                #cert["cert_deployments"][dep_num].append({"received_certificate_chain":[cert_num]})
+                
 
             for path_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"])):
                 chain_name = certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["trust_store"]["name"]
-                #cert["cert_deployments"][dep_num]["path_validation_results"].append({"chain_name":chain_name,"verrified_certificate_chain":[]})
                 cert["cert_deployments"][dep_num]["path_validation_results"][chain_name] = []
                 for path_chain_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"])):
                     as_pem = certinfo_json["certificate_deployments"][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"][path_chain_num]["as_pem"]
