@@ -99,8 +99,8 @@ def do_dig(request):
             answer_mx = my_resolver.query(website, "MX")
             for rdata in answer_mx:
                 ttl = answer_mx.rrset.ttl
-                dig_result["MX Records"].append({"MX Record":str(rdata.exchange),
-                                        "Preference": str(rdata.preference),  "TTL": str(ttl)})
+                dig_result["MX Records"].append({"MX Record":str(rdata.exchange)+"</div>",
+                                        "Preference":str(rdata.preference),  "TTL":str(ttl)})
                 # dig_result["MX Records"].append({"MX Record":str(rdata.exchange)+"  Preference: "+str(rdata.preference)})
         except:
             pass
