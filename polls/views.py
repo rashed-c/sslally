@@ -268,7 +268,12 @@ def getCert(website,port):
                 subject_alternative = subject_alternative.replace("'","")
                 subject_alternative = subject_alternative[1:-1]
 
-                cert_authority = getCertificateAuthority(serial)
+                if(cert_num==0):
+                    serial = getSerialHex(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num+1]["serial_number"])
+                    cert_authority = getCertificateAuthority(serial)
+                else:
+                    cert_authority = getCertificateAuthority(serial)
+                
                 validfrom_date = formatDate(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_before"])
                 notvalidafter_date = getExpirationDays(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_after"])
                 hpkp_pin = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["hpkp_pin"]
