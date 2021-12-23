@@ -65,7 +65,7 @@ function path_data_block(path,num){
      path_id_num = 5 + path_id_num
   }
 var path_data_block = ''+
-'<div class="bg-white border" x-data="{ open: false }"' + 
+'<div class="bg-white" x-data="{ open: false }"' + 
 '    x-show="open"' + 
 '    @open-dropdown.window="if ($event.detail.id =='+path_id_num+') open = true"' + 
 '    @click.away="open = false">' + 
@@ -108,7 +108,8 @@ $.ajax({
       for (var num in data["cert_deployments"]){
             
             ssl_data.innerHTML += '<div class="shadow-sm border border-gray-200" id="main-cert'+num+'"></div>'
-            ssl_data.innerHTML += '<div class="shadow-sm border border-gray-200 " id="other-cert'+num+'"></div>'
+            ssl_data.innerHTML += '<div class="shadow-sm border border-gray-200" id="other-cert'+num+'"></div>'
+            ssl_data.innerHTML +='<br>'
 
             
             main_cert[num] = document.getElementById('main-cert'+num);
@@ -130,11 +131,11 @@ $.ajax({
                   }
                 }
 
-                var diver_div = document.createElement('div')
-                  diver_div.innerHTML='<div></div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg><div></div>';
-                  diver_div.classList='divide-y flex justify-center items-center'
+                var divider_div = document.createElement('div')
+                  divider_div.innerHTML='<div></div><div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></div><div></div>';
+                  divider_div.classList='flex justify-center items-center'
 
-                other_cert[num].parentNode.insertBefore(diver_div,other_cert[num])
+                other_cert[num].parentNode.insertBefore(divider_div,other_cert[num])
                 other_cert[num].innerHTML += '<div class="flex font-bold justify-center items-center  py-2 px-2"> Other Certificates</div>';
                 
                 
@@ -142,12 +143,10 @@ $.ajax({
 
               
               else{
-                
                 for (var key in  (data["cert_deployments"][num]["received_certificate_chain"][inner_num])){
                   if(!key.includes("Subject")){
                     if(key != "pem"){  
-                    other_cert[num].innerHTML += '<div class="grid grid-cols-4 justify-items-start items-center  py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">'+key+'</div><div class="col-span-3">'+(data["cert_deployments"][num]["received_certificate_chain"][inner_num][key])+"</div></div>";
-                  
+                    other_cert[num].innerHTML += '<div class="grid grid-cols-4 justify-items-start items-center  py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">'+key+'</div><div class="col-span-3">'+(data["cert_deployments"][num]["received_certificate_chain"][inner_num][key])+"</div></div>";   
                   }
                   }
                 }
@@ -155,7 +154,7 @@ $.ajax({
             }
             
 
-          ssl_data.innerHTML += '<div id="ssl-path-data'+num+'" class="flex border-b-2 py-2 px-2"></div>';
+          other_cert[num].innerHTML += '<div id="ssl-path-data'+num+'" class="flex border-b-2 py-2 px-2"></div>';
           var ssl_path_div = document.getElementById('ssl-path-data'+num);  
           ssl_path_div.innerHTML +='<div class="font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-sm">Cert Paths: </div>';
 
@@ -173,9 +172,8 @@ $.ajax({
             }
           }
 
-
           for (var key in (data["cert_deployments"][num]["path_validation_results"])){
-          ssl_data.innerHTML += path_data_block(key,num)
+          other_cert[num].innerHTML += path_data_block(key,num)
           path_data = document.getElementById('cert-path-'+key+num);
     
           for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])){
