@@ -8,6 +8,8 @@
 var valid_svg='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 fill-current text-green-600" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'; 
 var warning_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>';
 var invalid_svg = '<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>';
+var ssl_data_div = document.createElement('div')
+ssl_data_div.classList='border py-2 px-2 border-gray-200'
 
 function myFunction(){
 
@@ -65,7 +67,7 @@ function path_data_block(path,num){
      path_id_num = 5 + path_id_num
   }
 var path_data_block = ''+
-'<div class="bg-white" x-data="{ open: false }"' + 
+'<div class="bg-white my-2 mx-2 py-2 px-2 border-t border-gray-200" x-data="{ open: false }"' + 
 '    x-show="open"' + 
 '    @open-dropdown.window="if ($event.detail.id =='+path_id_num+') open = true"' + 
 '    @click.away="open = false">' + 
@@ -134,6 +136,7 @@ $.ajax({
                 var divider_div = document.createElement('div')
                   divider_div.innerHTML='<div></div><div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></div><div></div>';
                   divider_div.classList='flex justify-center items-center'
+    
 
                 other_cert[num].parentNode.insertBefore(divider_div,other_cert[num])
                 other_cert[num].innerHTML += '<div class="flex font-bold justify-center items-center  py-2 px-2"> Other Certificates</div>';
@@ -146,7 +149,7 @@ $.ajax({
                 for (var key in  (data["cert_deployments"][num]["received_certificate_chain"][inner_num])){
                   if(!key.includes("Subject")){
                     if(key != "pem"){  
-                    other_cert[num].innerHTML += '<div class="grid grid-cols-4 justify-items-start items-center  py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">'+key+'</div><div class="col-span-3">'+(data["cert_deployments"][num]["received_certificate_chain"][inner_num][key])+"</div></div>";   
+                    other_cert[num].innerHTML += '<div class="grid grid-cols-4 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">'+key+'</div><div class="col-span-3">'+(data["cert_deployments"][num]["received_certificate_chain"][inner_num][key])+"</div></div>";   
                   }
                   }
                 }
@@ -154,9 +157,9 @@ $.ajax({
             }
             
 
-          other_cert[num].innerHTML += '<div id="ssl-path-data'+num+'" class="flex border-b-2 py-2 px-2"></div>';
+          other_cert[num].innerHTML += '<div id="ssl-path-data'+num+'" class="flex py-2 px-2"></div>';
           var ssl_path_div = document.getElementById('ssl-path-data'+num);  
-          ssl_path_div.innerHTML +='<div class="font-bold bg-gray-300 justify-center items-center shadow-sm py-2 px-2 rounded-sm">Cert Paths: </div>';
+          ssl_path_div.innerHTML +='<div class="font-bold bg-gray-300 justify-center items-center py-2 px-2 rounded-sm">Cert Paths: </div>';
 
           //section for creating path
           
@@ -208,13 +211,14 @@ $.ajax({
         {   
         
         data=JSON.parse(data)
-       
         ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2">SSL Protocols</div>';
-        ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center font-bold py-2 px-2"><div>Protocol</div><div>Cipher Suites</div></div>';
+        ssl_data.appendChild(ssl_data_div)
+
+        ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center font-bold py-2 px-2"><div>Protocol</div><div>Cipher Suites</div></div>';
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
            
-            ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
+            ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">'+(key)+(data[key])+"</div>";
             
         }
       }
@@ -235,7 +239,7 @@ $.ajax({
        
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2 ">'+(key)+(data[key])+"</div>";
+          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 ">'+(key)+(data[key])+"</div>";
           console.log(data[key])
         }
       }
@@ -257,7 +261,7 @@ $.ajax({
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
           
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
+          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">'+(key)+(data[key])+"</div>";
         
         }
       }
@@ -279,7 +283,7 @@ $.ajax({
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
          
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
+          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">'+(key)+(data[key])+"</div>";
           console.log(data[key])
         }
       }
@@ -301,7 +305,7 @@ $.ajax({
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
          
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2">'+(key)+(data[key])+"</div>";
+          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">'+(key)+(data[key])+"</div>";
           
         }
       }
@@ -323,7 +327,7 @@ $.ajax({
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
         
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2 auto-cols-max">'+(key)+(data[key])+"</div>";
+          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 auto-cols-max">'+(key)+(data[key])+"</div>";
         
         }
       }
@@ -346,7 +350,7 @@ $.ajax({
         data=JSON.parse(data)
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
-          ssl_data.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center border-b-2 py-2 px-2 auto-cols-max">'+(key)+(data[key])+"</div>";
+          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 auto-cols-max">'+(key)+(data[key])+"</div>";
         }
       }
   
