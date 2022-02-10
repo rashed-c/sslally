@@ -1,459 +1,477 @@
-
-
 {% extends "polls/base.html" %}
 
 {% block javascript %}
 <script>
+  var valid_svg =
+    '<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 fill-current text-green-600" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>';
+  var warning_svg =
+    '<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>';
+  var invalid_svg =
+    '<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>';
+  var ssl_data_div = document.createElement('div')
+  ssl_data_div.classList = 'border py-2 px-2 border-gray-200'
 
-var valid_svg='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 fill-current text-green-600" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'; 
-var warning_svg ='<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>';
-var invalid_svg = '<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>';
-var ssl_data_div = document.createElement('div')
-ssl_data_div.classList='border py-2 px-2 border-gray-200'
+  function myFunction() {
 
-function myFunction(){
+    var website_port = document.getElementById("website_port").value;
+    var ssl_data = document.getElementById("ssl-data");
+    var spinner_div = document.getElementById("loading-spinner");
+    var scanner_text = document.getElementById("scanning-update");
+    ssl_data.innerHTML = ""
 
-var website_port = document.getElementById("website_port").value;
-var ssl_data = document.getElementById("ssl-data");
-var spinner_div = document.getElementById("loading-spinner");
-var scanner_text = document.getElementById("scanning-update");
-ssl_data.innerHTML=""
+    function path_block(path, num) {
+      path_id_num = 0
+      if (num != 0) {
+        path_id_num = num * 5
+      }
+      if (path == "Android") {
+        path_id_num = 1 + path_id_num
+      } else if (path == "Apple") {
+        path_id_num = 2 + path_id_num
+      } else if (path == "Java") {
+        path_id_num = 3 + path_id_num
+      } else if (path == "Mozilla") {
+        path_id_num = 4 + path_id_num
+      } else if (path == "Windows") {
+        path_id_num = 5 + path_id_num
+      }
+      var path_block = '' +
+        '<div x-data="{id: ' + path_id_num + '}">' +
+        '      <button  @click="$dispatch(\'open-dropdown\',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">' +
+        '      ' + path +
+        '      </button>' +
+        '</div>' +
+        '';
 
-function path_block(path,num){
-  path_id_num=0
-  if (num != 0){path_id_num = num*5}
-  if (path == "Android"){
-     path_id_num = 1 + path_id_num
-  }
-  else if (path == "Apple"){
-     path_id_num = 2 + path_id_num
-  }
-  else if (path == "Java"){
-     path_id_num = 3 + path_id_num
-  }
-  else if (path == "Mozilla"){
-     path_id_num = 4 + path_id_num
-  }
-  else if (path == "Windows"){
-     path_id_num = 5 + path_id_num
-  }
-  var path_block = ''+
-  '<div x-data="{id: '+path_id_num+'}">' + 
-'      <button  @click="$dispatch(\'open-dropdown\',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">'+ 
-'      '+path+ 
-'      </button>' + 
-'</div>' +
- '';
+      return path_block
+    }
 
-return path_block
-}
+    function path_data_block(path, num) {
+      path_id_num = 0
+      if (num != 0) {
+        path_id_num = num * 5
+      }
+      if (path == "Android") {
+        path_id_num = 1 + path_id_num
+      } else if (path == "Apple") {
+        path_id_num = 2 + path_id_num
+      } else if (path == "Java") {
+        path_id_num = 3 + path_id_num
+      } else if (path == "Mozilla") {
+        path_id_num = 4 + path_id_num
+      } else if (path == "Windows") {
+        path_id_num = 5 + path_id_num
+      }
+      var path_data_block = '' +
+        '<div class="bg-white my-2 mx-2 py-2 px-2 border-t border-gray-200" x-data="{ open: false }"' +
+        '    x-show="open"' +
+        '    @open-dropdown.window="if ($event.detail.id ==' + path_id_num + ') open = true"' +
+        '    @click.away="open = false">' +
+        '    <div id="cert-path-' + path + num + '"></div>' +
+        '</div>' +
+        '';
+      return path_data_block
+    }
 
-function path_data_block(path,num){
-  path_id_num=0
-  if (num != 0){path_id_num = num*5}
-  if (path == "Android"){
-     path_id_num = 1 + path_id_num
-  }
-  else if (path == "Apple"){
-     path_id_num = 2 + path_id_num
-  }
-  else if (path == "Java"){
-     path_id_num = 3 + path_id_num
-  }
-  else if (path == "Mozilla"){
-     path_id_num = 4 + path_id_num
-  }
-  else if (path == "Windows"){
-     path_id_num = 5 + path_id_num
-  }
-var path_data_block = ''+
-'<div class="bg-white my-2 mx-2 py-2 px-2 border-t border-gray-200" x-data="{ open: false }"' + 
-'    x-show="open"' + 
-'    @open-dropdown.window="if ($event.detail.id =='+path_id_num+') open = true"' + 
-'    @click.away="open = false">' + 
-'    <div id="cert-path-'+path+num+'"></div>' + 
-'</div>' + 
-'';
-return path_data_block
-}
+    scanner_text.innerHTML = ""
+    // ssl_data.innerHTML=""
+    //ssl_path_div.innerHTML=""
 
-scanner_text.innerHTML=""
-// ssl_data.innerHTML=""
-//ssl_path_div.innerHTML=""
-
-//document.getElementById("ssl-data").innerHTML.replace(" ");
-// if (typeof ajax_request !== 'undefined') {
-//   ajax_request.abort();}
+    //document.getElementById("ssl-data").innerHTML.replace(" ");
+    // if (typeof ajax_request !== 'undefined') {
+    //   ajax_request.abort();}
 
 
-$.ajax({
-   
-    type: "GET",
-    url:"result/?website_port="+website_port,
-    beforeSend: function(){
-    $('#loading-spinner').show();
-    scanner_text.innerHTML="Scanning certificate..."
-    },
-    success: function(data)
-    {   
-  
+    $.ajax({
 
-      data=JSON.parse(data)
-    
+      type: "GET",
+      url: "result/?website_port=" + website_port,
+      beforeSend: function () {
+        $('#loading-spinner').show();
+        scanner_text.innerHTML = "Scanning certificate..."
+      },
+      success: function (data) {
 
-      
+        data = JSON.parse(data)
 
-      ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2"> Main Certificate Information</div>';
-      main_cert_num = 0
-      var main_cert=[];
-      var other_cert=[];
-      for (var num in data["cert_deployments"]){
-            
-            ssl_data.innerHTML += '<div class="shadow-sm border border-gray-200" id="main-cert'+num+'"></div>'
-            ssl_data.innerHTML += '<div class="shadow-sm border border-gray-200" id="other-cert'+num+'"></div>'
-            ssl_data.innerHTML +='<br>'
+        ssl_data.innerHTML +=
+          '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2"> Main Certificate Information</div>';
+        main_cert_num = 0
+        var main_cert = [];
+        var other_cert = [];
+        for (var num in data["cert_deployments"]) {
 
-            
-            main_cert[num] = document.getElementById('main-cert'+num);
-            other_cert[num] = document.getElementById('other-cert'+num);
-            
-            console.log(main_cert[num])
-        
-            
-            for (var inner_num in (data["cert_deployments"][num]["received_certificate_chain"])){
-              
-              if(inner_num == 0){
-                main_cert_num ++
-                main_cert[num].innerHTML += '<div class="grid grid-cols-4 font-bold justify-center items-center py-2 px-6"><div></div> <div class="font-semibold">Received Certificate Chain #'+main_cert_num+'</div></div>';
-                for (var key in  (data["cert_deployments"][num]["received_certificate_chain"][inner_num])){
-                  if(key != "pem"){  
-                   
-                    main_cert[num].innerHTML += '<div class="grid grid-cols-4 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">'+key+'</div><div class="col-span-3">'+(data["cert_deployments"][num]["received_certificate_chain"][inner_num][key])+"</div></div>";
-                    
-                  }
+          ssl_data.innerHTML += '<div class="shadow-sm border border-gray-200" id="main-cert' + num + '"></div>'
+          ssl_data.innerHTML += '<div class="shadow-sm border border-gray-200" id="other-cert' + num + '"></div>'
+          ssl_data.innerHTML += '<br>'
+
+
+          main_cert[num] = document.getElementById('main-cert' + num);
+          other_cert[num] = document.getElementById('other-cert' + num);
+
+          console.log(main_cert[num])
+
+
+          for (var inner_num in (data["cert_deployments"][num]["received_certificate_chain"])) {
+
+            if (inner_num == 0) {
+              main_cert_num++
+              main_cert[num].innerHTML +=
+                '<div class="grid grid-cols-4 font-bold justify-center items-center py-2 px-6"><div></div> <div class="font-semibold">Received Certificate Chain #' +
+                main_cert_num + '</div></div>';
+              for (var key in (data["cert_deployments"][num]["received_certificate_chain"][inner_num])) {
+                if (key != "pem") {
+
+                  main_cert[num].innerHTML +=
+                    '<div class="grid grid-cols-4 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
+                    key + '</div><div class="col-span-3">' + (data["cert_deployments"][num][
+                      "received_certificate_chain"
+                    ][inner_num][key]) + "</div></div>";
+
                 }
-
-                var divider_div = document.createElement('div')
-                  divider_div.innerHTML='<div></div><div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></div><div></div>';
-                  divider_div.classList='flex justify-center items-center'
-    
-
-                other_cert[num].parentNode.insertBefore(divider_div,other_cert[num])
-                other_cert[num].innerHTML += '<div class="flex font-bold justify-center items-center  py-2 px-2"> Other Certificates</div>';
-                
-                
               }
 
-              
-              else{
-                for (var key in  (data["cert_deployments"][num]["received_certificate_chain"][inner_num])){
-                  if(!key.includes("Subject")){
-                    if(key != "pem"){  
-                    other_cert[num].innerHTML += '<div class="grid grid-cols-4 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">'+key+'</div><div class="col-span-3">'+(data["cert_deployments"][num]["received_certificate_chain"][inner_num][key])+"</div></div>";   
-                  }
+              var divider_div = document.createElement('div')
+              divider_div.innerHTML =
+                '<div></div><div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></div><div></div>';
+              divider_div.classList = 'flex justify-center items-center'
+
+
+              other_cert[num].parentNode.insertBefore(divider_div, other_cert[num])
+              other_cert[num].innerHTML +=
+                '<div class="flex font-bold justify-center items-center  py-2 px-2"> Other Certificates</div>';
+
+            } else {
+              for (var key in (data["cert_deployments"][num]["received_certificate_chain"][inner_num])) {
+                if (!key.includes("Subject")) {
+                  if (key != "pem") {
+                    other_cert[num].innerHTML +=
+                      '<div class="grid grid-cols-4 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
+                      key + '</div><div class="col-span-3">' + (data["cert_deployments"][num]["received_certificate_chain"][inner_num][key]) + "</div></div>";
                   }
                 }
-              } 
+              }
             }
-            
+          }
 
-          other_cert[num].innerHTML += '<div id="ssl-path-data'+num+'" class="flex py-2 px-2"></div>';
-          var ssl_path_div = document.getElementById('ssl-path-data'+num);  
-          ssl_path_div.innerHTML +='<div class="font-bold bg-gray-300 justify-center items-center py-2 px-2 rounded-sm">Cert Paths: </div>';
+
+          other_cert[num].innerHTML += '<div id="ssl-path-data' + num + '" class="flex py-2 px-2"></div>';
+          var ssl_path_div = document.getElementById('ssl-path-data' + num);
+          ssl_path_div.innerHTML +=
+            '<div class="font-bold bg-gray-300 justify-center items-center py-2 px-2 rounded-sm">Cert Paths: </div>';
 
           //section for creating path
-          
-          for (var key in (data["cert_deployments"][num]["path_validation_results"])){
-          
-            ssl_path_div.innerHTML += path_block(key,num)
-          
-            for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])){
-              for(var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])){
-                if(inner_key.hasOwnProperty){
-                }
+
+          for (var key in (data["cert_deployments"][num]["path_validation_results"])) {
+
+            ssl_path_div.innerHTML += path_block(key, num)
+
+            for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])) {
+              for (var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])) {
+                if (inner_key.hasOwnProperty) {}
               }
             }
           }
 
-          for (var key in (data["cert_deployments"][num]["path_validation_results"])){
-          other_cert[num].innerHTML += path_data_block(key,num)
-          path_data = document.getElementById('cert-path-'+key+num);
-    
-          for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])){
-          
-            for(var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])){
-              if(inner_key.hasOwnProperty){
-                if(inner_key != "pem"){  
-                  path_data.innerHTML += '<div class="grid grid-cols-4 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">'+inner_key+'</div><div class="col-span-3">'+(data["cert_deployments"][num]["path_validation_results"][key][inner_num][inner_key])+"</div></div>";
+          for (var key in (data["cert_deployments"][num]["path_validation_results"])) {
+            other_cert[num].innerHTML += path_data_block(key, num)
+            path_data = document.getElementById('cert-path-' + key + num);
+
+            for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])) {
+
+              for (var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])) {
+                if (inner_key.hasOwnProperty) {
+                  if (inner_key != "pem") {
+                    path_data.innerHTML +=
+                      '<div class="grid grid-cols-4 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
+                      inner_key + '</div><div class="col-span-3">' + (data["cert_deployments"][num][
+                        "path_validation_results"
+                      ][key][inner_num][inner_key]) + "</div></div>";
+                  }
                 }
+
+
               }
-              
-              
             }
+
           }
-        
-        }
-        
-      }
-    
-    },
 
-    complete: function(){
-      //Second AJAX FUNCTION
-      $.ajax({
-        type: "GET",
-        url:"ssl2_0/?website_port="+website_port,
-        beforeSend: function(){
-        $('#loading-spinner').show();
-        scanner_text.innerHTML="Scanning for SSL 2.0"
-        },
-        success: function(data)
-        {   
-        
-        data=JSON.parse(data)
-        ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2">SSL Protocols</div>';
-        ssl_data.appendChild(ssl_data_div)
-
-        ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center font-bold py-2 px-2"><div>Protocol</div><div>Cipher Suites</div></div>';
-        for (var key in data) { 
-          if (data.hasOwnProperty(key)) {
-           
-            ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">'+(key)+(data[key])+"</div>";
-            
         }
-      }
-  
-        },
-        complete: function(){
+
+      },
+
+      complete: function () {
+        //Second AJAX FUNCTION
         $.ajax({
-        type: "GET",
-        url:"ssl3_0/?website_port="+website_port,
-        beforeSend: function(){
-        $('#loading-spinner').show();
-        scanner_text.innerHTML="Scanning for SSL 3.0"
-        },
-        success: function(data)
-        {   
-   
-        data=JSON.parse(data)
-       
-        for (var key in data) { 
-          if (data.hasOwnProperty(key)) {
-          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 ">'+(key)+(data[key])+"</div>";
-          console.log(data[key])
-        }
-      }
-  
-        },
-        complete: function(){
-          $.ajax({
-        type: "GET",
-        url:"tls1_0/?website_port="+website_port,
-        beforeSend: function(){
-        $('#loading-spinner').show();
-        scanner_text.innerHTML="Scanning for TLS 1.0"
-        },
-        success: function(data)
-        {   
-        
-        data=JSON.parse(data)
-       
-        for (var key in data) { 
-          if (data.hasOwnProperty(key)) {
-          
-          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">'+(key)+(data[key])+"</div>";
-        
-        }
-      }
-  
-        },
-        complete: function(){
-          $.ajax({
-        type: "GET",
-        url:"tls1_1/?website_port="+website_port,
-        beforeSend: function(){
-        $('#loading-spinner').show();
-        scanner_text.innerHTML="Scanning for TLS 1.1"
-        },
-        success: function(data)
-        {   
+          type: "GET",
+          url: "ssl2_0/?website_port=" + website_port,
+          beforeSend: function () {
+            $('#loading-spinner').show();
+            scanner_text.innerHTML = "Scanning for SSL 2.0"
+          },
+          success: function (data) {
 
-        data=JSON.parse(data)
-       
-        for (var key in data) { 
-          if (data.hasOwnProperty(key)) {
-         
-          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">'+(key)+(data[key])+"</div>";
-          console.log(data[key])
-        }
-      }
-  
-        },
-        complete: function(){
-          $.ajax({
-        type: "GET",
-        url:"tls1_2/?website_port="+website_port,
-        beforeSend: function(){
-        $('#loading-spinner').show();
-        scanner_text.innerHTML="Scanning for TLS 1.2"
-        },
-        success: function(data)
-        {   
-      
-        data=JSON.parse(data)
-      
-        for (var key in data) { 
-          if (data.hasOwnProperty(key)) {
-         
-          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">'+(key)+(data[key])+"</div>";
-          
-        }
-      }
-  
-        },
-        complete: function(){
-          $.ajax({
-        type: "GET",
-        url:"tls1_3/?website_port="+website_port,
-        beforeSend: function(){
-        $('#loading-spinner').show();
-        scanner_text.innerHTML="Scanning for TLS 1.3"
-        },
-        success: function(data)
-        {   
-       
-        data=JSON.parse(data)
-      
-        for (var key in data) { 
-          if (data.hasOwnProperty(key)) {
-        
-          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 auto-cols-max">'+(key)+(data[key])+"</div>";
-        
-        }
-      }
-  
-        },
-        complete: function(){
-          $('#loading-spinner').hide(); 
-          scanner_text.innerHTML=""
+            data = JSON.parse(data)
+            ssl_data.innerHTML +=
+              '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2">SSL Protocols</div>';
+            ssl_data.appendChild(ssl_data_div)
+            ssl_data_div.innerHTML = '';
+            ssl_data_div.innerHTML +=
+              '<div class="grid grid-cols-3 justify-items-start items-center font-bold py-2 px-2"><div>Protocol</div><div>Cipher Suites</div></div>';
+            for (var key in data) {
+              if (data.hasOwnProperty(key)) {
+                ssl_data_div.innerHTML +=
+                  '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' + (key) + (
+                    data[key]) + "</div>";
+              }
+            }
 
-        $.ajax({
-        type: "GET",
-        url:"supported_suites/?website_port="+website_port,
-        beforeSend: function(){
-        $('#loading-spinner').show();
-        scanner_text.innerHTML="Getting suported ciphers"
-        },
-        success: function(data)
-        {   
-       
-        data=JSON.parse(data)
-        for (var key in data) { 
-          if (data.hasOwnProperty(key)) {
-          ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 auto-cols-max">'+(key)+(data[key])+"</div>";
-        }
-      }
-  
-        },
-        complete: function(){
-          $('#loading-spinner').hide(); 
-          scanner_text.innerHTML=""
+          },
+          complete: function () {
+            $.ajax({
+              type: "GET",
+              url: "ssl3_0/?website_port=" + website_port,
+              beforeSend: function () {
+                $('#loading-spinner').show();
+                scanner_text.innerHTML = "Scanning for SSL 3.0"
+              },
+              success: function (data) {
 
-          
-          
-        },
-        failure: function(data) { 
-            console.log('Got an error dude');
-          
-        }})
+                data = JSON.parse(data)
 
-          
-          
-        },
-        failure: function(data) { 
+                for (var key in data) {
+                  if (data.hasOwnProperty(key)) {
+                    ssl_data_div.innerHTML +=
+                      '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 ">' + (
+                        key) + (data[key]) + "</div>";
+                    console.log(data[key])
+                  }
+                }
+
+              },
+              complete: function () {
+                $.ajax({
+                  type: "GET",
+                  url: "tls1_0/?website_port=" + website_port,
+                  beforeSend: function () {
+                    $('#loading-spinner').show();
+                    scanner_text.innerHTML = "Scanning for TLS 1.0"
+                  },
+                  success: function (data) {
+
+                    data = JSON.parse(data)
+
+                    for (var key in data) {
+                      if (data.hasOwnProperty(key)) {
+
+                        ssl_data_div.innerHTML +=
+                          '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' +
+                          (key) + (data[key]) + "</div>";
+
+                      }
+                    }
+
+                  },
+                  complete: function () {
+                    $.ajax({
+                      type: "GET",
+                      url: "tls1_1/?website_port=" + website_port,
+                      beforeSend: function () {
+                        $('#loading-spinner').show();
+                        scanner_text.innerHTML = "Scanning for TLS 1.1"
+                      },
+                      success: function (data) {
+
+                        data = JSON.parse(data)
+
+                        for (var key in data) {
+                          if (data.hasOwnProperty(key)) {
+
+                            ssl_data_div.innerHTML +=
+                              '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' +
+                              (key) + (data[key]) + "</div>";
+                            console.log(data[key])
+                          }
+                        }
+
+                      },
+                      complete: function () {
+                        $.ajax({
+                          type: "GET",
+                          url: "tls1_2/?website_port=" + website_port,
+                          beforeSend: function () {
+                            $('#loading-spinner').show();
+                            scanner_text.innerHTML = "Scanning for TLS 1.2"
+                          },
+                          success: function (data) {
+
+                            data = JSON.parse(data)
+
+                            for (var key in data) {
+                              if (data.hasOwnProperty(key)) {
+
+                                ssl_data_div.innerHTML +=
+                                  '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' +
+                                  (key) + (data[key]) + "</div>";
+
+                              }
+                            }
+
+                          },
+                          complete: function () {
+                            $.ajax({
+                              type: "GET",
+                              url: "tls1_3/?website_port=" + website_port,
+                              beforeSend: function () {
+                                $('#loading-spinner').show();
+                                scanner_text.innerHTML =
+                                  "Scanning for TLS 1.3"
+                              },
+                              success: function (data) {
+
+                                data = JSON.parse(data)
+
+                                for (var key in data) {
+                                  if (data.hasOwnProperty(key)) {
+
+                                    ssl_data_div.innerHTML +=
+                                      '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 auto-cols-max">' +
+                                      (key) + (data[key]) + "</div>";
+
+                                  }
+                                }
+
+                              },
+                              complete: function () {
+                                $('#loading-spinner').hide();
+                                scanner_text.innerHTML = ""
+
+                                $.ajax({
+                                  type: "GET",
+                                  url: "supported_suites/?website_port=" +
+                                    website_port,
+                                  beforeSend: function () {
+                                    $('#loading-spinner').show();
+                                    scanner_text.innerHTML =
+                                      "Getting suported ciphers"
+                                  },
+                                  success: function (data) {
+
+                                    data = JSON.parse(data)
+                                    for (var key in data) {
+                                      if (data.hasOwnProperty(key)) {
+                                        ssl_data_div.innerHTML +=
+                                          '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 auto-cols-max">' +
+                                          (key) + (data[key]) +
+                                          "</div>";
+                                      }
+                                    }
+
+                                  },
+                                  complete: function () {
+                                    $('#loading-spinner').hide();
+                                    scanner_text.innerHTML = ""
+
+
+
+                                  },
+                                  failure: function (data) {
+                                    console.log('Got an error dude');
+
+                                  }
+                                })
+
+
+
+                              },
+                              failure: function (data) {
+                                console.log('Got an error dude');
+
+                              }
+                            })
+
+                          },
+                          failure: function (data) {
+                            console.log('Got an error dude');
+
+                          }
+                        })
+
+                      },
+                      failure: function (data) {
+                        console.log('Got an error dude');
+
+                      }
+                    })
+
+                  },
+                  failure: function (data) {
+                    console.log('Got an error dude');
+
+                  }
+                })
+
+              },
+              failure: function (data) {
+                console.log('Got an error dude');
+
+              }
+            })
+
+          },
+          failure: function (data) {
             console.log('Got an error dude');
-          
-        }})
-          
-        },
-        failure: function(data) { 
-            console.log('Got an error dude');
-          
-        }})
-          
-        },
-        failure: function(data) { 
-            console.log('Got an error dude');
-          
-        }})
-          
-        },
-        failure: function(data) { 
-            console.log('Got an error dude');
-          
-        }})
-          
-        },
-        failure: function(data) { 
-            console.log('Got an error dude');
-          
-        }})
-          
-        },
-        failure: function(data) { 
-            console.log('Got an error dude');
-          
-        }})
-    },
-    failure: function(data) { 
+
+          }
+        })
+      },
+      failure: function (data) {
         console.log('Got an error dude');
-        
-    }})
-    
-}
 
+      }
+    })
+
+  }
 </script>
 {% endblock %}
 
 {% block content %}
 <style>
-    .loader {
-      border-top-color: #3498db;
-      -webkit-animation: spinner 1.5s linear infinite;
-      animation: spinner 1.5s linear infinite;
+  .loader {
+    border-top-color: #3498db;
+    -webkit-animation: spinner 1.5s linear infinite;
+    animation: spinner 1.5s linear infinite;
+  }
+
+  @-webkit-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
     }
-  
-    @-webkit-keyframes spinner {
-      0% {
-        -webkit-transform: rotate(0deg);
-      }
-      100% {
-        -webkit-transform: rotate(360deg);
-      }
+
+    100% {
+      -webkit-transform: rotate(360deg);
     }
-  
-    @keyframes spinner {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
+  }
+
+  @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
     }
-  </style>
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
 
 
 
 
-  <div class="max-w-6xl mx-auto">
+<div class="max-w-6xl mx-auto">
   <div class="mx-auto flex items-center justify-center p-5 space-x-2">
-    <div class="">Hostname:</div>    
+    <div class="">Hostname:</div>
     <div class="">
-        <input
-          id="website_port"
-          type="text"
-          placeholder="Placeholder"
-          class="
+      <input id="website_port" type="text" placeholder="Placeholder" class="
             px-3
             py-3
             placeholder-gray-400
@@ -465,12 +483,9 @@ $.ajax({
             outline-none
             focus:outline-none focus:ring
             w-full
-          "
-        />
-      </div>
-      <button 
-      onclick="myFunction()"
-      class="
+          " />
+    </div>
+    <button onclick="myFunction()" class="
         bg-purple-500
         active:bg-purple-900
         text-white
@@ -487,21 +502,17 @@ $.ajax({
         ease-linear
         transition-all
         duration-150
-      "
-      type="button"
-    >
-    TEST SSL
+      " type="button">
+      TEST SSL
     </button>
 
-    <div
-    id="loading-spinner" style="display: none;"
-    class="
+    <div id="loading-spinner" style="display: none;" class="
         loader
         ease-linear
         rounded-full
         border-8 border-t-8 border-gray-200
         h-10
-        w-10" >
+        w-10">
     </div>
 
   </div>
@@ -509,6 +520,6 @@ $.ajax({
   <div class="flex justify-center items-center" id="scanning-update"> </div>
 
   <div class="mx-auto mt-10 mb-10 bg-white rounded-md" id="ssl-data"></div>
-  </div>
+</div>
 
-  {% endblock %}
+{% endblock %}
