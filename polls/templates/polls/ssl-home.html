@@ -101,8 +101,8 @@
         var other_cert = [];
         for (var num in data["cert_deployments"]) {
 
-          ssl_data.innerHTML += '<div class="shadow-sm border border-gray-200" id="main-cert' + num + '"></div>'
-          ssl_data.innerHTML += '<div class="shadow-sm border border-gray-200" id="other-cert' + num + '"></div>'
+          ssl_data.innerHTML += '<div class="shadow-sm border py-10 px-10 border-gray-200" id="main-cert' + num + '"></div>'
+          ssl_data.innerHTML += '<div class="shadow-sm border py-10 px-10 border-gray-200" id="other-cert' + num + '"></div>'
           ssl_data.innerHTML += '<br>'
 
 
@@ -117,13 +117,12 @@
             if (inner_num == 0) {
               main_cert_num++
               main_cert[num].innerHTML +=
-                '<div class="grid grid-cols-4 font-bold justify-center items-center py-2 px-6"><div></div> <div class="font-semibold">Received Certificate Chain #' +
-                main_cert_num + '</div></div>';
+                '<div class="grid grid-cols-4 font-bold justify-center items-center py-2 px-6"><div></div> <div class="font-semibold">Received Certificate Chain #' +main_cert_num + '</div></div>';
               for (var key in (data["cert_deployments"][num]["received_certificate_chain"][inner_num])) {
                 if (key != "pem") {
 
                   main_cert[num].innerHTML +=
-                    '<div class="grid grid-cols-4 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
+                    '<div class="grid grid-cols-4 bg-gray-200 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
                     key + '</div><div class="col-span-3">' + (data["cert_deployments"][num][
                       "received_certificate_chain"
                     ][inner_num][key]) + "</div></div>";
@@ -132,8 +131,7 @@
               }
 
               var divider_div = document.createElement('div')
-              divider_div.innerHTML =
-                '<div></div><div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></div><div></div>';
+              divider_div.innerHTML ='<div></div><div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></div><div></div>';
               divider_div.classList = 'flex justify-center items-center'
 
 
@@ -146,11 +144,14 @@
                 if (!key.includes("Subject")) {
                   if (key != "pem") {
                     other_cert[num].innerHTML +=
-                      '<div class="grid grid-cols-4 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
+                      '<div class="grid grid-cols-4 justify-items-start items-center bg-gray-200 py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
                       key + '</div><div class="col-span-3">' + (data["cert_deployments"][num]["received_certificate_chain"][inner_num][key]) + "</div></div>";
                   }
-                }
+                }                
               }
+
+              other_cert[num].innerHTML += '<div></div><div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></div><div></div>';
+
             }
           }
 
