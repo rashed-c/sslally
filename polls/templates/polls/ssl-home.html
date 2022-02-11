@@ -240,8 +240,9 @@ $.ajax({
         for (var key in data) { 
           if (data.hasOwnProperty(key)) {
           ssl_data_div.innerHTML += '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 ">'+(key)+(data[key])+"</div>";
-          console.log(data[key])
+		  console.log(data[key])
         }
+		data="";	
       }
   
         },
