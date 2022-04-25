@@ -60,7 +60,6 @@
                   <div class="px-2 py-2 bg-white rounded-md shadow dark-mode:bg-gray-800">
                     <a class="block px-4 py-2 mt-2 text-md fontawesome bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/dig">DIG</a>
                     <a class="block px-4 py-2 mt-2 text-md fontawesome bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/ping">Ping</a>
-                    <a class="block px-4 py-2 mt-2 text-md fontawesome bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/traceroute">Traceroute</a>
                     <a class="block px-4 py-2 mt-2 text-md fontawesome bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/portcheck">Port check</a>
                   </div>
                 </div>
@@ -116,9 +115,7 @@
           flex-wrap flex-col
         "
       >
-        <div
-          class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left"
-        >
+        <div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
           <a
             href=""
             class="
@@ -164,27 +161,27 @@
                 mb-3
               "
             >
-              CATEGORIES
+              TOOLS
             </h2>
             <nav class="list-none mb-10">
               <li>
-                <a href="" class="text-gray-600 hover:text-gray-800"
-                  >First Link</a
+                <a href="/ssl/" class="text-gray-600 hover:text-gray-800"
+                  >SSL Test</a
                 >
               </li>
               <li>
-                <a href="" class="text-gray-600 hover:text-gray-800"
-                  >Second Link</a
+                <a href="/dig/" class="text-gray-600 hover:text-gray-800"
+                  >DIG</a
                 >
               </li>
               <li>
-                <a href="" class="text-gray-600 hover:text-gray-800"
-                  >Third Link</a
+                <a href="/ping/" class="text-gray-600 hover:text-gray-800"
+                  >Ping</a
                 >
               </li>
               <li>
-                <a href="" class="text-gray-600 hover:text-gray-800"
-                  >Fourth Link</a
+                <a href="/portcheck/" class="text-gray-600 hover:text-gray-800"
+                  >Port test</a
                 >
               </li>
             </nav>
@@ -261,6 +258,7 @@
               </li>
             </nav>
           </div>
+
           <div class="lg:w-1/4 md:w-1/2 w-full px-4">
             <h2
               class="
@@ -297,6 +295,7 @@
               </li>
             </nav>
           </div>
+          
         </div>
       </div>
   
@@ -352,318 +351,6 @@
 
     
 
-  
-<!-- <div class="bg-white shadow w-full text-gray-700 dark-mode:text-gray-200 dark-mode:bg-gray-800">
-  <div x-data="{ open: false }" class="flex flex-col py-1 md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
-    <div class="p-4 flex flex-row items-center justify-between">
-      <a href="/" class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-sm dark-mode:text-white focus:outline-none focus:shadow-outline">SSL Ally</a>
-      <button class="md:hidden rounded-sm focus:outline-none focus:shadow-outline" @click="open = !open">
-        <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
-          <path x-show="!open" fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-          <path x-show="open" fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-        </svg>
-      </button>
-    </div>
-    <nav :class="{'flex': open, 'hidden': !open}" class="flex-col flex-grow pb-4 md:pb-0 hidden md:flex md:justify-end md:flex-row">
-      <a class="px-6 py-2 mt-2 text-md rounded-sm dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/ssl">SSL Test</a>
-      <div @click.away="open = false" class="relative" x-data="{ open: false }">
-        <button @click="open = !open" class="flex flex-row items-center w-full px-6 py-2 mt-2 text-md bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:focus:bg-gray-600 dark-mode:hover:bg-gray-600 md:w-auto md:inline md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-          <span>Toolbox</span>
-          <svg fill="currentColor" viewBox="0 0 20 20" :class="{'rotate-180': open, 'rotate-0': !open}" class="inline w-4 h-4 mt-1 ml-1 transition-transform duration-200 transform md:-mt-1"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        </button>
-        <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 w-full mt-2 origin-top-right rounded-md shadow-lg md:w-48">
-          <div class="px-2 py-2 bg-white rounded-md shadow dark-mode:bg-gray-800">
-            <a class="block px-4 py-2 mt-2 text-md fontawesome bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/dig">DIG</a>
-            <a class="block px-4 py-2 mt-2 text-md fontawesome bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/ping">Ping</a>
-            <a class="block px-4 py-2 mt-2 text-md fontawesome bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/traceroute">Traceroute</a>
-            <a class="block px-4 py-2 mt-2 text-md fontawesome bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/portcheck">Port check</a>
-          </div>
-        </div>
-      </div>  
-      <a class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Blog</a>
-      <a class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">About</a>
-      <a class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Contact</a>
-      <button onclick="signIn()" class="
-      md:w-30
-      sm:w-30
-      bg-indigo-500
-      text-white
-      active:bg-purple-600
-      font-bold
-      uppercase
-      text-sm
-      px-6
-      py-3
-      rounded-sm
-      shadow
-      hover:shadow-lg
-      outline-none
-      focus:outline-none
-      ease-linear
-      transition-all
-      duration-150
-      shadow-sm" 
-      type="button">
-    Sign In
-  </button>
-        
-    </nav>
-  </div>
-</div>
-  </head>
 
-
-  <bodys class="">
- 
-  </bodys>
-
-
-  <footers class="bg-gray-300">
-    <div
-      class="
-        container
-        px-5
-        py-24
-        mx-auto
-        flex
-        md:items-center
-        lg:items-start
-        md:flex-row md:flex-nowrap
-        flex-wrap flex-col
-      "
-    >
-      <div
-        class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left"
-      >
-        <a
-          href=""
-          class="
-            flex
-            title-font
-            font-medium
-            items-center
-            md:justify-start
-            justify-center
-            text-gray-900
-          "
-        >
-          <i class="fas fa-cubes fa-lg text-purple-500"></i>
-          <span class="ml-3 text-xl">SSLAlly</span>
-        </a>
-        <p class="mt-2 text-sm font-medium text-gray-500">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi,
-          quam?
-        </p>
-      </div>
-      <div
-        class="
-          flex-grow flex flex-wrap
-          md:pl-20
-          -mb-10
-          md:mt-0
-          mt-10
-          md:text-left
-          text-center
-          text-gray-300
-          font-medium
-          border-gray-200
-        "
-      >
-        <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-          <h2
-            class="
-              title-font
-              font-medium
-              text-gray-900
-              tracking-widest
-              text-sm
-              mb-3
-            "
-          >
-            CATEGORIES
-          </h2>
-          <nav class="list-none mb-10">
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >First Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Second Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Third Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Fourth Link</a
-              >
-            </li>
-          </nav>
-        </div>
-        <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-          <h2
-            class="
-              title-font
-              font-medium
-              text-gray-900
-              tracking-widest
-              text-sm
-              mb-3
-            "
-          >
-            CATEGORIES
-          </h2>
-          <nav class="list-none mb-10">
-            <li>
-              <a href="" class="text-gray-400 hover:text-gray-800"
-                >First Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Second Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Third Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Fourth Link</a
-              >
-            </li>
-          </nav>
-        </div>
-        <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-          <h2
-            class="
-              title-font
-              font-medium
-              text-gray-900
-              tracking-widest
-              text-sm
-              mb-3
-            "
-          >
-            CATEGORIES
-          </h2>
-          <nav class="list-none mb-10">
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >First Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Second Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Third Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Fourth Link</a
-              >
-            </li>
-          </nav>
-        </div>
-        <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-          <h2
-            class="
-              title-font
-              font-medium
-              text-gray-900
-              tracking-widest
-              text-sm
-              mb-3
-            "
-          >
-            CATEGORIES
-          </h2>
-          <nav class="list-none mb-10">
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >First Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Second Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Third Link</a
-              >
-            </li>
-            <li>
-              <a href="" class="text-gray-600 hover:text-gray-800"
-                >Fourth Link</a
-              >
-            </li>
-          </nav>
-        </div>
-      </div>
-    </div>
-
-     Footer bread crumb-->
-    
-     <!-- <div class="bg-gray-900">
-      <div
-        class="
-          container
-          mx-auto
-          py-4
-          px-5
-          flex flex-wrap flex-col
-          sm:flex-row
-        "
-      >
-        <p class="text-gray-400 text-sm text-center sm:text-left">
-          © 2021 Copyright:
-          <a
-            href="/"
-            class="font-bold text-gray-400 ml-1"
-            target="_blank"
-            >SSLAlly</a>
-        </p>
-        <span
-          class="
-            inline-flex
-            sm:ml-auto sm:mt-0
-            mt-2
-            justify-center
-            sm:justify-start
-          "
-        >
-          <a href="" class="text-gray-500">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-          <a href="" class="ml-3 text-gray-500">
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a href="" class="ml-3 text-gray-500">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a href="" class="ml-3 text-gray-500">
-            <i class="fab fa-youtube"></i>
-          </a>
-          <a href="" class="ml-3 text-gray-500">
-            <i class="fab fa-instagram"></i>
-          </a>
-        </span>
-      </div>
-    </div>
-  </footers> --> 
 
 </html>
