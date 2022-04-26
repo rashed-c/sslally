@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #Other django apps
+    # Other django apps
     'tailwind',
     'theme',
     'polls',
@@ -130,7 +130,6 @@ STATIC_URL = '/static/'
 TAILWIND_APP_NAME = 'theme'
 
 
-
 # RATELIMIT SETTINGS
 #RATELIMIT_CACHE_PREFIX = 'rl:'
 RATELIMIT_ENABLE = True
@@ -138,17 +137,13 @@ RATELIMIT_USE_CACHE = 'default'
 #RATELIMIT_VIEW = None
 
 
+# Windows NPM path
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
-#Windows NPM path
-#NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
-
-#Mac NPM path
+# Mac NPM path
 #NPM_BIN_PATH = "/usr/local/bin/npm"
 
 
-#Linux NPM path
-NPM_BIN_PATH = "/usr/bin/npm"
-                                                
-
-                    
+# Linux NPM path
+#NPM_BIN_PATH = "/usr/bin/npm"
