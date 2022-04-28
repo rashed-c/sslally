@@ -9,8 +9,8 @@
 $(document).ready(function() {
 
 
-
- $("button").click(function(){
+ //get value from buttons in div id: record_buttons 
+ $("#record_buttons button").click(function(){
   var button_value = $(this).val();
   var website_port = document.getElementById("website_port").value;
   var dns_server = document.getElementById("dns_server").value;
@@ -95,7 +95,7 @@ $(document).ready(function() {
       </div>
     
 
-      <div  class="flex-wrap max-w-max mx-auto  mt-10 flex  border divide-indigo-400 border-indigo-500 rounded-sm bg-gray-100 divide-indigo-400 text-base text-indigo-500 leading-5">
+      <div id="record_buttons"  class="flex-wrap max-w-max mx-auto  mt-10 flex  border divide-indigo-400 border-indigo-500 rounded-sm bg-gray-100 divide-indigo-400 text-base text-indigo-500 leading-5">
         <button value="A"
             class="px-4 py-2 cursor-pointer focus:bg-purple-600 focus:text-white focus:scale-110 focus:outline-none hover:bg-purple-600 hover:text-white transition duration-200 ease-in-out flex justify-center items-center">
             <span class="ml-2">A</span>
