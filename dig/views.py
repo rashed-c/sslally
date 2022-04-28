@@ -24,15 +24,21 @@ def do_dig(request):
         my_resolver.nameservers = ["1.1.1.1"]
 
     def resolve_query(query_type):
-
         dig_result = {query_type: []}
         try:
             answer = my_resolver.query(website, query_type)
             for rdata in answer:
                 ttl = answer.rrset.ttl
                 result = rdata
-                dig_result[query_type].append(
-                    {query_type: str(result), "TTL": str(ttl)})
+                if (query_type == "MX"):
+                    result = rdata.exchange
+                    preference = rdata.preference
+                    dig_result[query_type].append(
+                        {query_type: str(result), "TTL": str(ttl),
+                         "Preference": str(preference)})
+                else:
+                    dig_result[query_type].append(
+                        {query_type: str(result), "TTL": str(ttl)})
         except Exception as e:
             dig_result[query_type].append(
                 {query_type: f"No {query_type} records found!"})
