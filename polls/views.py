@@ -173,95 +173,24 @@ def result(request):
     '''
 
     certs = getCert(website, port)
-    # print(certs)
-    # cert_data=[{"Main Certs":[],"Other Certs":[], "Cert Path":[]}]
-    # cert_data={"Main Certs":[],"Other Certs":[],"Cert Path":[]}
-    # for dep_num in range(len(certs["cert_deployments"])):
-    #     cert_data["Main Certs"].append([])
-    #     cert_data["Other Certs"].append([])
-    #     cert_data["Cert Path"].append([])
-    #     for cert_num in range(len(certs["cert_deployments"][dep_num]["received_certificate_chain"])):
-    #         if cert_num == 0:
-    #             cert_data["Main Certs"][dep_num].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
-    #         else:
-    #             cert_data["Other Certs"][dep_num].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
-    #     for path_num in range(len(certs["cert_deployments"][dep_num]["path_validation_results"])):
-    #         cert_data["Cert Path"][dep_num].append([])
-    #         cert_data["Cert Path"][dep_num][path_num].append({certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["chain_name"]:[]})
-    #         #print(cert_data["Cert Path"][dep_num][path_num])
-    #         for path_cert_num in range(len(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"])):
-    #             #print(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"])
-    #             cert_data["Cert Path"][dep_num][path_num].append(certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"][path_cert_num])
-
-    # #cert_data[0]["Main Cert"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
-    # # cert_data={"Main Certs":[],"Other Certs":[], "Cert Path":[]}
-
-    # # for dep_num in range(len(certs["cert_deployments"])):
-    # #     for cert_num in range(len(certs["cert_deployments"][dep_num]["received_certificate_chain"])):
-    # #         if cert_num == 0:
-    # #             cert_data["Main Certs"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
-    # #         else:
-    # #             cert_data["Other Certs"].append(certs["cert_deployments"][dep_num]["received_certificate_chain"][cert_num])
-    # #     for path_num in range(len(certs["cert_deployments"][dep_num]["path_validation_results"])):
-    # #         path_name = certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["chain_name"]
-    # #         cert_data["Cert Path"].append({"Name":path_name, "Path Chain":[]})
-    # #         for path_chain_num in range(len(certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"])):
-    # #             cert_data["Cert Path"][path_num]["Path Chain"].append(certs["cert_deployments"][dep_num]["path_validation_results"][path_num]["verrified_certificate_chain"][path_chain_num])
-
-    #     # for cert_num in range(len(certs["cert_deployments"][dep_num]["received_certificate_chain"])):
-    #     #     if cert_num == 0:
-    #     #         cert_data["Main Certs"].append(certs["cert_deployments"][0]["received_certificate_chain"][cert_num])
-    #     #     else:
-    #     #         cert_data["Other Certs"].append(certs["cert_deployments"][0]["received_certificate_chain"][cert_num])
-    #     # for path_num in range(len(certs["cert_deployments"][0]["path_validation_results"])):
-    #     #     path_name = certs["cert_deployments"][0]["path_validation_results"][path_num]["chain_name"]
-    #     #     cert_data["Cert Path"].append({"Name":path_name, "Path Chain":[]})
-    #     #     for path_chain_num in range(len(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"])):
-    #     #         cert_data["Cert Path"][path_num]["Path Chain"].append(certs["cert_deployments"][0]["path_validation_results"][path_num]["verrified_certificate_chain"][path_chain_num])
-
-    # print(cert_data)
-
-    # cert_data=[]
-    # deployment_num = 0
-    # for deployment in cert_deployments:
-    #     for cert in deployment:
-    #         cert_num = 0
-    #         #Main cert
-    #         if (cert == cert_deployments[deployment_num][0]):
-    #             cert_data.append([{"Main cert" :
-    #             {"Certificate #: " : cert[0]["Certificate #"],
-    #             "Valid from: " : cert[0]["Valid from"],
-    #             "Host name: " : cert[0]["DNS Name"],
-    #             "Expiration date: " : cert[0]["Expiration Date"]}}])
-
-    #         #Intermediate cert
-    #         else:
-    #             cert_data[0].append([{"Valid from" : cert[cert_num]["Valid from"],
-    #             "Serial Number" : cert[cert_num]["Serial Number"],
-    #           #  "Host name" : cert[cert_num]["DNS Name"],
-    #             "Expiration Date" : cert[cert_num]["Expiration Date"]}])
-    #         #     "Host name" : cert_deployments[deployment][cert]["DNS Name"],
-    #         #     "Expiration date" : cert_deployments[deployment][cert]["Expiration Date"]}])
-    #     deployment_num +=1
-    # cert_data = {'<div class="cursor-pointer pr-2 font-semibold"> Valid between: </div>':'<div class="fontawesome">'+validfrom_date+" - "+expiration_date+"</div>",
-    # '<div class="cursor-pointer pr-2 font-semibold"> Host name: </div>':'<div class="cursor-pointer fontawesome">'+str(host_names)+"</div>"+"<div class=''>"+valid_svg+"</div>",}
-    # #'<div class="cursor-pointer pr-2 font-semibold"> Certificate Authority: </div>':'<div class="fontawesome">'+cert_organization+"</div>"+"<div class=''>"+ca_status+"</div>"}
-    # print(cert_data)
-
     cert_data_json = json.dumps(certs)
     return JsonResponse(cert_data_json, safe=False)
     # return render(request, 'polls/result.html', {'certinfo':certinfo_view,'tlsinfo10':accepted_tls10,'tlsinfo11':accepted_tls11,'tlsinfo12':accepted_tls12,'tlsinfo13':accepted_tls13} )
 
 
 def getCert(website, port):
-    server_location = ServerNetworkLocationViaDirectConnection.with_ip_address_lookup(
-        website, port)
-    server_info = ServerConnectivityTester().perform(server_location)
-    scanner = Scanner()
-    server_scan_req = ServerScanRequest(server_info=server_info, scan_commands={
-                                        ScanCommand.CERTIFICATE_INFO}, )
-    scanner.queue_scan(server_scan_req)
     cert = {"cert_deployments": []}
+    server_location = ServerNetworkLocationViaDirectConnection.with_ip_address_lookup(website, port)
+    print(server_location)
+    try:
+        server_info = ServerConnectivityTester().perform(server_location)
+    except:
+        print(cert)
+        return cert
+    scanner = Scanner()
+    server_scan_req = ServerScanRequest(server_info=server_info, scan_commands={ScanCommand.CERTIFICATE_INFO}, )
+    scanner.queue_scan(server_scan_req)
+    
     for server_scan_result in scanner.get_results():
         certinfo_result = server_scan_result.scan_commands_results[ScanCommand.CERTIFICATE_INFO]
         server_scan_result_as_json = json.dumps(
@@ -374,6 +303,7 @@ def getCert(website, port):
         #             path_num += 1
         #         chain_num +=1
         #     deployment_num +=1
+        print(cert)
     return (cert)
 
 
@@ -390,7 +320,6 @@ def getExpirationDays(date):
     date = (datetime.strptime(date, '%Y-%m-%d').strftime('%B %d, %Y'))
     date_and_days = date+" (Expiring in "+str(expiring_in_days)+" days)"
     #date = datetime.strptime(date,'%Y-%m-%d')
-
     #expring_in_days = (date - datetime.today()).days
     #formatted_date = (datetime.strptime(date,'%Y-%m-%d').strftime('%B %d, %Y'))
     # print(expring_in_days)

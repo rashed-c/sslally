@@ -91,8 +91,10 @@
         scanner_text.innerHTML = "Scanning certificate..."
       },
       success: function (data) {
-
+         
         data = JSON.parse(data)
+      
+
 
         ssl_data.innerHTML +=
           '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2"> Main Certificate Information</div>';
@@ -109,9 +111,7 @@
           main_cert[num] = document.getElementById('main-cert' + num);
           other_cert[num] = document.getElementById('other-cert' + num);
 
-          console.log(main_cert[num])
-
-
+      
           for (var inner_num in (data["cert_deployments"][num]["received_certificate_chain"])) {
 
             if (inner_num == 0) {
@@ -198,10 +198,13 @@
           }
 
         }
-
-      },
-
+     
+    }
+,
+ 
       complete: function () {
+
+        //console.log(data['cert_deployments'].length != 0) 
         //Second AJAX FUNCTION
         $.ajax({
           type: "GET",
@@ -426,9 +429,9 @@
           }
         })
       },
+      
       failure: function (data) {
         console.log('Got an error dude');
-
       }
     })
 
