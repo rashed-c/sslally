@@ -27,6 +27,6 @@ urlpatterns = [
     path('polls/', include('polls.urls')),
     path('ping/', include('ping.urls')),
     path('dig/', include('dig.urls')),
-    path('monitor/', include('monitor.urls')),
     path('portcheck/', include('portcheck.urls')),
+    path('monitor/', include('ssl_monitor.urls')),
     path('admin/', admin.site.urls), ]
