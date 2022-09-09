@@ -185,7 +185,6 @@ def getCert(website, port):
     try:
         server_info = ServerConnectivityTester().perform(server_location)
     except:
-        print(cert)
         return cert
     scanner = Scanner()
     server_scan_req = ServerScanRequest(server_info=server_info, scan_commands={ScanCommand.CERTIFICATE_INFO}, )
@@ -248,62 +247,6 @@ def getCert(website, port):
                     cert_authority = getCertificateAuthority(serial)
                     cert["cert_deployments"][dep_num]["path_validation_results"][chain_name].append(
                         {"pem": as_pem, "<div>Subject: </div>": subject, "<div>Serial number: </div>": serial, "<div>Issuer: </div>": cert_authority})
-
-                    # .append([{"serial_number": serial}])
-
-        # deployment_num = 0
-        # for deployment in (certinfo_json["certificate_deployments"]):
-        #     cert.append([])
-        #     chain_num = 0
-        #     for cert_chain in (certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"]):
-        #         certificate_num = deployment_num+1
-        #         hpkp_pin = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["hpkp_pin"]
-        #         cert_serial_number = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["serial_number"]
-        #         expiration_date = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["not_valid_after"]
-        #         expiration_date = expiration_date[0:-9]
-        #         expiration_date = (datetime.strptime(expiration_date,'%Y-%m-%d').strftime('%B %d, %Y'))
-        #         validfrom_date = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["not_valid_before"]
-        #         validfrom_date = validfrom_date[0:-9]
-        #         validfrom_date = (datetime.strptime(validfrom_date,'%Y-%m-%d').strftime('%B %d, %Y'))
-        #         dns_name = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["subject_alternative_name"]["dns"]
-        #         host_name = []
-        #         filtered = fnmatch.filter(dns_name,website)
-        #         if filtered:
-        #             host_status = valid_svg
-        #             for name in dns_name:
-        #                 if name == website:
-        #                     host_name.append('<div class="bg-gray-300 font-bold">'+name+"</div>")
-        #                 else:
-        #                     host_name.append(name+", ")
-        #         else:
-        #             website = (get_fld(website, fix_protocol=True))
-        #             filtered = fnmatch.filter(dns_name,"*."+website)
-        #             if(filtered):
-        #                 website_highlight = "*."+website
-        #                 for name in dns_name:
-        #                     if name == website_highlight:
-        #                         host_name.append('<div class="bg-gray-300 font-bold">'+name+"</div>")
-        #                     else:
-        #                         host_name.append(name+"<br>")
-        #                 host_status = valid_svg
-        #             else:
-        #                 host_status = invalid_svg
-        #         host_names = ""
-        #         for name in host_name:
-        #             host_names += name
-        #         key_size = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["public_key"]["key_size"]
-        #         cert_serial_number = certinfo_json["certificate_deployments"][deployment_num]["received_certificate_chain"][chain_num]["serial_number"]
-        #         serial_number_hex = checkCA(cert_serial_number)
-        #         cert[deployment_num].append([])
-        #         cert[deployment_num][chain_num].append({"Certificate #": certificate_num,"Serial Number" : serial_number_hex, "hpkp_pin": hpkp_pin, "Expiration Date": expiration_date, "Valid from": validfrom_date,"DNS Name": host_name, "Key size": key_size})
-        #         #cert.append({deployment_num:{chain_num:{"Serial Number" : serial_number_hex, "hpkp_pin": hpkp_pin, "Expiration Date": expiration_date, "Valid from": validfrom_date,"DNS Name": dns_name, "Key size": key_size}}})
-        #         path_num=0
-        #         for path in (certinfo_json["certificate_deployments"][deployment_num]["path_validation_results"]):
-        #             print(certinfo_json["certificate_deployments"][deployment_num]["path_validation_results"][path_num]["trust_store"]["name"])
-        #             path_num += 1
-        #         chain_num +=1
-        #     deployment_num +=1
-        print(cert)
     return (cert)
 
 
@@ -319,12 +262,8 @@ def getExpirationDays(date):
         date, '%Y-%m-%d') - datetime.today()).days
     date = (datetime.strptime(date, '%Y-%m-%d').strftime('%B %d, %Y'))
     date_and_days = date+" (Expiring in "+str(expiring_in_days)+" days)"
-    #date = datetime.strptime(date,'%Y-%m-%d')
-    #expring_in_days = (date - datetime.today()).days
-    #formatted_date = (datetime.strptime(date,'%Y-%m-%d').strftime('%B %d, %Y'))
-    # print(expring_in_days)
     return(str(date_and_days))
-    #validfrom_date = (datetime.strptime(validfrom_date,'%Y-%m-%d').strftime('%B %d, %Y'))
+   
 
 
 def getProtocol(website, port, protocol):
@@ -357,11 +296,6 @@ def getProtocol(website, port, protocol):
             accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
             supported_suites[protocol].append(
                 accepted_cipher_suite.cipher_suite.name)
-        # if(accepted_ciphers):
-        #     pass
-        # else:
-        #     accepted_ciphers = protocol + " not supported"
-        #accepted_ciphers = json.dumps(accepted_ciphers)
         if(supported_suites[protocol]):
             cipher_suites = ""
             for cipher in supported_suites[protocol]:

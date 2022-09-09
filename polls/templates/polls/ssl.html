@@ -13,29 +13,29 @@
 
   function myFunction() {
 
-    var website_port = document.getElementById("website_port").value;
-    var ssl_data = document.getElementById("ssl-data");
-    var spinner_div = document.getElementById("loading-spinner");
-    var scanner_text = document.getElementById("scanning-update");
-    ssl_data.innerHTML = ""
+var website_port = document.getElementById("website_port").value;
+var ssl_data = document.getElementById("ssl-data");
+var spinner_div = document.getElementById("loading-spinner");
+var scanner_text = document.getElementById("scanning-update");
+ssl_data.innerHTML = ""
 
-    function path_block(path, num) {
-      path_id_num = 0
-      if (num != 0) {
+function path_block(path, num) {
+    path_id_num = 0
+    if (num != 0) {
         path_id_num = num * 5
-      }
-      if (path == "Android") {
+    }
+    if (path == "Android") {
         path_id_num = 1 + path_id_num
-      } else if (path == "Apple") {
+    } else if (path == "Apple") {
         path_id_num = 2 + path_id_num
-      } else if (path == "Java") {
+    } else if (path == "Java") {
         path_id_num = 3 + path_id_num
-      } else if (path == "Mozilla") {
+    } else if (path == "Mozilla") {
         path_id_num = 4 + path_id_num
-      } else if (path == "Windows") {
+    } else if (path == "Windows") {
         path_id_num = 5 + path_id_num
-      }
-      var path_block = '' +
+    }
+    var path_block = '' +
         '<div x-data="{id: ' + path_id_num + '}">' +
         '      <button  @click="$dispatch(\'open-dropdown\',{id})" class="bg-blue-600 text-gray-200 hover:bg-blue-500 px-4 py-3 text-sm focus:outline-none" type="button">' +
         '      ' + path +
@@ -43,26 +43,26 @@
         '</div>' +
         '';
 
-      return path_block
-    }
+    return path_block
+}
 
-    function path_data_block(path, num) {
-      path_id_num = 0
-      if (num != 0) {
+function path_data_block(path, num) {
+    path_id_num = 0
+    if (num != 0) {
         path_id_num = num * 5
-      }
-      if (path == "Android") {
+    }
+    if (path == "Android") {
         path_id_num = 1 + path_id_num
-      } else if (path == "Apple") {
+    } else if (path == "Apple") {
         path_id_num = 2 + path_id_num
-      } else if (path == "Java") {
+    } else if (path == "Java") {
         path_id_num = 3 + path_id_num
-      } else if (path == "Mozilla") {
+    } else if (path == "Mozilla") {
         path_id_num = 4 + path_id_num
-      } else if (path == "Windows") {
+    } else if (path == "Windows") {
         path_id_num = 5 + path_id_num
-      }
-      var path_data_block = '' +
+    }
+    var path_data_block = '' +
         '<div class="bg-white my-2 mx-2 py-2 px-2 border-t border-gray-200" x-data="{ open: false }"' +
         '    x-show="open"' +
         '    @open-dropdown.window="if ($event.detail.id ==' + path_id_num + ') open = true"' +
@@ -70,378 +70,323 @@
         '    <div id="cert-path-' + path + num + '"></div>' +
         '</div>' +
         '';
-      return path_data_block
-    }
+    return path_data_block
+}
 
-    scanner_text.innerHTML = ""
-    // ssl_data.innerHTML=""
-    //ssl_path_div.innerHTML=""
+scanner_text.innerHTML = ""
+// ssl_data.innerHTML=""
+//ssl_path_div.innerHTML=""
 
-    //document.getElementById("ssl-data").innerHTML.replace(" ");
-    // if (typeof ajax_request !== 'undefined') {
-    //   ajax_request.abort();}
+//document.getElementById("ssl-data").innerHTML.replace(" ");
+// if (typeof ajax_request !== 'undefined') {
+//   ajax_request.abort();}
 
 
-    $.ajax({
+$.ajax({
 
-      type: "GET",
-      url: "result/?website_port=" + website_port,
-      beforeSend: function () {
+    type: "GET",
+    url: "result/?website_port=" + website_port,
+    beforeSend: function() {
         $('#loading-spinner').show();
         scanner_text.innerHTML = "Scanning certificate..."
-      },
-      success: function (data) {
-         
+    },
+    success: function(data) {
+
         data = JSON.parse(data)
-      
+
+        if (data['cert_deployments'].length != 0) {
 
 
-        ssl_data.innerHTML +=
-          '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2"> Main Certificate Information</div>';
-        main_cert_num = 0
-        var main_cert = [];
-        var other_cert = [];
-        for (var num in data["cert_deployments"]) {
-
-          ssl_data.innerHTML += '<div class="shadow-sm border py-10 px-10 border-gray-200" id="main-cert' + num + '"></div>'
-          ssl_data.innerHTML += '<div class="shadow-sm border py-10 px-10 border-gray-200" id="other-cert' + num + '"></div>'
-          ssl_data.innerHTML += '<br>'
-
-
-          main_cert[num] = document.getElementById('main-cert' + num);
-          other_cert[num] = document.getElementById('other-cert' + num);
-
-      
-          for (var inner_num in (data["cert_deployments"][num]["received_certificate_chain"])) {
-
-            if (inner_num == 0) {
-              main_cert_num++
-              main_cert[num].innerHTML +=
-                '<div class="grid grid-cols-4 font-bold justify-center items-center py-2 px-6"><div></div> <div class="font-semibold">Received Certificate Chain #' +main_cert_num + '</div></div>';
-              for (var key in (data["cert_deployments"][num]["received_certificate_chain"][inner_num])) {
-                if (key != "pem") {
-
-                  main_cert[num].innerHTML +=
-                    '<div class="grid grid-cols-4 bg-gray-200 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
-                    key + '</div><div class="col-span-3">' + (data["cert_deployments"][num][
-                      "received_certificate_chain"
-                    ][inner_num][key]) + "</div></div>";
-
-                }
-              }
-
-              var divider_div = document.createElement('div')
-              divider_div.innerHTML ='<div></div><div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></div><div></div>';
-              divider_div.classList = 'flex justify-center items-center'
-
-
-              other_cert[num].parentNode.insertBefore(divider_div, other_cert[num])
-              other_cert[num].innerHTML +=
-                '<div class="flex font-bold justify-center items-center  py-2 px-2"> Other Certificates</div>';
-
-            } else {
-              for (var key in (data["cert_deployments"][num]["received_certificate_chain"][inner_num])) {
-                if (!key.includes("Subject")) {
-                  if (key != "pem") {
-                    other_cert[num].innerHTML +=
-                      '<div class="grid grid-cols-4 justify-items-start items-center bg-gray-200 py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
-                      key + '</div><div class="col-span-3">' + (data["cert_deployments"][num]["received_certificate_chain"][inner_num][key]) + "</div></div>";
-                  }
-                }                
-              }
-
-              other_cert[num].innerHTML += '<div></div><div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></div><div></div>';
-
-            }
-          }
-
-
-          other_cert[num].innerHTML += '<div id="ssl-path-data' + num + '" class="flex py-2 px-2"></div>';
-          var ssl_path_div = document.getElementById('ssl-path-data' + num);
-          ssl_path_div.innerHTML +=
-            '<div class="font-bold bg-gray-300 justify-center items-center py-2 px-2 rounded-sm">Cert Paths: </div>';
-
-          //section for creating path
-
-          for (var key in (data["cert_deployments"][num]["path_validation_results"])) {
-
-            ssl_path_div.innerHTML += path_block(key, num)
-
-            for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])) {
-              for (var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])) {
-                if (inner_key.hasOwnProperty) {}
-              }
-            }
-          }
-
-          for (var key in (data["cert_deployments"][num]["path_validation_results"])) {
-            other_cert[num].innerHTML += path_data_block(key, num)
-            path_data = document.getElementById('cert-path-' + key + num);
-
-            for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])) {
-
-              for (var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])) {
-                if (inner_key.hasOwnProperty) {
-                  if (inner_key != "pem") {
-                    path_data.innerHTML +=
-                      '<div class="grid grid-cols-4 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
-                      inner_key + '</div><div class="col-span-3">' + (data["cert_deployments"][num][
-                        "path_validation_results"
-                      ][key][inner_num][inner_key]) + "</div></div>";
-                  }
-                }
-
-
-              }
-            }
-
-          }
-
-        }
-     
-    }
-,
- 
-      complete: function () {
-
-        //console.log(data['cert_deployments'].length != 0) 
-        //Second AJAX FUNCTION
-        $.ajax({
-          type: "GET",
-          url: "ssl2_0/?website_port=" + website_port,
-          beforeSend: function () {
-            $('#loading-spinner').show();
-            scanner_text.innerHTML = "Scanning for SSL 2.0"
-          },
-          success: function (data) {
-
-            data = JSON.parse(data)
             ssl_data.innerHTML +=
-              '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2">SSL Protocols</div>';
-            ssl_data.appendChild(ssl_data_div)
-            ssl_data_div.innerHTML = '';
-            ssl_data_div.innerHTML +=
-              '<div class="grid grid-cols-3 justify-items-start items-center font-bold py-2 px-2"><div>Protocol</div><div>Cipher Suites</div></div>';
-            for (var key in data) {
-              if (data.hasOwnProperty(key)) {
-                ssl_data_div.innerHTML +=
-                  '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' + (key) + (
-                    data[key]) + "</div>";
-              }
-            }
+                '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2"> Main Certificate Information</div>';
+            main_cert_num = 0
+            var main_cert = [];
+            var other_cert = [];
+            for (var num in data["cert_deployments"]) {
 
-          },
-          complete: function () {
-            $.ajax({
-              type: "GET",
-              url: "ssl3_0/?website_port=" + website_port,
-              beforeSend: function () {
-                $('#loading-spinner').show();
-                scanner_text.innerHTML = "Scanning for SSL 3.0"
-              },
-              success: function (data) {
+                ssl_data.innerHTML += '<div class="shadow-sm border py-10 px-10 border-gray-200" id="main-cert' + num + '"></div>'
+                ssl_data.innerHTML += '<div class="shadow-sm border py-10 px-10 border-gray-200" id="other-cert' + num + '"></div>'
+                ssl_data.innerHTML += '<br>'
 
-                data = JSON.parse(data)
 
-                for (var key in data) {
-                  if (data.hasOwnProperty(key)) {
-                    ssl_data_div.innerHTML +=
-                      '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 ">' + (
-                        key) + (data[key]) + "</div>";
-                    console.log(data[key])
-                  }
-                }
+                main_cert[num] = document.getElementById('main-cert' + num);
+                other_cert[num] = document.getElementById('other-cert' + num);
 
-              },
-              complete: function () {
-                $.ajax({
-                  type: "GET",
-                  url: "tls1_0/?website_port=" + website_port,
-                  beforeSend: function () {
-                    $('#loading-spinner').show();
-                    scanner_text.innerHTML = "Scanning for TLS 1.0"
-                  },
-                  success: function (data) {
+                console.log(main_cert[num])
 
-                    data = JSON.parse(data)
 
-                    for (var key in data) {
-                      if (data.hasOwnProperty(key)) {
+                for (var inner_num in (data["cert_deployments"][num]["received_certificate_chain"])) {
 
-                        ssl_data_div.innerHTML +=
-                          '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' +
-                          (key) + (data[key]) + "</div>";
+                    if (inner_num == 0) {
+                        main_cert_num++
+                        main_cert[num].innerHTML +=
+                            '<div class="grid grid-cols-4 font-bold justify-center items-center py-2 px-6"><div></div> <div class="font-semibold">Received Certificate Chain #' + main_cert_num + '</div></div>';
+                        for (var key in (data["cert_deployments"][num]["received_certificate_chain"][inner_num])) {
+                            if (key != "pem") {
 
-                      }
-                    }
+                                main_cert[num].innerHTML +=
+                                    '<div class="grid grid-cols-4 bg-gray-200 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
+                                    key + '</div><div class="col-span-3">' + (data["cert_deployments"][num][
+                                        "received_certificate_chain"
+                                    ][inner_num][key]) + "</div></div>";
 
-                  },
-                  complete: function () {
-                    $.ajax({
-                      type: "GET",
-                      url: "tls1_1/?website_port=" + website_port,
-                      beforeSend: function () {
-                        $('#loading-spinner').show();
-                        scanner_text.innerHTML = "Scanning for TLS 1.1"
-                      },
-                      success: function (data) {
-
-                        data = JSON.parse(data)
-
-                        for (var key in data) {
-                          if (data.hasOwnProperty(key)) {
-
-                            ssl_data_div.innerHTML +=
-                              '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' +
-                              (key) + (data[key]) + "</div>";
-                            console.log(data[key])
-                          }
+                            }
                         }
 
-                      },
-                      complete: function () {
-                        $.ajax({
-                          type: "GET",
-                          url: "tls1_2/?website_port=" + website_port,
-                          beforeSend: function () {
+                        var divider_div = document.createElement('div')
+                        divider_div.innerHTML = '<div></div><div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></div><div></div>';
+                        divider_div.classList = 'flex justify-center items-center'
+
+
+                        other_cert[num].parentNode.insertBefore(divider_div, other_cert[num])
+                        other_cert[num].innerHTML +=
+                            '<div class="flex font-bold justify-center items-center  py-2 px-2"> Other Certificates</div>';
+
+                    } else {
+                        for (var key in (data["cert_deployments"][num]["received_certificate_chain"][inner_num])) {
+                            if (!key.includes("Subject")) {
+                                if (key != "pem") {
+                                    other_cert[num].innerHTML +=
+                                        '<div class="grid grid-cols-4 justify-items-start items-center bg-gray-200 py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
+                                        key + '</div><div class="col-span-3">' + (data["cert_deployments"][num]["received_certificate_chain"][inner_num][key]) + "</div></div>";
+                                }
+                            }
+                        }
+
+                        other_cert[num].innerHTML += '<div></div><div><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg></div><div></div>';
+
+                    }
+                }
+
+
+                other_cert[num].innerHTML += '<div id="ssl-path-data' + num + '" class="flex py-2 px-2"></div>';
+                var ssl_path_div = document.getElementById('ssl-path-data' + num);
+                ssl_path_div.innerHTML +=
+                    '<div class="font-bold bg-gray-300 justify-center items-center py-2 px-2 rounded-sm">Cert Paths: </div>';
+
+                //section for creating path
+
+                for (var key in (data["cert_deployments"][num]["path_validation_results"])) {
+
+                    ssl_path_div.innerHTML += path_block(key, num)
+
+                    for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])) {
+                        for (var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])) {
+                            if (inner_key.hasOwnProperty) {}
+                        }
+                    }
+                }
+
+                for (var key in (data["cert_deployments"][num]["path_validation_results"])) {
+                    other_cert[num].innerHTML += path_data_block(key, num)
+                    path_data = document.getElementById('cert-path-' + key + num);
+
+                    for (var inner_num in (data["cert_deployments"][num]["path_validation_results"][key])) {
+
+                        for (var inner_key in (data["cert_deployments"][num]["path_validation_results"][key][inner_num])) {
+                            if (inner_key.hasOwnProperty) {
+                                if (inner_key != "pem") {
+                                    path_data.innerHTML +=
+                                        '<div class="grid grid-cols-4 justify-items-start items-center py-2 px-6 text-ellipsis overflow-hidden"><div class="font-medium">' +
+                                        inner_key + '</div><div class="col-span-3">' + (data["cert_deployments"][num][
+                                            "path_validation_results"
+                                        ][key][inner_num][inner_key]) + "</div></div>";
+                                }
+                            }
+
+
+                        }
+                    }
+
+                }
+
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "ssl2_0/?website_port=" + website_port,
+                beforeSend: function() {
+                    $('#loading-spinner').show();
+                    scanner_text.innerHTML = "Scanning for SSL 2.0"
+                },
+                success: function(data) {
+
+                    data = JSON.parse(data)
+                    ssl_data.innerHTML +=
+                        '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2">SSL Protocols</div>';
+                    ssl_data.appendChild(ssl_data_div)
+                    ssl_data_div.innerHTML = '';
+                    ssl_data_div.innerHTML +=
+                        '<div class="grid grid-cols-3 justify-items-start items-center font-bold py-2 px-2"><div>Protocol</div><div>Cipher Suites</div></div>';
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            ssl_data_div.innerHTML +=
+                                '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' + (key) + (
+                                    data[key]) + "</div>";
+                        }
+                    }
+                },
+                complete: function() {
+                    $.ajax({
+                        type: "GET",
+                        url: "ssl3_0/?website_port=" + website_port,
+                        beforeSend: function() {
                             $('#loading-spinner').show();
-                            scanner_text.innerHTML = "Scanning for TLS 1.2"
-                          },
-                          success: function (data) {
+                            scanner_text.innerHTML = "Scanning for SSL 3.0"
+                        },
+                        success: function(data) {
 
                             data = JSON.parse(data)
 
                             for (var key in data) {
-                              if (data.hasOwnProperty(key)) {
-
-                                ssl_data_div.innerHTML +=
-                                  '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' +
-                                  (key) + (data[key]) + "</div>";
-
-                              }
-                            }
-
-                          },
-                          complete: function () {
-                            $.ajax({
-                              type: "GET",
-                              url: "tls1_3/?website_port=" + website_port,
-                              beforeSend: function () {
-                                $('#loading-spinner').show();
-                                scanner_text.innerHTML =
-                                  "Scanning for TLS 1.3"
-                              },
-                              success: function (data) {
-
-                                data = JSON.parse(data)
-
-                                for (var key in data) {
-                                  if (data.hasOwnProperty(key)) {
-
+                                if (data.hasOwnProperty(key)) {
                                     ssl_data_div.innerHTML +=
-                                      '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 auto-cols-max">' +
-                                      (key) + (data[key]) + "</div>";
-
-                                  }
+                                        '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 ">' + (
+                                            key) + (data[key]) + "</div>";
+                                    console.log(data[key])
                                 }
-
-                              },
-                              complete: function () {
-                                $('#loading-spinner').hide();
-                                scanner_text.innerHTML = ""
-
-                                $.ajax({
-                                  type: "GET",
-                                  url: "supported_suites/?website_port=" +
-                                    website_port,
-                                  beforeSend: function () {
+                            }
+                        },
+                        complete: function() {
+                            $.ajax({
+                                type: "GET",
+                                url: "tls1_0/?website_port=" + website_port,
+                                beforeSend: function() {
                                     $('#loading-spinner').show();
-                                    scanner_text.innerHTML =
-                                      "Getting suported ciphers"
-                                  },
-                                  success: function (data) {
+                                    scanner_text.innerHTML = "Scanning for TLS 1.0"
+                                },
+                                success: function(data) {
 
                                     data = JSON.parse(data)
+
                                     for (var key in data) {
-                                      if (data.hasOwnProperty(key)) {
-                                        ssl_data_div.innerHTML +=
-                                          '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 auto-cols-max">' +
-                                          (key) + (data[key]) +
-                                          "</div>";
-                                      }
+                                        if (data.hasOwnProperty(key)) {
+
+                                            ssl_data_div.innerHTML +=
+                                                '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' +
+                                                (key) + (data[key]) + "</div>";
+
+                                        }
                                     }
 
-                                  },
-                                  complete: function () {
-                                    $('#loading-spinner').hide();
-                                    scanner_text.innerHTML = ""
+                                },
+
+                                complete: function() {
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "tls1_1/?website_port=" + website_port,
+                                        beforeSend: function() {
+                                            $('#loading-spinner').show();
+                                            scanner_text.innerHTML = "Scanning for TLS 1.1"
+                                        },
+                                        success: function(data) {
+
+                                            data = JSON.parse(data)
+
+                                            for (var key in data) {
+                                                if (data.hasOwnProperty(key)) {
+
+                                                    ssl_data_div.innerHTML +=
+                                                        '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' +
+                                                        (key) + (data[key]) + "</div>";
+                                                    console.log(data[key])
+                                                }
+                                            }
+
+                                        },
+                                    });
+                                },
+
+                                complete: function() {
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "tls1_2/?website_port=" + website_port,
+                                        beforeSend: function() {
+                                            $('#loading-spinner').show();
+                                            scanner_text.innerHTML = "Scanning for TLS 1.2"
+                                        },
+                                        success: function(data) {
+
+                                            data = JSON.parse(data)
+
+                                            for (var key in data) {
+                                                if (data.hasOwnProperty(key)) {
+
+                                                    ssl_data_div.innerHTML +=
+                                                        '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2">' +
+                                                        (key) + (data[key]) + "</div>";
+
+                                                }
+                                            }
+
+                                        },
+
+                                        complete: function() {
+                                            $.ajax({
+                                                type: "GET",
+                                                url: "tls1_3/?website_port=" + website_port,
+                                                beforeSend: function() {
+                                                    $('#loading-spinner').show();
+                                                    scanner_text.innerHTML =
+                                                        "Scanning for TLS 1.3"
+                                                },
+                                                success: function(data) {
+
+                                                    data = JSON.parse(data)
+
+                                                    for (var key in data) {
+                                                        if (data.hasOwnProperty(key)) {
+
+                                                            ssl_data_div.innerHTML +=
+                                                                '<div class="grid grid-cols-3 justify-items-start items-center py-2 px-2 auto-cols-max">' +
+                                                                (key) + (data[key]) + "</div>";
+
+                                                        }
+                                                    }
+
+                                                },
+                                                complete: function() {
+                                                    $('#loading-spinner').hide();
+                                                    scanner_text.innerHTML = ""
+                                                }
+
+
+                                            })
+                                        }
+
+
+                                    })
+                                }
 
 
 
-                                  },
-                                  failure: function (data) {
-                                    console.log('Got an error dude');
 
-                                  }
-                                })
+                            });
+                        }
 
 
+                    });
+                }
+            });
+        } else {
+            ssl_data.innerHTML += '<div class="flex font-bold justify-center items-center bg-gray-300 shadow-sm py-2 px-2"> No certificate found!</div>';
+            $('#loading-spinner').hide();
+            scanner_text.innerHTML = ""
+        }
 
-                              },
-                              failure: function (data) {
-                                console.log('Got an error dude');
+    },
 
-                              }
-                            })
 
-                          },
-                          failure: function (data) {
-                            console.log('Got an error dude');
-
-                          }
-                        })
-
-                      },
-                      failure: function (data) {
-                        console.log('Got an error dude');
-
-                      }
-                    })
-
-                  },
-                  failure: function (data) {
-                    console.log('Got an error dude');
-
-                  }
-                })
-
-              },
-              failure: function (data) {
-                console.log('Got an error dude');
-
-              }
-            })
-
-          },
-          failure: function (data) {
-            console.log('Got an error dude');
-
-          }
-        })
-      },
-      
-      failure: function (data) {
+    failure: function(data) {
         console.log('Got an error dude');
-      }
-    })
-
-  }
+    }
+  })
+}
 </script>
 {% endblock %}
 
 {% block content %}
 <style>
-  
   .loader {
     border-top-color: #3498db;
     -webkit-animation: spinner 1.5s linear infinite;
