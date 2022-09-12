@@ -1,22 +1,23 @@
+from multiprocessing import context
 from django.shortcuts import render
 from ratelimit.decorators import ratelimit
-import psycopg2
+from ssl_monitor.models import CertMonitor
 
 
 @ratelimit(key='ip', rate='1/m')
 def home(request):
-    conn = psycopg2.connect("host=sslally-db.crdjigjiw9yx.us-east-1.rds.amazonaws.com",
-    dbname="postgres",
-    user="dbmaster", 
-    password="G55AwhDzsHY2NouhPFnL")
-    cur = conn.cursor()
-    print('PostgreSQL database version:')
-    cur.execute('SELECT version()')
-        # display the PostgreSQL database server version
-    db_version = cur.fetchone()
-    print(db_version)
+    
+    certs = CertMonitor()
+    certs.url = 'nexon.net'
+    certs.checkFreqency = 3600
+    certs.save()
+
+    certObjs = CertMonitor.objects.get(pk=11)
+    
+
     context = {
-        "db_version" : db_version
+        "cert_urls": certObjs.url
     }
+    
        
     return render(request, 'polls/sslmonitor.html', context)

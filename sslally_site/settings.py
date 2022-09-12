@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'polls',
     'ping',
     'dig',
-    'background_task'
+    'background_task',
+    'ssl_monitor'
 ]
 
 MIDDLEWARE = [
@@ -81,12 +82,26 @@ WSGI_APPLICATION = 'sslally_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+ """
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres', 
+        'USER': 'dbmaster', 
+        'PASSWORD': 'G55AwhDzsHY2NouhPFnL',
+        'HOST': 'sslally-db.crdjigjiw9yx.us-east-1.rds.amazonaws.com', 
+        'PORT': '5432',
+    }
+}
+
+
 
 
 # Password validation
