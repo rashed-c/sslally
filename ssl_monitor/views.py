@@ -1,7 +1,7 @@
 from multiprocessing import context
 from django.shortcuts import render
 from ratelimit.decorators import ratelimit
-from ssl_monitor.models import CertMonitor
+from ssl_monitor.models import CertMonitor #import database models
 
 
 @ratelimit(key='ip', rate='1/m')
@@ -12,11 +12,12 @@ def home(request):
     certs.checkFreqency = 3600
     certs.save()
 
-    certObjs = CertMonitor.objects.get(pk=11)
+    certObjs = CertMonitor.objects.all()
+    
     
 
     context = {
-        "cert_urls": certObjs.url
+        "cert_urls": certObjs
     }
     
        

@@ -176,8 +176,20 @@ $.ajax({
         py-6 mt-10 
         items-center" 
         id="ping-data"> 
-         
-        {{cert_urls}}
+
+		<table>
+	<th> URL </th> <th>status</th> <th>Check frequency</th>
+        {% for cert in cert_urls %} 
+       
+	<tr>
+       <td>{{cert.url}}</td>
+	<td>{{cert.certStatus}}</td>
+        <td>{{cert.checkFreqency}}</td>
+	<tr>
+
+        {% endfor %}
+      
+        </table>
 
         </div>
 
