@@ -9,12 +9,11 @@ def home(request):
     
     certs = CertMonitor()
     certs.url = 'nexon.net'
-    certs.checkFreqency = 3600
+    certs.checkFrequency = 3600
+    certs.certValid ='False'
     certs.save()
 
     certObjs = CertMonitor.objects.all()
-    
-    
 
     context = {
         "cert_urls": certObjs
