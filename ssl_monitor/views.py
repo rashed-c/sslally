@@ -1,5 +1,6 @@
 from multiprocessing import context
 from django.shortcuts import render
+from polls.views import getCertStatus
 from ratelimit.decorators import ratelimit
 from ssl_monitor.models import CertMonitor #import database models
 
@@ -8,10 +9,12 @@ from ssl_monitor.models import CertMonitor #import database models
 def home(request):
     
     certs = CertMonitor()
-    certs.url = 'nexon.net'
+    certs.url = 'nessadc.com'
     certs.checkFrequency = 3600
-    certs.certValid ='False'
+    certs.certValid = (getCertStatus(certs.url, "443"))
     certs.save()
+    
+    
 
     certObjs = CertMonitor.objects.all()
 

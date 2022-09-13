@@ -16,6 +16,7 @@ from ratelimit.decorators import ratelimit
 import pandas as pd
 import fnmatch
 from background_task import background
+from dateutil import parser
 # Make a regular expression
 # for validating an Ip-address
 regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
@@ -126,14 +127,14 @@ def home(request):
     return render(request, 'polls/ssl.html')
 
 
-def test_ssl_cert(request):
+""" def test_ssl_cert(request):
     website = request.GET.get('website_port')
     if ":" in website:
         port = website.split(":")[1]  # Get port number
         website = website.split(":")[0]  # All exepct port number and colon
     else:
         port = 443
-    cert = getCert(website, port)
+    cert = getCert(website, port) """
 
 
 @ratelimit(key='user_or_ip', rate='1/5s', method=ratelimit.ALL)
@@ -214,28 +215,22 @@ def getCert(website, port):
                 subject_alternative = subject_alternative[1:-1]
 
                 if(cert_num == 0):
-                    serial = getSerialHex(
-                        certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num+1]["serial_number"])
+                    serial = getSerialHex(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num+1]["serial_number"])
                     cert_authority = getCertificateAuthority(serial)
                 else:
                     cert_authority = getCertificateAuthority(serial)
 
-                validfrom_date = formatDate(
-                    certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_before"])
-                notvalidafter_date = getExpirationDays(
-                    certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_after"])
+                validfrom_date = formatDate(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_before"])
+                notvalidafter_date = getExpirationDays(certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_after"])
+                expirationDate = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["not_valid_after"]
                 hpkp_pin = certinfo_json['certificate_deployments'][dep_num]["received_certificate_chain"][cert_num]["hpkp_pin"]
-                key_size = str(certinfo_json["certificate_deployments"][dep_num]
-                               ["received_certificate_chain"][cert_num]["public_key"]["key_size"]) + " Bits"
-                signature_algorithm = certinfo_json["certificate_deployments"][dep_num][
-                    "received_certificate_chain"][cert_num]["signature_algorithm_oid"]["name"]
-
+                key_size = str(certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["public_key"]["key_size"]) + " Bits"
+                signature_algorithm = certinfo_json["certificate_deployments"][dep_num]["received_certificate_chain"][cert_num]["signature_algorithm_oid"]["name"]
                 cert["cert_deployments"][dep_num]["received_certificate_chain"].append({"pem": as_pem, "<div>Subject: </div>": subject, "<div>Subject Alternatives: </div>": subject_alternative, "<div>Serial number: </div>": serial, "<div>Valid from: </div>": validfrom_date,
-                                                                                       "<div>Not valid after: </div>": notvalidafter_date, "<div>Issuer: </div>": cert_authority, "<div>HPKP Pin: </div>": hpkp_pin, "<div>Signature Algorithm: </div>": signature_algorithm, "<div>Key size: </div>": key_size})
+                                                                                       "<div>Not valid after: </div>": notvalidafter_date, "expiration_date":expirationDate, "<div>Issuer: </div>": cert_authority, "<div>HPKP Pin: </div>": hpkp_pin, "<div>Signature Algorithm: </div>": signature_algorithm, "<div>Key size: </div>": key_size})
 
             for path_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"])):
-                chain_name = certinfo_json['certificate_deployments'][dep_num][
-                    "path_validation_results"][path_num]["trust_store"]["name"]
+                chain_name = certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["trust_store"]["name"]
                 cert["cert_deployments"][dep_num]["path_validation_results"][chain_name] = []
                 for path_chain_num in range(len(certinfo_json['certificate_deployments'][dep_num]["path_validation_results"][path_num]["verified_certificate_chain"])):
                     as_pem = certinfo_json["certificate_deployments"][dep_num]["path_validation_results"][
@@ -263,9 +258,28 @@ def getExpirationDays(date):
     date = (datetime.strptime(date, '%Y-%m-%d').strftime('%B %d, %Y'))
     date_and_days = date+" (Expiring in "+str(expiring_in_days)+" days)"
     return(str(date_and_days))
+
+
+
+def getCertStatus(website,port):
+    certs = getCert(website, port)
+    cert_data_json = json.loads(json.dumps(certs))
+    present_date = datetime.now()
+    cert_expiration_date = cert_data_json['cert_deployments'][0]['received_certificate_chain'][0]['expiration_date']
+    #print(datetime.strptime(cert_expiration_date,"%Y-%m-%d"))
+    cert_expiration_date = parser.parse(cert_expiration_date)
+    print(present_date)
+    print(cert_expiration_date)
+    if(present_date < cert_expiration_date):
+        return True
+    else:
+        return False
+
+
    
 
 
+""" 
 def getProtocol(website, port, protocol):
     supported_suites = {protocol: []}
     if(protocol == "ssl2.0"):
@@ -303,7 +317,8 @@ def getProtocol(website, port, protocol):
         else:
             cipher_suites = "Protocol not supported"
 
-        return(cipher_suites)
+        return(cipher_suites) 
+"""
 
 
 def checkIP(Ip):
