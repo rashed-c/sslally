@@ -167,7 +167,7 @@ $.ajax({
 
     
        
-        <div class="max-w-6xl 
+     <!--    <div class="max-w-6xl 
         h-56 
         mx-auto
          border 
@@ -189,9 +189,46 @@ $.ajax({
 
         {% endfor %}
       
+        </table> -->
+
+        <table class="min-w-full text-center">
+          <thead class="border-b bg-gray-900">
+            <tr>
+              <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+                Hostname
+              </th>
+              <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+                Cert Status
+              </th>
+              <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+                Expiration Date
+              </th>
+              <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+                Check Frequency
+              </th>
+            </tr>
+          </thead class="border-b">
+          <tbody>
+            <tr class="bg-white border-b">
+              {% for cert in cert_urls %} 
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                {{cert.url}}
+              </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                {{cert.certValid}}
+              </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                {{cert.expirationDate}}
+              </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                {{cert.checkFrequency}}
+              </td>
+            </tr class="bg-white border-b">
+                {% endfor %}
+          </tbody>
         </table>
 
-        </div>
+        <!-- </div> -->
 
       </div>
     

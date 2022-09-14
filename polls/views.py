@@ -260,20 +260,30 @@ def getExpirationDays(date):
     return(str(date_and_days))
 
 
+class CertInformation:
+    def __init__(self, website, port):
+        self.website = website
+        self.port = port
+        self.certExpirationDate = ""
 
-def getCertStatus(website,port):
-    certs = getCert(website, port)
-    cert_data_json = json.loads(json.dumps(certs))
-    present_date = datetime.now()
-    cert_expiration_date = cert_data_json['cert_deployments'][0]['received_certificate_chain'][0]['expiration_date']
-    #print(datetime.strptime(cert_expiration_date,"%Y-%m-%d"))
-    cert_expiration_date = parser.parse(cert_expiration_date)
-    print(present_date)
-    print(cert_expiration_date)
-    if(present_date < cert_expiration_date):
-        return True
-    else:
-        return False
+    def getCertStatus(self):
+        certs = getCert(self.website, self.port)
+        cert_data_json = json.loads(json.dumps(certs))
+        present_date = datetime.now()
+        cert_expiration_date = cert_data_json['cert_deployments'][0]['received_certificate_chain'][0]['expiration_date']
+        #print(datetime.strptime(cert_expiration_date,"%Y-%m-%d"))
+        cert_expiration_date = parser.parse(cert_expiration_date)
+        self.certExpirationDate = cert_expiration_date
+        print(present_date)
+        print(cert_expiration_date)
+        if(present_date < cert_expiration_date):
+            return True
+        else:
+            return False
+     
+    def getExpirationDate(self):
+        return self.certExpirationDate
+    
 
 
    
