@@ -32,23 +32,25 @@ var isRunning = false;
   
 function myFunction(){
 var website_port = document.getElementById("website_port").value;
-document.getElementById("ping-data").innerHTML = "";
+var monitorTable = $('#monitorURL_Table').DataTable();
+//document.getElementById("ping-data").innerHTML = "";
 
 $.ajax({
     type: "GET",
-    url:"status/?website_port="+website_port,
+    url:"monitorUrl/?website_port="+website_port,
     
     beforeSend: function () {
         $('#loading-spinner').show();
        
       },
     success: function(data){   
-      document.getElementById("ping-data").innerHTML +=  (data + "<br>") 
+      //document.getElementById("ping-data").innerHTML +=  (data + "<br>") 
+      console.log(data)
+      monitorTable.ajax.reload()
     },
-    complete: function () {
-                                    $('#loading-spinner').hide();
-                                    scanner_text.innerHTML = ""
-                                  },
+    complete: function () {$('#loading-spinner').hide();
+    //scanner_text.innerHTML = ""
+  },
     failure: function(data) { 
         console.log('Got an error dude');
       }});  
@@ -191,7 +193,7 @@ $.ajax({
       
         </table> -->
 
-        <table class="min-w-full text-center">
+        <table id="monitorURL_Table" class="min-w-full text-center">
           <thead class="border-b bg-gray-900">
             <tr>
               <th scope="col" class="text-sm font-medium text-white px-6 py-4">
