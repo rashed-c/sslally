@@ -46,7 +46,9 @@ $.ajax({
     success: function(data){   
       //document.getElementById("ping-data").innerHTML +=  (data + "<br>") 
       console.log(data)
-      monitorTable.ajax.reload()
+	  monitorTable.row.add(['a','1','1','1'])
+	 console.log(monitorTable)
+      // monitorTable.ajax.reload()
     },
     complete: function () {$('#loading-spinner').hide();
     //scanner_text.innerHTML = ""

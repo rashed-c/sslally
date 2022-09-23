@@ -51,22 +51,26 @@ def monitorUrl(request):
     certs.save()
     
     
+    CertMonitor.objects.filter(pk__in=CertMonitor.objects.filter(type='Active').order_by('-id').values('pk')[:10]).delete()
+    certObjs = CertMonitor.objects.all().last()
 
-    certObjs = list(CertMonitor.objects.values())
+
 
     #print(list(CertMonitor.objects.values()))
-
-
+    dictionary = {"hostname":certObjs.certValid,
+            "Cert Status":certObjs.certValid,
+            "Expiration Date":certObjs.certValid,
+            "Check Frequency":certObjs.certValid}
 
     """  context = {
         "cert_urls": certObjs
     } 
     """
-    certObjs = json.dumps(certObjs)
-    print(certObjs)
+    #certObjs = json.dumps(certObjs)
+    print(dictionary)
 
     #return render(request, 'polls/sslmonitor.html', context)
-    return JsonResponse(certObjs,safe = False)
+    return JsonResponse(dictionary,safe = False)
 
 def get_host_port(website):
     website = website
