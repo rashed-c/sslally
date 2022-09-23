@@ -10,28 +10,10 @@ from ssl_monitor.models import CertMonitor #import database models
 
 @ratelimit(key='ip', rate='1/m')
 def home(request):
-    
-    """  url = "nessadc.com"
-    certInfo = polls.views.CertInformation(url,"443")
-    
-
-    certs = CertMonitor()
-    certs.url = url
-    certs.checkFrequency = 3600
-    certs.certValid = certInfo.getCertStatus()
-    certs.expirationDate = certInfo.certExpirationDate
-    certs.save() 
-    """
-    
-    
-
     certObjs = CertMonitor.objects.all()
-
     context = {
         "cert_urls": certObjs
-    }
-    
-       
+    }   
     return render(request, 'polls/sslmonitor.html', context)
 
 def monitorUrl(request):
@@ -51,25 +33,16 @@ def monitorUrl(request):
     certs.save()
     
     
-    CertMonitor.objects.filter(pk__in=CertMonitor.objects.filter(type='Active').order_by('-id').values('pk')[:10]).delete()
+    #Delete all but latest 10 added urls - For testing only
+    CertMonitor.objects.filter(pk__in=CertMonitor.objects.filter().order_by('-id').values('pk')[10:]).delete()
+
     certObjs = CertMonitor.objects.all().last()
 
-
-
-    #print(list(CertMonitor.objects.values()))
-    dictionary = {"hostname":certObjs.certValid,
+    dictionary = {"hostname":certObjs.url,
             "Cert Status":certObjs.certValid,
-            "Expiration Date":certObjs.certValid,
-            "Check Frequency":certObjs.certValid}
-
-    """  context = {
-        "cert_urls": certObjs
-    } 
-    """
-    #certObjs = json.dumps(certObjs)
+            "Expiration Date":certObjs.expirationDate,
+            "Check Frequency":certObjs.checkFrequency}
     print(dictionary)
-
-    #return render(request, 'polls/sslmonitor.html', context)
     return JsonResponse(dictionary,safe = False)
 
 def get_host_port(website):

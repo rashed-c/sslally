@@ -8,6 +8,8 @@
 var counter; 
 var isRunning = false; 
 
+$(document).ready( function () {$('#monitorURL_Table').DataTable();});
+
 // function poll() {
 //     if(!isRunning){
 //     document.getElementById("ping-data").innerHTML =  ""
@@ -31,8 +33,9 @@ var isRunning = false;
 
   
 function myFunction(){
+
 var website_port = document.getElementById("website_port").value;
-var monitorTable = $('#monitorURL_Table').DataTable();
+
 //document.getElementById("ping-data").innerHTML = "";
 
 $.ajax({
@@ -44,18 +47,19 @@ $.ajax({
        
       },
     success: function(data){   
-      //document.getElementById("ping-data").innerHTML +=  (data + "<br>") 
-      console.log(data)
-	  monitorTable.row.add(['a','1','1','1'])
-	 console.log(monitorTable)
-      // monitorTable.ajax.reload()
-    },
-    complete: function () {$('#loading-spinner').hide();
-    //scanner_text.innerHTML = ""
+      //document.getElementById("ping-data").innerHTML +=  (data + "<br>")
+      var monitorTable = $('#monitorURL_Table').DataTable();
+
+      var rowNode = monitorTable.row.add([data['hostname'],data['Cert Status'],data['Expiration Date'],data['Check Frequency'], "Refresh"]).draw().node();
+
+      $( rowNode ).css( 'color', 'red' ).animate( { color: 'black' } );
   },
-    failure: function(data) { 
-        console.log('Got an error dude');
-      }});  
+
+      complete: function () {$('#loading-spinner').hide();
+  },
+      failure: function(data) { 
+          console.log('Got an error dude');
+        }});  
   }; 
 </script>
 
@@ -195,40 +199,26 @@ $.ajax({
       
         </table> -->
 
-        <table id="monitorURL_Table" class="min-w-full text-center">
+        <table id="monitorURL_Table" class="">
           <thead class="border-b bg-gray-900">
             <tr>
-              <th scope="col" class="text-sm font-medium text-white px-6 py-4">
-                Hostname
-              </th>
-              <th scope="col" class="text-sm font-medium text-white px-6 py-4">
-                Cert Status
-              </th>
-              <th scope="col" class="text-sm font-medium text-white px-6 py-4">
-                Expiration Date
-              </th>
-              <th scope="col" class="text-sm font-medium text-white px-6 py-4">
-                Check Frequency
-              </th>
+              <th scope="col" class="text-sm font-medium text-white px-6 py-4">Hostname</th>
+              <th scope="col" class="text-sm font-medium text-white px-6 py-4">Cert Status</th>
+              <th scope="col" class="text-sm font-medium text-white px-6 py-4">Expiration Date</th>
+              <th scope="col" class="text-sm font-medium text-white px-6 py-4">Check Frequency</th>
+              <th scope="col" class="text-sm font-medium text-white px-6 py-4">Action</th>
             </tr>
           </thead class="border-b">
           <tbody>
+            {% for cert in cert_urls %} 
             <tr class="bg-white border-b">
-              {% for cert in cert_urls %} 
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{cert.url}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{cert.certValid}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{cert.expirationDate}}
-              </td>
-              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {{cert.checkFrequency}}
-              </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{cert.url}}</td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{cert.certValid}}</td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"> {{cert.expirationDate}} </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{cert.checkFrequency}}</td>
+              <td>Refresh</td>
             </tr class="bg-white border-b">
-                {% endfor %}
+            {% endfor %}
           </tbody>
         </table>
 
