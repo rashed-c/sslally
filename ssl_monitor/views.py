@@ -42,7 +42,7 @@ def monitorUrl(request):
             "Cert Status":certObjs.certValid,
             "Expiration Date":certObjs.expirationDate,
             "Check Frequency":certObjs.checkFrequency}
-    print(dictionary)
+            
     return JsonResponse(dictionary,safe = False)
 
 def get_host_port(website):

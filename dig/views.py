@@ -60,4 +60,4 @@ def do_dig(request):
     except:
         pass
 
-    return HttpResponse(answers)
+    return JsonResponse(answers, safe = False)
