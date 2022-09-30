@@ -18,7 +18,26 @@
        <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> 
        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"/>
        
+       <!-- Flowbite dependencies-->
+       <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.3/dist/flowbite.min.css" />
+       <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
 
+       <!-- tw-elements dependencies-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+              },
+            }
+          }
+        }
+      </script>
       
 
         <!-- Required nav javascripts -->
@@ -75,7 +94,37 @@
               <a class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="https://blog.sslally.com">Blog</a>
               <a class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">About</a>
               <a class="px-4 py-2 mt-2 mr-2 text-sm font-semibold bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Contact</a>
-              <button onclick="signIn()" class="
+              
+              {% if user.is_authenticated %}
+              <button 
+              class="
+              md:w-30
+              sm:w-30
+              bg-purple-500
+              text-white
+              active:bg-purple-600
+              font-bold
+              uppercase
+              text-sm
+              px-6
+              py-3
+              rounded-sm
+              shadow
+              hover:shadow-lg
+              outline-none
+              focus:outline-none
+              ease-linear
+              transition-all
+              duration-150
+              shadow-sm" 
+              href="{% url 'account_logout' %}"
+              type="button">
+            Sign Out
+          </button>
+
+          {% else %}
+            
+          <button onclick="signIn()" class="
               md:w-30
               sm:w-30
               bg-purple-500
@@ -98,6 +147,7 @@
               type="button">
             Sign In
           </button>
+          {% endif %}
                 
             </nav>
           </div>

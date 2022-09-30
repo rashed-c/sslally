@@ -20,7 +20,7 @@ from django.views.generic import TemplateView
 
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name="polls/home.html")),
+    path('', TemplateView.as_view(template_name="polls/home.html"), name="home"),
     path('theme/', TemplateView.as_view(template_name="base.html")),
     path('traceroute/', TemplateView.as_view(template_name="polls/traceroute-home.html")),
     path('ssl/', include('polls.urls')),
@@ -29,4 +29,5 @@ urlpatterns = [
     path('dig/', include('dig.urls')),
     path('portcheck/', include('portcheck.urls')),
     path('monitor/', include('ssl_monitor.urls')),
-    path('admin/', admin.site.urls), ]
+    path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),]
