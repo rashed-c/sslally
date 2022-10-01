@@ -6,14 +6,15 @@ import polls.views
 import json 
 from ratelimit.decorators import ratelimit
 from ssl_monitor.models import CertMonitor #import database models
+from django.contrib.auth.decorators import login_required
 
 
 @ratelimit(key='ip', rate='1/m')
+@login_required
 def home(request):
-    certObjs = CertMonitor.objects.all()
-    context = {
-        "cert_urls": certObjs
-    }   
+    #certObjs = CertMonitor.objects.all()
+    certObjs = CertMonitor.objects.filter(user = request.user)
+    context = { "cert_urls": certObjs}   
     return render(request, 'polls/sslmonitor.html', context)
 
 def monitorUrl(request):

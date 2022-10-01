@@ -96,7 +96,9 @@
               <a class="px-4 py-2 mt-2 mr-2 text-sm font-semibold bg-transparent rounded-sm dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Contact</a>
               
               {% if user.is_authenticated %}
+              <form action="/accounts/logout">
               <button 
+              onclick="location.href='/accounts/logout';"
               class="
               md:w-30
               sm:w-30
@@ -117,14 +119,14 @@
               transition-all
               duration-150
               shadow-sm" 
-              href="{% url 'account_logout' %}"
               type="button">
             Sign Out
           </button>
-
+        </form>
           {% else %}
             
-          <button onclick="signIn()" class="
+          <button onclick="location.href='/accounts/login';"
+          class="
               md:w-30
               sm:w-30
               bg-purple-500
