@@ -289,7 +289,7 @@ class CertInformation:
    
 
 
-""" 
+
 def getProtocol(website, port, protocol):
     supported_suites = {protocol: []}
     if(protocol == "ssl2.0"):
@@ -328,7 +328,7 @@ def getProtocol(website, port, protocol):
             cipher_suites = "Protocol not supported"
 
         return(cipher_suites) 
-"""
+
 
 
 def checkIP(Ip):
