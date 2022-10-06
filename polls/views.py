@@ -91,6 +91,21 @@ def get_tls_1_1(request):
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
 
+def get_tls_1_1(request):
+    website = request.GET.get('website_port')
+    print(website)
+    if ":" in website:
+        port = website[-3:]  # Get port number
+        website = website[0:-4]  # All exepct port number and colon
+    else:
+        port = 443
+    accepted_ciphers = getProtocol(website, port, "tls1.1")
+    accepted_ciphers = {'<div class="cursor-pointer pr-2">TLS 1.1</div>':
+                        '<div class="fontawesome">'+str(accepted_ciphers)+"</div>"}
+    accepted_ciphers = json.dumps(accepted_ciphers)
+    return JsonResponse(accepted_ciphers, safe=False)
+
+
 
 def get_tls_1_2(request):
     website = request.GET.get('website_port')
@@ -105,7 +120,6 @@ def get_tls_1_2(request):
                         '<div class="fontawesome">'+str(accepted_ciphers)+"</div>"}
     accepted_ciphers = json.dumps(accepted_ciphers)
     return JsonResponse(accepted_ciphers, safe=False)
-
 
 def get_tls_1_3(request):
     website = request.GET.get('website_port')
@@ -122,8 +136,41 @@ def get_tls_1_3(request):
     return JsonResponse(accepted_ciphers, safe=False)
 
 
+
+def tls_compression(request):
+    website = request.GET.get('website_port')
+    print(website)
+    if ":" in website:
+        port = website[-3:]  # Get port number
+        website = website[0:-4]  # All exepct port number and colon
+    else:
+        port = 443
+    cipher_results = getProtocol(website, port, "tls_compression")
+    cipher_results = {'<div class="cursor-pointer pr-2">TLS Compression</div>':
+                        '<div class="fontawesome">'+str(cipher_results)+"</div>"}
+    print(cipher_results)
+    cipher_results = json.dumps(cipher_results)
+    print(cipher_results)
+    return JsonResponse(cipher_results, safe=False)
+
+
+
+
 @ratelimit(key='ip')
 def home(request):
+    '''
+    getProtocol("opac.bu.umk.pl", 443, "tls_compression")
+    print (getProtocol("opac.bu.umk.pl", 443, "tls_1_3_early_data"))
+    print(getProtocol("opac.bu.umk.pl", 443, "openssl_ccs_injection"))
+    print(getProtocol("opac.bu.umk.pl", 443, "tls_fallback_scsv"))
+    print(getProtocol("opac.bu.umk.pl", 443, "heartbleed"))
+    print(getProtocol("opac.bu.umk.pl", 443, "robot"))
+    print(getProtocol("opac.bu.umk.pl", 443, "session_renegotiation"))
+    print(getProtocol("opac.bu.umk.pl", 443, "session_resumption"))
+    print(getProtocol("opac.bu.umk.pl", 443, "session_resumption_rate"))
+    print(getProtocol("opac.bu.umk.pl", 443, "http_headers"))
+    print(getProtocol("opac.bu.umk.pl", 443, "elliptic_curves"))
+    '''
     return render(request, 'polls/ssl.html')
 
 
@@ -152,26 +199,7 @@ def result(request):
     else:
         port = 443
 
-    '''
-    Transform to uppercase first:
-    SSL_2_0_CIPHER_SUITES: CipherSuitesScanResult
-    SSL_3_0_CIPHER_SUITES: CipherSuitesScanResult
-    tls_1_0_cipher_suites: CipherSuitesScanResult
-    tls_1_1_cipher_suites: CipherSuitesScanResult
-    tls_1_2_cipher_suites: CipherSuitesScanResult
-    tls_1_3_cipher_suites: CipherSuitesScanResult
-    tls_compression: CompressionScanResult
-    tls_1_3_early_data: EarlyDataScanResult
-    openssl_ccs_injection: OpenSslCcsInjectionScanResult
-    tls_fallback_scsv: FallbackScsvScanResult
-    heartbleed: HeartbleedScanResult
-    robot: RobotScanResult
-    session_renegotiation: SessionRenegotiationScanResult
-    session_resumption: SessionResumptionSupportScanResult
-    session_resumption_rate: SessionResumptionRateScanResult
-    http_headers: HttpHeadersScanResult
-    elliptic_curves: SupportedEllipticCurvesScanResult
-    '''
+   
 
     certs = getCert(website, port)
     cert_data_json = json.dumps(certs)
@@ -304,6 +332,50 @@ def getProtocol(website, port, protocol):
         command = ScanCommand.TLS_1_2_CIPHER_SUITES
     elif(protocol == "tls1.3"):
         command = ScanCommand.TLS_1_3_CIPHER_SUITES
+    elif(protocol == "tls_compression"):
+        command = ScanCommand.TLS_COMPRESSION
+    elif(protocol == "tls_1_3_early_data"):
+        command = ScanCommand.TLS_1_3_EARLY_DATA
+    elif(protocol == "openssl_ccs_injection"):
+        command = ScanCommand.OPENSSL_CCS_INJECTION
+    elif(protocol == "tls_fallback_scsv"):
+        command = ScanCommand.TLS_FALLBACK_SCSV
+    elif(protocol == "heartbleed"):
+        command = ScanCommand.HEARTBLEED
+    elif(protocol == "robot"):
+        command = ScanCommand.ROBOT
+    elif(protocol == "session_renegotiation"):
+        command = ScanCommand.SESSION_RENEGOTIATION
+    elif(protocol == "session_resumption"):
+        command = ScanCommand.SESSION_RESUMPTION
+    elif(protocol == "session_resumption_rate"):
+        command = ScanCommand.SESSION_RESUMPTION_RATE
+    elif(protocol == "http_headers"):
+        command = ScanCommand.HTTP_HEADERS
+    elif(protocol == "elliptic_curves"):
+        command = ScanCommand.ELLIPTIC_CURVES
+
+    '''
+    Transform to uppercase first:
+    SSL_2_0_CIPHER_SUITES: CipherSuitesScanResult
+    SSL_3_0_CIPHER_SUITES: CipherSuitesScanResult
+    tls_1_0_cipher_suites: CipherSuitesScanResult
+    tls_1_1_cipher_suites: CipherSuitesScanResult
+    tls_1_2_cipher_suites: CipherSuitesScanResult
+    tls_1_3_cipher_suites: CipherSuitesScanResult
+    tls_compression: CompressionScanResult
+    tls_1_3_early_data: EarlyDataScanResult
+    openssl_ccs_injection: OpenSslCcsInjectionScanResult
+    tls_fallback_scsv: FallbackScsvScanResult
+    heartbleed: HeartbleedScanResult
+    robot: RobotScanResult
+    session_renegotiation: SessionRenegotiationScanResult
+    session_resumption: SessionResumptionSupportScanResult
+    session_resumption_rate: SessionResumptionRateScanResult
+    http_headers: HttpHeadersScanResult
+    elliptic_curves: SupportedEllipticCurvesScanResult
+    '''
+
     server_location = ServerNetworkLocationViaDirectConnection.with_ip_address_lookup(
         website, port)
     server_info = ServerConnectivityTester().perform(server_location)
@@ -315,19 +387,24 @@ def getProtocol(website, port, protocol):
 
     for server_scan_result in scanner.get_results():
         cipher_result = server_scan_result.scan_commands_results[command]
+        
         accepted_ciphers = ""
-        for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
-            accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
-            supported_suites[protocol].append(
-                accepted_cipher_suite.cipher_suite.name)
-        if(supported_suites[protocol]):
-            cipher_suites = ""
-            for cipher in supported_suites[protocol]:
-                cipher_suites += "</br>"+cipher
-        else:
-            cipher_suites = "Protocol not supported"
+      
+        while protocol not in ["tls_compression", "tls_1_3_early_data","openssl_ccs_injection","tls_fallback_scsv","heartbleed","robot","session_renegotiation","session_resumption","session_resumption_rate","http_headers","elliptic_curves"]:
+            for accepted_cipher_suite in cipher_result.accepted_cipher_suites:
+                accepted_ciphers += (accepted_cipher_suite.cipher_suite.name+", ")
+                supported_suites[protocol].append(
+                    accepted_cipher_suite.cipher_suite.name)
+            if(supported_suites[protocol]):
+                cipher_suites = ""
+                for cipher in supported_suites[protocol]:
+                    cipher_suites += "</br>"+cipher
+            else:
+                cipher_suites = "Protocol not supported"
 
-        return(cipher_suites) 
+            return(cipher_suites)
+        else:
+            return(cipher_result)
 
 
 
