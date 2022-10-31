@@ -26,7 +26,7 @@ def monitorUrl(request):
         print(host, port)
 
     certInfo = polls.views.CertInformation(host,port)
-    certs = CertMonitor()
+    certs = CertMonitor(user=request.user)
     certs.url = host
     certs.checkFrequency = 3600
     certs.certValid = certInfo.getCertStatus()
