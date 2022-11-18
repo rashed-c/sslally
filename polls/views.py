@@ -15,7 +15,7 @@ from datetime import datetime
 from ratelimit.decorators import ratelimit
 import pandas as pd
 import fnmatch
-from background_task import background
+#from background_task import background
 from dateutil import parser
 # Make a regular expression
 # for validating an Ip-address

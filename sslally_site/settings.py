@@ -37,13 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Other django apps
+    # tailwind apps
     'tailwind',
     'theme',
+    'django_browser_reload',
+    # Other django apps
     'polls',
     'ping',
     'dig',
-    'background_task',
+    #'background_task',
     'ssl_monitor',
     
     # Django auth apps
@@ -85,6 +87,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'ratelimit.middleware.RatelimitMiddleware',
+    # tailwind: auto insert script tag before </body> when debug is true
+    'django_browser_reload.middleware.BrowserReloadMiddleware',
 ]
 
 ROOT_URLCONF = 'sslally_site.urls'

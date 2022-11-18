@@ -17,11 +17,15 @@ from django import urls
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
+from django.conf.urls import *
 
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name="polls/home.html"), name="home"),
+    #tailwind theme and autoreload
     path('theme/', TemplateView.as_view(template_name="base.html")),
+    path("__reload__/", include("django_browser_reload.urls")),
+    #My views
     path('traceroute/', TemplateView.as_view(template_name="polls/traceroute-home.html")),
     path('ssl/', include('polls.urls')),
     path('polls/', include('polls.urls')),

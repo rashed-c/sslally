@@ -13,7 +13,7 @@ defusedxml==0.7.1
 distlib==0.3.6
 Django==3.1.6
 django-allauth==0.51.0
-django-background-tasks==1.2.5
+#django-background-tasks==1.2.5
 django-compat==1.0.15
 django-ratelimit==3.0.1
 django-tailwind==2.2.2
