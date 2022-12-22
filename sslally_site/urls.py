@@ -34,4 +34,4 @@ urlpatterns = [
     path('portcheck/', include('portcheck.urls')),
     path('monitor/', include('ssl_monitor.urls')),
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),]
+    path('account/', include('allauth.urls')),]
