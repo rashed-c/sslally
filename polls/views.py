@@ -17,6 +17,7 @@ import pandas as pd
 import fnmatch
 #from background_task import background
 from dateutil import parser
+from django.contrib.auth.decorators import login_required
 # Make a regular expression
 # for validating an Ip-address
 regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
@@ -171,8 +172,10 @@ def home(request):
     print(getProtocol("opac.bu.umk.pl", 443, "http_headers"))
     print(getProtocol("opac.bu.umk.pl", 443, "elliptic_curves"))
     '''
-    return render(request, 'polls/ssl.html')
-
+    if request.user.is_authenticated:
+        return render(request, 'polls/home.html')
+    else:
+        return render(request, 'polls/ssl.html')
 
 """ def test_ssl_cert(request):
     website = request.GET.get('website_port')

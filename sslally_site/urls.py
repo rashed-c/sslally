@@ -21,14 +21,14 @@ from django.conf.urls import *
 
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name="polls/home.html"), name="home"),
+    #path('', TemplateView.as_view(template_name="polls/home.html"), name="home"),
     #tailwind theme and autoreload
     path('theme/', TemplateView.as_view(template_name="base.html")),
     path("__reload__/", include("django_browser_reload.urls")),
     #My views
+    path('', include('polls.urls')),
     path('traceroute/', TemplateView.as_view(template_name="polls/traceroute-home.html")),
     path('ssl/', include('polls.urls')),
-    path('polls/', include('polls.urls')),
     path('ping/', include('ping.urls')),
     path('dig/', include('dig.urls')),
     path('portcheck/', include('portcheck.urls')),
