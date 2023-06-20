@@ -1,4 +1,4 @@
-"""Gunicorn *development* config file"""
+"""Gunicorn *prod* config file"""
 
 # Django WSGI application path in pattern MODULE_NAME:VARIABLE_NAME
 wsgi_app = "sslally_site.wsgi:application"
