@@ -20,7 +20,9 @@ Installation Instruction:
 
 3. python manage.py tailwind install
 
+About: 
 
+sslally.com is an web app developed in Django.  The app provides ability to scan sslcerts, perform dig, ping, port-check and other tools.  The goal is to be able to create an easy to use web application to monitor ssl certs, gateways, and applications. 
 
 
 Example: 
